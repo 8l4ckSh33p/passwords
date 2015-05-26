@@ -1,12 +1,14 @@
-# Passwords for ownCloud Server 8
+# Passwords
+### for ownCloud Server 8
+2015, Fallon Turner <fcturner@users.noreply.github.com>
 
 ## Introduction
-This is a Password Manager for viewing, editing and generating passwords (see 'img/example.png' for a screenshot). You can insert and manage your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored encrypted into the ownCloud database (read Security part for details). 
+This is a Password Manager for viewing, editing and generating passwords (see 'img/example.png' for a screenshot) in ownCloud. You can insert and manage your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored encrypted into the ownCloud database (read Security part for details). 
 
 This app is primarily intended as a password MANAGER, e.g. for a local ownCloud instance on your own WPA2 protected LAN. If you trust yourself enough as security expert, you can use this app behind an SSL secured server for a neat cloud solution. The app will be blocked if not accessed thru port 443 (https), which will result in your passwords not being loaded (decrypted) and shown. Also, make sure your server hasn't any kind of vulnerabilities (CSRF, XSS, SQL Injection, Privilege Escalation, Remote Code Execution, to name a few). 
 
 * Not happy with the encryption or the fact that this app exists? You're welcome to create your own :)
-* Happily want to contribute to improve this app? You're welcome to contact or create pull requests :)
+* Happily want to contribute to improve this app? You're welcome to contact me or create pull requests :)
 
 The script for creating passwords can be found in 'js/script.js'.
 
@@ -20,11 +22,12 @@ All passwords (generated or your own) are stored encrypted in your ownCloud data
 * It uses [Encrypt-then-MAC](http://en.wikipedia.org/wiki/Authenticated_encryption#Approaches_to_Authenticated_Encryption) (EtM), which is a very good method for ensuring the authenticity of the encrypted data
 * It uses mcrypt to perform the encryption using MCRYPT_BLOWFISH cyphers and MCRYPT_MODE_CBC for the mode. It's strong enough, and still fairly fast
 * It hides the [Initialization vector](http://en.wikipedia.org/wiki/Initialization_vector) (IV)
-* It uses a [timing-safe comparison]() function using [double hash-based message authentication code](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (HMAC) verification] of the source data
+* It uses a [timing-safe comparison](http://blog.ircmaxell.com/2014/11/its-all-about-time.html) function using [double hash-based message authentication code](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (HMAC) verification] of the source data
 
 This all means: it's pretty safe :)
 
 ## Installation
-
 Download the latest release and copy the folder 'passwords' to /owncloud/apps/. Login as admin and enable the app.
 
+### Credits
+I thank Anthony Ferrara ([ircmaxell](http://careers.stackoverflow.com/ircmaxell)), for [teaching the world how to properly set up](http://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved/5093422#5093422) security in PHP.

@@ -15,7 +15,7 @@ $container->query('OCP\INavigationManager')->add(function () use ($container) {
 
 		// sorting weight for the navigation. The higher the number, the higher
 		// will it be listed in the navigation
-		'order' => 10,
+		'order' => 20,
 
 		// the route that will be shown on startup
 		'href' => $urlGenerator->linkToRoute('passwords.page.index'),
