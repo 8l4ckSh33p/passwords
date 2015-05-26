@@ -1,4 +1,4 @@
-# Passwords for ownCloud Server 8
+# Password Manager for ownCloud Server 8
 
 ## Introduction
 This is a Password Manager for viewing, editing and generating passwords (see 'img/example.png' for a screenshot). You can insert and manage your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored encrypted into the ownCloud database (read Security part for details). 
@@ -20,7 +20,7 @@ All passwords (generated or your own) are stored encrypted in your ownCloud data
 * It uses [Encrypt-then-MAC](http://en.wikipedia.org/wiki/Authenticated_encryption#Approaches_to_Authenticated_Encryption) (EtM), which is a very good method for ensuring the authenticity of the encrypted data
 * It uses mcrypt to perform the encryption using MCRYPT_BLOWFISH cyphers and MCRYPT_MODE_CBC for the mode. It's strong enough, and still fairly fast
 * It hides the [Initialization vector](http://en.wikipedia.org/wiki/Initialization_vector) (IV)
-* It uses a [timing-safe comparison]() function using [double hash-based message authentication code](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (HMAC) verification] of the source data
+* It uses a [timing-safe comparison]() function using [double hash-based message authentication code](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (HMAC) verification of the source data
 
 This all means: it's pretty safe :)
 
