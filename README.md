@@ -17,7 +17,7 @@ The script for creating passwords can be found in 'js/script.js'.
 Generated passwords are in fact pseudo-generated (i.e. not using atmospheric noise), since only the Javascript Math.random-function is used, of which I think is randomly 'enough'. After generation of different types of characters (your choice to include lowercase, uppercase, numbers and/or reading marks, strength will be calculated), scrambling of these characters is done using the [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle) (also known as Knuth, a de-facto unbiased shuffle algorithm).
 ### Encrypted storage in database
 All passwords (generated or your own) are stored encrypted in your ownCloud database.
-* The keys are not used directly. Instead, it uses [Key stretching](http://en.wikipedia.org/wiki/Key_stretching) which relies on [Password-Based Key Derivation Function 2](http://en.wikipedia.org/wiki/PBKDF2) (PBKDF2)
+* The keys are not used directly. Instead, it uses [key stretching](http://en.wikipedia.org/wiki/Key_stretching) which relies on [Password-Based Key Derivation Function 2](http://en.wikipedia.org/wiki/PBKDF2) (PBKDF2)
 * The key used for encryption is unique for every encrypted block of text. The supplied key therefore becomes a "master key". This class therefore provides key rotation for cipher and authentication keys
 * It uses [Encrypt-then-MAC](http://en.wikipedia.org/wiki/Authenticated_encryption#Approaches_to_Authenticated_Encryption) (EtM), which is a very good method for ensuring the authenticity of the encrypted data
 * It uses mcrypt to perform the encryption using MCRYPT_BLOWFISH cyphers and MCRYPT_MODE_CBC for the mode. It's strong enough, and still fairly fast
@@ -26,8 +26,11 @@ All passwords (generated or your own) are stored encrypted in your ownCloud data
 
 This all means: it's pretty safe :)
 
+## Website icons
+All website icons are downloaded from a secured Google server when you load the page. Nothing fancy or unsafe (even using Google), it's just about icons. The icon for The White House's website for example (replace *whitehouse.gov* with your own domain to try): [https://www.google.com/s2/favicons?domain=www.whitehouse.gov](https://www.google.com/s2/favicons?domain=www.whitehouse.gov).
+
 ## Installation
-Download the latest release and copy the folder 'passwords' to /owncloud/apps/. Login as admin and enable the app.
+Download the latest release and copy the folder 'passwords' to /owncloud/apps/. Login as admin and enable the app. The database table will be created automatically.
 
 ### Credits
 I would like to thank Anthony Ferrara ([ircmaxell](http://careers.stackoverflow.com/ircmaxell)), for [teaching the world how to properly set up](http://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved/5093422#5093422) security in PHP.
