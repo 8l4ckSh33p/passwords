@@ -27,9 +27,9 @@ All passwords (generated or your own) are stored encrypted in your ownCloud data
 This all means: it's pretty safe :)
 
 ### Decryption (for pulling from database)
-All passwords are encrypted with user-specific and server-specific keys. This means passwords can be decrypted:
-* only by the user who created the password (so this user must be logged in), and
-* only on the same ownCloud instance where the password was created in.
+All passwords are encrypted with user-specific, ownCloud-specific and server-specific keys. This means passwords can be decrypted:
+* only by the user who created the password (so this user must be logged in),
+* only on the same ownCloud instance where the password was created in (meaning: same password salt in config.php).
 
 Admins are never able to decrypt passwords, since they cannot login as the user (assuming the administrator does not know the user's password).
 
