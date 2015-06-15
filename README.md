@@ -25,8 +25,6 @@ All passwords (generated or your own) are stored encrypted in your ownCloud data
 * It uses a [timing-safe comparison](http://blog.ircmaxell.com/2014/11/its-all-about-time.html) function using [double Hash-based Message Authentication Code](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (HMAC) verification of the source data
 * Encryption is done using a key built from user-specific, ownCloud-specific, and database entry-specific data so this key differs from every other database entry
 
-This all means: it's pretty safe :)
-
 ### Decryption (for pulling from database)
 All passwords are encrypted with user-specific, ownCloud-specific and server-specific keys. This means passwords can be decrypted:
 * only by the user who created the password (so this user must be logged in),
