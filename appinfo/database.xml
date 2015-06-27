@@ -18,35 +18,32 @@
             <field>
                 <name>user_id</name>
                 <type>text</type>
-                <length>200</length>
+                <length>500</length>
                 <default></default>
                 <notnull>true</notnull>
             </field>
             <field>
-                <!-- <name>title</name> -->
+                <name>loginname</name>
+                <type>text</type>
+                <length>500</length>
+                <default></default>
+                <notnull>true</notnull>
+            </field>
+            <field>
                 <name>website</name>
                 <type>text</type>
-                <length>200</length>
+                <length>500</length>
                 <default></default>
                 <notnull>true</notnull>
             </field>
             <field>
-                <!-- <name>content</name> -->
-                <name>username</name>
-                <type>text</type>
-                <default></default>
-                <notnull>true</notnull>
-            </field>
-            <field>
-                <name>password</name>
+                <name>pass</name>
                 <type>blob</type>
-                <default></default>
                 <notnull>true</notnull>
             </field>
             <field>
                 <name>creation_date</name>
                 <type>date</type>
-                <default></default>
                 <notnull>true</notnull>
             </field>
         </declaration>
