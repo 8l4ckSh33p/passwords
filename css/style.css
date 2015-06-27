@@ -1,34 +1,217 @@
+p, h2, label, .emptyinfo {
+	color: #555;
+}
+
+#PasswordsTableContent .icon-delete {
+	opacity: 0.5;
+}
+#PasswordsTableContent .icon-delete:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+
+.is_website a {
+	color: #00a !important;
+}
+.is_website a:hover {
+	text-decoration: underline;
+}
+.row_id_td,
+#column_id {
+	display: none;
+}
+.websitepic {
+	vertical-align: middle;
+	height: 16px;
+	width: 16px;
+	margin-right: 5px;
+}
+#add_password_div {
+	border: 2px solid #eee;
+	margin-left: 5%;
+	margin-right: 5%;
+	padding: 8%;
+}
+.icon-passwords {
+	background-image: url(../img/app_black.svg);
+}
+.icon-passwords-blocked {
+	background-image: url(../img/app_red.svg);
+}
+h3,
+#new_password_add,
+#new_generate,
+#new_website,
+#new_username,
+#new_password {
+	margin-left: 3%;
+	margin-bottom: 3%;
+	width: 94%;
+}
+#new_password {
+	/*font-family: 'Consolas';*/
+}
+#gen_lower,
+#gen_upper,
+#gen_numbers,
+#gen_special,
+#gen_length,
+#generate-strength {
+	margin-left: 10%;
+}
+#generate-strength {
+	text-align: center;
+	margin-right: 10%;
+}
+#gen_length {
+	width: 38px;
+}
+#generate-passwordtools {
+	display: none;
+}
+
+h3 {
+	color: #555;
+	font-weight: bold;
+	text-align: center;
+}
+#new_password_add {
+	font-weight: bold !important;
+}
+#PasswordsTable table {
+	border: 0;
+	width: 100%;
+}
+#PasswordsTable table th {
+	color: #555;
+	font-weight: bold;
+	border: 0;
+	text-align: center;
+	padding-bottom: 10px;
+	word-wrap: break-word;
+}
+#PasswordsTable table th:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+#PasswordsTable table td {
+	color: #555;
+	text-align: center;
+	border: 0;
+	border-bottom: 1px solid #ddd;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+#FieldLengthCheck {
+	width: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#FieldLengthCheck:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+#emptycontent {
+	display: none;
+}
+#blockedcontent {
+  font-size: 16px;
+  color: #888;
+  position: absolute;
+  text-align: center;
+  top: 30%;
+  width: 75%;
+  margin-left: 12.5%;
+}
+#blockedcontent [class^="icon-"], #blockedcontent [class*=" icon-"] {
+	background-size: 64px;
+	height: 64px;
+	width: 64px;
+	margin: 0 auto 15px;
+}
+#blockedcontent h2 {
+  font-size: 22px;
+  margin-bottom: 10px; 
+  color: #a00;
+  font-weight: bold;
+}
+.green,
+green {
+	color: #0a0 !important;
+}
+.red,
+red {
+	color: #a00 !important;
+}
+.orange,
+orange {
+	color: #c80 !important;
+}
+#PasswordsTableSearch {
+	width: 50%;
+	margin: 0 auto;
+}
+#search_clear {
+	height: 32px;
+	padding-top: 8px;
+}
+/* x days ago */
+.creation_date:hover span {
+	display: none;
+}
+.creation_date span {
+	color: inherit !important;
+}
+
+td[title]:hover:after {
+	content: attr(title);
+	position: relative !important;
+	font-style: italic;
+}
+
+
+/* old */
 #app-content-wrapper {
-    height: 100%;
+	height: 100%;
 }
 
-#editor {
-    height: 100%;
-    width: 100%;
-}
 
-#editor .input {
-    height: calc(100% - 51px);
-    width: 100%;
+/* hide if screen too small */
+@media screen and (max-width: 1200px) {
+	/* booleans */
+	#hide1 {
+		display: none;
+	}
 }
-
-#editor .save {
-    height: 50px;
-    width: 100%;
-    text-align: center;
-    border-top: 1px solid #ccc;
-    background-color: #fafafa;
+@media screen and (max-width: 1050px) {
+	/* length and creation date */
+	#hide2 {
+		display: none;
+	}
 }
-
-#editor textarea {
-    height: 100%;
-    width: 100%;
-    border: 0;
-    margin: 0;
-    border-radius: 0;
-    overflow-y: auto;
+@media screen and (max-width: 900px) {
+	/* strength */
+	#hide3 {
+		display: none;
+	}
 }
-
-#editor button {
-    height: 44px;
+@media screen and (max-width: 600px) {
+	/* mobile phone etc. */
+	#PasswordsTable table {
+		table-layout: fixed;
+		font-size: 80%;
+	}
+	#PasswordsTableContent .icon-delete {
+		background-size: 20% !important;
+	}
+	#PasswordsTable table td {
+		word-wrap: break-word;
+	}
+}
+@media screen and (max-width: 450px) {
+	/* mobile phone etc. */
+	#PasswordsTable table {
+		font-size: 60%;
+	}
 }

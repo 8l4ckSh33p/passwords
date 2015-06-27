@@ -48,11 +48,11 @@ class PasswordApiController extends ApiController {
      * @NoCSRFRequired
      * @NoAdminRequired
      *
-     * @param string $title
-     * @param string $content
+     * @param string $loginname
+     * @param string $website
      */
-    public function create($title, $content) {
-        return $this->service->create($title, $content, $this->userId);
+    public function create($loginname, $website, $pass) {
+        return $this->service->create($loginname, $website, $pass, $this->userId);
     }
 
     /**
@@ -61,12 +61,12 @@ class PasswordApiController extends ApiController {
      * @NoAdminRequired
      *
      * @param int $id
-     * @param string $title
-     * @param string $content
+     * @param string $loginname
+     * @param string $website
      */
-    public function update($id, $title, $content) {
-        return $this->handleNotFound(function () use ($id, $title, $content) {
-            return $this->service->update($id, $title, $content, $this->userId);
+    public function update($id, $loginname, $website, $pass) {
+        return $this->handleNotFound(function () use ($id, $loginname, $website, $pass) {
+            return $this->service->update($id, $loginname, $website, $pass, $this->userId);
         });
     }
 
