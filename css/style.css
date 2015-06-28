@@ -149,12 +149,14 @@ orange {
 	color: #c80 !important;
 }
 #PasswordsTableSearch {
-	width: 50%;
+	width: 90%;
 	margin: 0 auto;
 }
 #search_clear {
 	height: 32px;
 	padding-top: 8px;
+	float: right;
+	margin-right: 0px;
 }
 /* x days ago */
 .creation_date:hover span {
