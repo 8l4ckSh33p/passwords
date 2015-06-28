@@ -191,11 +191,17 @@
 
 				});
 
+								
+			},
+			renderNavigation: function() {
+				
+				// clear search field
 				$('#search_clear').click(function() {
 					$('#search_text').val('');
 					$('#search_text').keyup();
 				});
 
+				// search function
 				$('#search_text').keyup(function() {
 					var $rows = $('#PasswordsTableContent tr').not('thead tr');
 					var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
@@ -207,10 +213,6 @@
 					}).hide();
 				});
 
-								
-			},
-			renderNavigation: function() {
-				
 				// clean up website: https://www.Google.com -> google.com
 				$('#new_website').focusout(function() {
 					$('#new_website').val(strip_website(this.value));
@@ -596,7 +598,7 @@ function FormatTable() {
 				}			
 
 				table.rows[i].cells[1].onclick = function () { // user name
-						window.prompt("", this.textContent);	
+					window.prompt("", this.textContent);	
 				};
 				table.rows[i].cells[2].onclick = function () { //password
 					window.prompt("", this.textContent);
@@ -638,12 +640,10 @@ function strength_func(Password) {
 	// check length
 	switch(true) {
 		case passwordLength >= 8:
-			// one point for every 8 characters, 
-
-			strength_calc = 1; //Math.floor(passwordLength / 8);
+			strength_calc = 1;
 			break;
 		case passwordLength <= 4:
-			// password smaller than 4 chars is always bad
+			// password smaller than 5 chars is always bad
 			return 0;
 			break;
 	}
@@ -731,7 +731,7 @@ function generatepw(lower, upper, number, special, length_chars) {
 
 	var ww = "" + Wlower + Wupper + Wnumber + Wspecial;
 
-	// length 27 with all 4 options = 6 char for every options (24) and 3 remaining
+	// e.g. length 27 with all 4 options = 6 char for every option (24) so 3 remaining
 	// so fill up, starting with special, then number, then upper, then lower:
 	var difference = length_chars - length_calc * (lower + upper + number + special);
 	if (special) {
