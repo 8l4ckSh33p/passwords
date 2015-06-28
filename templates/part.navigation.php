@@ -9,7 +9,14 @@
 	</div>
 </li>
 
-<br><br>
+<div id="PasswordsTableSearch">
+	<p><?php p($l->t("Search table")); ?>:</p>
+	
+	<input type="text" id="search_text" class="tekst_veld" placeholder="<?php p($l->t("Search for")); ?>..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+	<input id="search_clear" type="button" value="<?php p($l->t("Clear")); ?>">
+</div>
+
+<br>
 
 <div id="add_password_div">
 	<h3><?php p($l->t("Add new password")); ?></h3>
