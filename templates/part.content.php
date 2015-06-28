@@ -1,12 +1,5 @@
 <div id="PasswordsTable">
 
-	<div id="PasswordsTableSearch">
-		<label><?php p($l->t("Search table")); ?>: 
-			<input type="text" id="search_text" class="tekst_veld" placeholder="<?php p($l->t("Search for")); ?>..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-		</label>
-		<input id="search_clear" type="button" value="<?php p($l->t("Clear")); ?>">
-	</div>
-
 	<table id="PasswordsTableContent" class="sortable">
 		<tr>
 			<th id="column_website"><?php p($l->t("Website or company")); ?></th>
