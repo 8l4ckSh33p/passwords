@@ -62,7 +62,7 @@ OC.L10N.register(
 	"Fill in the website, user name and password." : "Fülle die Website, Benutzername und Passwort aus.",
 	"Fill in a valid number as length with a minimum of 4." : "Bitte 4 Zeichen angeben.",
 	"Select at least one option to generate a password." : "Wähle mindestens eine Option, um ein Passwort zu generieren.",
-	"Error: Could not create password." : "Fehler: Passwort könnte nicht erstellt werden.",
+	"Error: Could not create password." : "Fehler: Passwort konnte nicht erstellt werden.",
 	"Error: Could not delete password." : "Fehler beim löschen des Passworts.",
 	"Error: Could not load passwords." : "Fehler beim Laden der Passwörter.",
 	"No passwords yet" : "keine Passwörter",
