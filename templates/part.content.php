@@ -3,8 +3,8 @@
 	<table id="PasswordsTableContent" class="sortable">
 		<tr>
 			<th id="column_website"><?php p($l->t("Website or company")); ?></th>
-			<th class="sorttable_alpha"><?php p($l->t("Login name")); ?></th>
-			<th class="sorttable_alpha"><?php p($l->t("Password")); ?></th>
+			<th id="FieldLengthCheck" class="sorttable_alpha"><?php p($l->t("Login name")); ?></th>
+			<th id="FieldLengthCheck" class="sorttable_alpha"><?php p($l->t("Password")); ?></th>
 			<th id="hide3"><?php p($l->t("Strength")); ?></th>
 			<th class="sorttable_numeric" id="hide2"><?php p($l->t("Length")); ?></th>
 			<th id="hide1">a-z</th>
