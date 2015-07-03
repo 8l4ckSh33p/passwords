@@ -36,7 +36,7 @@
 		<tr>
 			<td><div id="FieldLengthCheck">{{ website }}</div></td>
 			<td><div id="FieldLengthCheck">{{ loginname }}</div></td>
-			<td><div id="FieldLengthCheck">{{ pass }}</div></td>
+			<td><div id="FieldLengthCheck" class="hidden_password">{{ pass }}</div></td>
 			<td id="hide3">(strength)</td>
 			<td id="hide2">(length)</td>
 			<td id="hide1">(a-z)</td>
