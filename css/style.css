@@ -148,6 +148,20 @@ red {
 orange {
 	color: #c80 !important;
 }
+
+/* password hide */
+.hidden_password {
+	text-indent: -9999px;
+	line-height: 0;
+}
+.hidden_password::after {
+	content: "*****";
+	text-indent: 0;
+	display: block;
+	line-height: initial;
+}
+/* password hide */
+
 #PasswordsTableSearch {
 	width: 90%;
 	margin: 0 auto;
