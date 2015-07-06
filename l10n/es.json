@@ -63,6 +63,7 @@
 	"There is no secure, encrypted connection." : "No hay conexión segura y cifrada.",
 	"Click here" : "Haga clic aquí",
 	"for a secured connection, or" : "para una conexión segura, o",
-	"to continue without a secure connection." : "para continuar sin una conexión segura."
+	"to continue without a secure connection." : "para continuar sin una conexión segura.",
+	"Please note that without a secure connection, your passwords may be accessible by everyone who is also connected to your network (WiFi or 3G/4G). The only security that remains, is the security of the network you are connected to. A company network is safer than a public network like in restaurants or shops." : "Recuerda que sin una conexión segura, tus contraseñas podrían ser accesibles por cualquiera que esté conectado a la misma red que tú (WiFi o 3G/4G). La única seguridad que habrá es la seguridad de la red a la que estés conectado. La red de la empresa es más segura que una red pública como la de restaurantes o tiendas."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
