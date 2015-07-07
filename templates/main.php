@@ -4,12 +4,14 @@
 		$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
 		if (false !== strpos($url,'d=1')) {
+			OC_Log::write('passwords', 'Passwords app accessed without secure connection.', OC_Log::WARN);
 		    return true;
 		}
 
 	  	return
 		(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-		|| $_SERVER['SERVER_PORT'] == 443;
+		|| $_SERVER['SERVER_PORT'] == 443
+		|| \OC_Config::getValue('forcessl', '');
 	};
 
 	style('passwords', 'style');
@@ -38,7 +40,7 @@
 
 <?php } else {
 		
-		OC_Log::write('passwords', 'Passwords app blocked; no secure connection.', OC_Log::WARN);
+		OC_Log::write('passwords', 'Passwords app blocked; no secure connection.', OC_Log::ERROR);
 ?>
 
 		<div id="app">
