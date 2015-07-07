@@ -126,7 +126,7 @@ class PasswordService {
      */
     class Encryption {
 
-        public static function makeKey($userKey, $serverKey, $userSuppliedKey) {
+        public function makeKey($userKey, $serverKey, $userSuppliedKey) {
             $key = hash_hmac('sha512', $userKey, $serverKey);
             $key = hash_hmac('sha512', $key, $userSuppliedKey);
             return $key;
