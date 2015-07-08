@@ -4,6 +4,7 @@
  use OCP\IRequest;
  use OCP\AppFramework\Http\TemplateResponse;
  use OCP\AppFramework\Controller;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 
  class PageController extends Controller {
 
@@ -16,7 +17,21 @@
       * @NoCSRFRequired
       */
      public function index() {
-         return new TemplateResponse('passwords', 'main');
+         if (substr(\OC_Util::getHumanVersion(), 0, 3) != '8.0') {
+
+            // OC >= 8.1
+            $response = new TemplateResponse('passwords', 'main');
+            $csp = new ContentSecurityPolicy();
+            $csp->addAllowedImageDomain('https://www.google.com');
+            $response->setContentSecurityPolicy($csp);
+            return $response;
+
+         } else {
+
+            // OC =< 8.0.4
+            return new TemplateResponse('passwords', 'main');
+
+         }
      }
 
  }
