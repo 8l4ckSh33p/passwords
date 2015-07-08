@@ -4,7 +4,7 @@
  use OCP\IRequest;
  use OCP\AppFramework\Http\TemplateResponse;
  use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\ContentSecurityPolicy;
+ use OCP\AppFramework\Http\ContentSecurityPolicy;
 
  class PageController extends Controller {
 
