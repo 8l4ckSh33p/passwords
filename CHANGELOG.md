@@ -1,3 +1,6 @@
+8.0.5
+* Compatibility with ownCloud 8.1 (this release however works with 8.0 too!)
+
 8.0.4
 * Added German translation
 * Completed Spanish translation
