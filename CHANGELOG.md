@@ -2,7 +2,7 @@
 * Compatibility with ownCloud 8.1 (this release however works with 8.0 too!)
 
 8.0.4
-* Added German translation
+* Added German translation ( thanks to 8l4ckSh33p from http://liebig-project.com )
 * Completed Spanish translation
 * Moved search field to navigation page, so this will stay visible when scrolling in a long list
 * Mask passwords (click to view them). This is CSS-only for now, to prevent simple screenshot-theft of passwords. Will be JS-coded later, so passwords will actually load and be decrypted when '*****' is clicked
