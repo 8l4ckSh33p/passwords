@@ -35,7 +35,7 @@ OC.L10N.register(
 	"Weak" : "Schwach",
 	"today" : "Heute",
 	"day ago" : "vor einem Tag",
-	"days ago" : "vor Tagen",
+	"days ago" : "Tag/en",
 	"January" : "Januar",
 	"February" : "Februar",
 	"March" : "März",
