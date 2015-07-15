@@ -1,6 +1,9 @@
 p, h2, label, .emptyinfo {
 	color: #555;
 }
+tr {
+	height: 35px;
+}
 
 #PasswordsTableContent .icon-delete {
 	opacity: 0.5;
@@ -27,7 +30,8 @@ p, h2, label, .emptyinfo {
 	margin-right: 5px;
 }
 #add_password_div {
-	border: 2px solid #eee;
+	border: 1px solid #ddd;
+	margin-top: 15px;
 	margin-left: 5%;
 	margin-right: 5%;
 	padding: 8%;
@@ -165,12 +169,17 @@ orange {
 #PasswordsTableSearch {
 	width: 90%;
 	margin: 0 auto;
+	margin-top: 15px;
 }
 #search_clear {
 	height: 32px;
 	padding-top: 8px;
 	float: right;
 	margin-right: 0px;
+	width: 30%;
+}
+#search_text {
+	width: 65%;
 }
 /* x days ago */
 .creation_date:hover span {
