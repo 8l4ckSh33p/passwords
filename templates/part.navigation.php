@@ -16,8 +16,6 @@
 	<input id="search_clear" type="button" value="<?php p($l->t("Clear")); ?>">
 </div>
 
-<br>
-
 <div id="add_password_div">
 	<h3><?php p($l->t("Add new password")); ?></h3>
 	<input type="text" id="new_website" class="tekst_veld" placeholder="<?php p($l->t("site.com or Name Inc.")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
