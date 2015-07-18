@@ -12,15 +12,15 @@
 <div id="PasswordsTableSearch">
 	<p><?php p($l->t("Search table")); ?>:</p>
 	
-	<input type="text" id="search_text" class="tekst_veld" placeholder="<?php p($l->t("Search for")); ?>..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+	<input type="text" id="search_text" placeholder="<?php p($l->t("Search for")); ?>..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 	<input id="search_clear" type="button" value="<?php p($l->t("Clear")); ?>">
 </div>
 
 <div id="add_password_div">
 	<h3><?php p($l->t("Add new password")); ?></h3>
-	<input type="text" id="new_website" class="tekst_veld" placeholder="<?php p($l->t("site.com or Name Inc.")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-	<input type="text" id="new_username" class="tekst_veld" placeholder="<?php p($l->t("Login name or e-mail")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-	<input type="text" id="new_password" class="tekst_veld" placeholder="<?php p($l->t("Password")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+	<input type="text" id="new_website" placeholder="<?php p($l->t("site.com or Name Inc.")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+	<input type="text" id="new_username" placeholder="<?php p($l->t("Login name or e-mail")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+	<input type="text" id="new_password" placeholder="<?php p($l->t("Password")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 	<div id="generate-password">
 			<p id="generate-strength"></p>
 		<div id="generate-passwordtools">
