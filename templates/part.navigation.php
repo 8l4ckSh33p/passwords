@@ -12,7 +12,7 @@
 <div id="PasswordsTableSearch">
 	<p><?php p($l->t("Search table")); ?>:</p>
 	
-	<input type="text" id="search_text" placeholder="<?php p($l->t("Search for")); ?>..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+	<input id="search_text" type="text" placeholder="<?php p($l->t("Search for")); ?>..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 	<input id="search_clear" type="button" value="<?php p($l->t("Clear")); ?>">
 </div>
 
