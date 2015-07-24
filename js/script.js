@@ -121,10 +121,11 @@
 				});
 				return deferred.promise();
 			},
-			updateActive: function(loginname, website, pass) {
+			updateActive: function(loginname, website, address, pass) {
 				var password = this.getActive();
 				password.loginname = loginname;
 				password.website = website;
+				password.address = address;
 				password.pass = pass;
 
 				return $.ajax({
@@ -133,6 +134,39 @@
 					contentType: 'application/json',
 					data: JSON.stringify(password)
 				});
+			}
+		};
+
+		// this holds all our passwords, admin and active user
+		var Settings = function(baseUrl) {
+			this._baseUrl = baseUrl;
+			this._settings = [];
+		};
+
+		Settings.prototype = {
+			load: function() {
+				var deferred = $.Deferred();
+				var self = this;
+				$.ajax({
+					url: this._baseUrl,
+					method: 'GET',
+					async: false
+				}).done(function( settings ) {
+					self._settings = settings;
+				}).fail(function() {
+					deferred.reject();
+				});
+				return deferred.promise();
+			},
+			getKey: function(key) {
+				for (var k in this._settings)
+				{
+					if (k == key)
+						return this._settings[k];
+				}
+			},
+			getAll: function() {
+				return this._settings;
 			}
 		};
 
@@ -154,34 +188,35 @@
 
 				update_pwcount();
 
-				FormatTable();
+				formatTable();
 
 				// sort on website, reset sort first
 				$('#column_id').click();
 				$('#column_website').click();
 
 				$('#PasswordsTableContent td').click(function() {
+					var table = document.getElementById('PasswordsTableContent');
 					var col = $(this).parent().children().index($(this));
 					var row = $(this).parent().parent().children().index($(this).parent()) + 1;
-					var table = document.getElementById('PasswordsTableContent');
-					var website = table.rows[row].cells[0].textContent;
-					var user = table.rows[row].cells[1].textContent;
-					var db_id = table.rows[row].cells[10].textContent;
-					if (col == 11) {
-						// clicked on trash, ask confirmation
-						if (confirm(t('passwords', "This will delete the password for") + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'. " + t('passwords', "Are you sure?"))) {
+					
+					// clicked on trash, ask confirmation to delete
+					// if (col == 13 && table.rows[row].cells[col].className != '') { // className is removed on shared item
+					if (col == 13) {	
+						var website = table.rows[row].cells[0].textContent;
+						var user = table.rows[row].cells[1].textContent;
+						var db_id = table.rows[row].cells[10].textContent;
+
+						if (confirm(t('passwords', "This will delete the password for") + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'.\n\n" + t('passwords', "Are you sure?"))) {
 
 							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
 							var view = new View(passwords);
+							
 							passwords.removeByID(db_id).done(function() {
-
 								// spinning wheel
 								$('.icon-loading-dark').css('display', 'block');
 								$('.icon-loading-dark').css('background-color', 'rgba(1, 1, 1, 0');
 								$('#slideshow input').css('display', 'none');
-
 								location.reload(true);
-
 							}).fail(function() {
 								alert(t('passwords', 'Error: Could not delete password.'));
 							});
@@ -189,11 +224,50 @@
 						}
 					}
 
+					// share icon
+					// if (col == 14) {
+					// 	var share_uid = prompt(t('passwords', 'Please enter the username of the user you want to share this password with:'), '');
+					// 	if (share_uid != '') {
+					// 		alert('will be shared with ' + share_uid);
+					// 	}
+					// }
+
+
 				});
 
 								
 			},
 			renderNavigation: function() {
+
+				// set settings
+				var settings = new Settings(OC.generateUrl('/apps/passwords/settings'));
+				settings.load();
+				if ((settings.getKey('backup_allowed').toLowerCase() == 'true') == false) {
+					// was already hidden with CSS at default for IE7 and lower
+					// Now remove it from DOM (doesn't work on IE7 and lower)
+					$('#app-settings-header').remove();
+					$('#app-settings-content').remove();
+				} else {
+					// So show it
+					$('#app-settings-content').show();
+					$('#app-settings-header').show();
+				}
+				$('#app-settings').attr('days-orange', settings.getKey('days_orange'));
+				$('#app-settings').attr('days-red', settings.getKey('days_red'));
+				if ((settings.getKey('icons_allowed').toLowerCase() == 'true')) {
+					$('#app-settings').attr('icons-show', settings.getKey('icons_show').toLowerCase() == 'true');
+					$('#app-settings').attr('icons-service', settings.getKey('icons_service'));
+				} else {
+					$('#app-settings').attr('icons-show', 'false');
+				}
+				$('#app-settings').attr('hide-passwords', settings.getKey('hide_passwords').toLowerCase() == 'true');
+				$('#app-settings').attr('hide-usernames', settings.getKey('hide_usernames').toLowerCase() == 'true');;
+
+
+				// download backup
+				$('#backupDL').click(function() {
+					backupPasswords();
+				});
 				
 				// clear search field
 				$('#search_clear').click(function() {
@@ -215,21 +289,60 @@
 
 				// clean up website: https://www.Google.com -> google.com
 				$('#new_website').focusout(function() {
-					$('#new_website').val(strip_website(this.value));
+					if ((this.value.substring(0,7).toLowerCase() == 'http://' 
+							|| this.value.substring(0,8).toLowerCase() == 'https://'
+							|| this.value.substring(0,4).toLowerCase() == 'www.'
+							) && $('#new_address').val() == '') {
+						$('#new_address').val(this.value.toLowerCase());
+					}
+					$('#new_website').val(strip_website(this.value).toLowerCase());
+				});
+				// try to set a domain entry on website field
+				$('#new_address').focusout(function() {
+					if ((this.value.substring(0,7).toLowerCase() == 'http://' 
+							|| this.value.substring(0,8).toLowerCase() == 'https://'
+							|| this.value.substring(0,4).toLowerCase() == 'www.'
+							) && $('#new_website').val() == '') {
+						$('#new_website').val(URLtoDomain(this.value));
+					}
 				});
 
 				// create a new password
 				var self = this;
 				$('#new_password_add').click(function() {
 
-					if ($('#new_username').val() == '' || $('#new_website').val() == '' || $('#new_password').val() == '') {
-						alert(t('passwords', 'Fill in the website, user name and password.'));
-						return false;
+					if ($('#new_username').val() == '' 
+						|| $('#new_website').val() == '' 
+						|| $('#new_password').val() == '') {
+							alert(t('passwords', 'Fill in the website, user name and password.'));
+							return false;
+					}
+
+					if ($('#new_address').val() != '' 
+						&& $('#new_address').val().substring(0,7).toLowerCase() != 'http://' 
+						&& $('#new_address').val().substring(0,8).toLowerCase() != 'https://'
+						&& $('#new_address').val().substring(0,4).toLowerCase() != 'www.') 
+					{
+						if (isUrl($('#new_address').val())) {
+							// valid ULR, so add http
+							$('#new_address').val('http://' + $('#new_address').val());
+							// now check if valid
+							if (!isUrl($('#new_address').val())) {
+								alert(t('passwords', 'Fill in a valid URL in the first field.') + '\n\n' + t('passwords', 'Note: This field is optional and can be left blank.'));
+								$('#new_address').select();
+								return false;
+							}
+						} else {
+							alert(t('passwords', 'Fill in a valid URL in the first field.') + '\n\n' + t('passwords', 'Note: This field is optional and can be left blank.'));
+							$('#new_address').select();
+							return false;
+						}
 					}
 
 					var password = {
 						loginname: $('#new_username').val(),
 						website: $('#new_website').val(),
+						address: $('#new_address').val(),
 						pass: $('#new_password').val()
 					};
 
@@ -243,39 +356,6 @@
 						$('#slideshow input').css('display', 'none');
 
 						location.reload(true);
-
-						// $('#new_username').val('');
-						// $('#new_website').val('');
-						// $('#new_password').val('');
-						// $('#new_password').val('');
-						// $('#generate-strength').text('');
-						// $('#generate-passwordtools').fadeOut(250);
-						// $('#gen_length').val('25');
-
-						// self.renderContent();
-
-						// // spinning wheel
-						// $('.icon-loading-dark').css('display', 'hidden');
-						// $('.icon-loading-dark').css('background-color', bg);
-						// $('#slideshow input').css('display', disp);
-
-						// // give yellow color to new row and fade out, search for highest ID
-						// var table = document.getElementById('PasswordsTableContent');
-						// var fieldID;
-						// var highestID = 0;
-						// var highestRow;
-						// for (var i = 1; i < table.rows.length; i++) {
-						// 	for (var j = 0; j < table.rows[i].cells.length; j++)
-						// 		fieldID = parseInt(table.rows[i].cells[10].textContent);
-						// 		if (fieldID > highestID) {
-						// 			highestID = fieldID;
-						// 			highestRow = i;
-						// 		}
-						// }
-						// var rows = $('tr', $('#PasswordsTableContent'));
-						// rows.eq(highestRow).animate( { backgroundColor: '#ffa' }, 1000, function() {
-						// 	$(this).animate( { backgroundColor: 'none' }, 3000);
-						// });
 
 					}).fail(function() {
 						alert(t('passwords', 'Error: Could not create password.'));
@@ -391,7 +471,7 @@ function strHasSpecial(str) {
 	
 }
 
-function FormatTable() {
+function formatTable() {
 
 	var table = document.getElementById('PasswordsTableContent');
 
@@ -466,19 +546,21 @@ function FormatTable() {
 				var datePart = table.rows[i].cells[9].textContent.split('-');
 				var dateToday = new Date();
 				var dateRowEntry = new Date(table.rows[i].cells[9].textContent);
-				// colorize date
+				// colourize date
+				var days_orange = $('#app-settings').attr("days-orange");
+				var days_red = $('#app-settings').attr("days-red");
 				var diffInDays = Math.floor((dateToday - dateRowEntry) / (1000*60*60*24));
 				var thisClass = table.rows[i].cells[3].className;
-				if(diffInDays > 364) {
-					table.rows[i].cells[9].className += ' red'; // > 365 dagen
-					table.rows[i].cells[2].className += ' red'; // force red color on password
-				} else if(diffInDays > 149) {
-					table.rows[i].cells[9].className += ' orange'; // 150-364 days
+				if(diffInDays > days_red - 1) {
+					table.rows[i].cells[9].className += ' red'; // default: > 365 dagen
+					table.rows[i].cells[2].className += ' red'; // force red colour on password
+				} else if(diffInDays > days_orange - 1) {
+					table.rows[i].cells[9].className += ' orange'; // default: 150-364 days
 					if (thisClass == 'green') {
 						table.rows[i].cells[2].className += ' orange'
 					}
-				} else if(diffInDays < 150) {
-					table.rows[i].cells[9].className += ' green'; // < 150 days
+				} else if(diffInDays < days_orange) {
+					table.rows[i].cells[9].className += ' green'; // < default: 150 days
 				}
 				switch (diffInDays) {
 					case 0:
@@ -486,20 +568,20 @@ function FormatTable() {
 						break;
 					case 1:
 						if (t('passwords', 'lang_en') == 'lang_es') {
-							table.rows[i].cells[9].setAttribute('title', ' hace ' + diffInDays + ' ' + t('passwords', 'day ago'));
+							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'day ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'day ago'));
 						}
 						break;
 					default:
 						if (t('passwords', 'lang_en') == 'lang_es') {
-							table.rows[i].cells[9].setAttribute('title', ' hace ' + diffInDays + ' ' + t('passwords', 'days ago'));
+							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'days ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'days ago'));
 						}
 				}
 
-				// goed laten sorteren (YYYYMMDD) en goed laten weergeven (D MMMM YYYY)
+				// sort correctly (YYYYMMDD)
 				var YYYYMMDD = datePart[0].toString() + datePart[1].toString() + datePart[2].toString();
 				table.rows[i].cells[9].setAttribute('sorttable_customkey', YYYYMMDD);
 
@@ -588,36 +670,66 @@ function FormatTable() {
 			for (var j = 0; j < table.rows[i].cells.length; j++)
 
 				var cellWebsite = table.rows[i].cells[0];
+				var cellWebsiteURL = table.rows[i].cells[12];
+				var cellUsername = table.rows[i].cells[1];
+				var cellPassword = table.rows[i].cells[2];
 
 				// clickable website
-				if(isUrl(cellWebsite.textContent)) {
-					cellWebsite.innerHTML = '<a href="http://' + cellWebsite.textContent + '" target="_blank"><img class="websitepic" src="https://www.google.com/s2/favicons?domain=http://www.' + cellWebsite.textContent + '">' + cellWebsite.textContent + '</a>';
-					cellWebsite.className += 'is_website';
-				} else {
+				if(isUrl(cellWebsite.textContent) || cellWebsiteURL.textContent != '') {
+					// set real website url if available
+					if (cellWebsiteURL.textContent != '') {
+						var websiteURL = cellWebsiteURL.textContent;
+					} else {
+						var websiteURL = 'http://' + cellWebsite.textContent;
+					}
+					cellWebsite.className += ' is_website';
+					var icons_show = $('#app-settings').attr("icons-show");
+					if (icons_show == 'true') {
+						var icons_service = $('#app-settings').attr("icons-service");
+						if (icons_service == 'ddg') { // DuckDuckGo
+							cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank"><img class="websitepic" src="https://icons.duckduckgo.com/ip2/' + cellWebsite.textContent + '.ico">' + cellWebsite.textContent + '</a>';
+						}
+						if (icons_service == 'ggl') { // Google
+							cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank"><img class="websitepic" src="https://www.google.com/s2/favicons?domain=' + cellWebsite.textContent + '">' + cellWebsite.textContent + '</a>';
+						}
+					} else {
+						cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank">' + cellWebsite.textContent + '</a>';
+					}
+				} else { // no valid website url
 					cellWebsite.innerHTML = cellWebsite.textContent; // or else doesn't align very well
-				}			
+				}
 
-				table.rows[i].cells[1].onclick = function () { // user name
-					window.prompt("", this.textContent);	
+				cellWebsiteURL = ''; // reset
+
+				// hide username and/or password according to user settings
+				var hide_usernames = $('#app-settings').attr("hide-usernames");
+				var hide_passwords = $('#app-settings').attr("hide-passwords");
+				if (hide_usernames == 'true') {
+					cellUsername.className += ' hidevalue';
+				}
+				if (hide_passwords == 'true') {
+					cellPassword.className += ' hidevalue';
+				}
+
+				// shared password
+				// var oc_user = $('head').attr("data-user");
+				// if (table.rows[i].cells[11].textContent != oc_user) {
+				// 	table.rows[i].cells[12].innerHTML = ' (' + t('passwords', 'from') + ' ' + table.rows[i].cells[11].textContent + ')';
+				// 	table.rows[i].cells[12].colSpan = "2";
+				// 	table.rows[i].cells[13].className = '';
+				// 	table.rows[i].cells[12].className = '';
+				// }
+
+				table.rows[i].cells[1].onclick = function () { // login name
+					window.prompt(t('passwords', 'Login name') + ':', this.textContent);	
 				};
 				table.rows[i].cells[2].onclick = function () { //password
-					window.prompt("", this.textContent);
+					window.prompt(t('passwords', 'Password') + ':', this.textContent);
 				};
 		}
 
 	}
 }
-
-function isUrl(url) {
-
-	// not starting with a whitespace char or / or $ or . or ? or #
-	// overall no spaces allowed
-	// at least 1 char before and 2 chars after a dot
-	var strRegex = '^[^\\s/$.?#]\\S{1,}\\.\\S{2,}$';
-	var re = new RegExp(strRegex);
-
-	return re.test(url);
- }
 
 function strength_func(Password) {
 
@@ -841,6 +953,18 @@ function update_pwcount() {
 	}
 }
 
+function isUrl(url) {
+
+	// not starting with a whitespace char or / or $ or . or ? or #
+	// overall no spaces allowed
+	// at least 1 char before and 2 chars after a dot
+	// test for ^[^\s/$.?#]\S{1,}\.[a-z]{2,}$
+	var strRegex = '^[^\\s/$.?#]\\S{1,}\\.[a-z]{2,}$';
+
+	var re = new RegExp(strRegex);
+
+	return re.test(url);
+}
 function strip_website(website) {
 
 	var convert = website;
@@ -862,4 +986,102 @@ function strip_website(website) {
 	};
 
 	return convert;
+}
+function URLtoDomain(website) {
+
+	var domain;
+	// remove protocol (http, ftp, etc.) and get domain
+	if (website.indexOf("://") > -1) {
+		domain = website.split('/')[2];
+	}
+	else {
+		domain = website.split('/')[0];
+	}
+
+	// remove port number
+	domain = domain.split(':')[0];
+
+	// remove unwanted wwww. for sorting purposes
+	if (domain.substr(0, 4) == "www.") {
+		domain = domain.substr(4, domain.length - 4);
+	};
+
+	return domain;
+}
+
+function backupPasswords() {
+
+	// No support in IE
+	if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) {
+		alert(t('passwords', "This function is unsupported on Microsoft Internet Explorer, since it doesn't allow writing to a BLOB-format."));
+		return false;
+	}
+
+	if (!confirm(t('passwords', 'This will download an unencrypted backup file, which contains all your passwords.') + '\n\n' + t('passwords', "Are you sure?"))) {
+		return false;
+	}
+
+	var d = new Date();
+
+	var textToWrite = $('#app-settings').attr("backup-title")
+					+ ', '
+					+ d.getFullYear()
+					+ '-'
+					+ ('0' + (d.getMonth() + 1)).slice(-2)
+					+ '-' 
+					+ ('0' + d.getDate()).slice(-2)
+					+ '\r\n\r\n';
+
+	var table = document.getElementById('PasswordsTableContent');
+	for (var i = 1; i < table.rows.length; i++) {
+		for (var j = 0; j < table.rows[i].cells.length; j++)
+
+			if (j == 0 || j == 1 || j == 2) { // first 3 columns: website, username, pass
+				textToWrite += table.rows[i].cells[j].textContent;
+				// add real website url if available
+				if (j == 0 && table.rows[i].cells[12].textContent != '') {
+					textToWrite += ' (' + table.rows[i].cells[12].textContent + ')';
+				}
+				textToWrite += '\r\n';
+			}
+
+			textToWrite += '\r\n';
+
+	}
+
+	var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+	var d = new Date();
+
+	// filename as YYYYMMDD_backup.txt
+	var fileNameToSaveAs = d.getFullYear()
+						 + ('0' + (d.getMonth() + 1)).slice(-2)
+						 + ('0' + d.getDate()).slice(-2)
+						 + '_backup.txt';
+
+	var downloadLink = document.createElement("a");
+	downloadLink.download = fileNameToSaveAs;
+	downloadLink.innerHTML = "Download File";
+	
+	if (window.webkitURL != null) {
+		// Chrome allows the link to be clicked
+		// without actually adding it to the DOM.
+		downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+	} else {
+		// Firefox requires the link to be added to the DOM
+		// before it can be clicked.
+		downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+		downloadLink.onclick = destroyClickedElement;
+		downloadLink.style.display = "none";
+		document.body.appendChild(downloadLink);
+	}
+
+	downloadLink.click();
+	downloadLink = '';
+
+	// collapse settings part in navigation pane
+	$('#app-settings-content').css('display', 'none');
+
+}
+function destroyClickedElement(event) {
+	document.body.removeChild(event.target);
 }
