@@ -1,25 +1,23 @@
 8.0.6
 
-Thanks to all contributors on GitHub, this is a rather big update. So thanks, you all!
-* Downloadable backup
-* Hiding of usernames and passwords
-* Added optional URL-field
+* Thanks to all contributors on GitHub, this is a rather big update. So thanks, you all!
+  * Downloadable backup
+  * Hiding of usernames and passwords
+  * Added optional URL-field
 
-Introducing settings!
-* Admin setting: check for secure connection at start and block app if there isn't one (leave this one checked preferably!)
-* Admin setting: allow/disallow downloading of backups (because they are not secure)
-* Admin setting: allow/disallow showing website icons (since using this service, the IP address wil be sent to another server)
-* Admin setting: service used for website icons: DuckDuckGo (default) or Google
-* Admin setting: amount of days before the creation date colours orange or red
-* User setting: show/hide website icons
-* User setting: show/hide usernames
-* User setting: show/hide passwords
+* Introducing settings!
+  * Admin setting: check for secure connection at start and block app if there isn't one (leave this one checked preferably!)
+  * Admin setting: allow/disallow downloading of backups (because they are not secure)
+  * Admin setting: allow/disallow showing website icons (since using this service, the IP address wil be sent to another server)
+  * Admin setting: service used for website icons: DuckDuckGo (default) or Google
+  * Admin setting: amount of days before the creation date colours orange or red
+  * User setting: show/hide website icons
+  * User setting: show/hide usernames
+  * User setting: show/hide passwords
 * 'Secure connection check' at start now checks for 'forcesll => true' in config.php too, fixing a false-positive error for people using (external) SSL extensions
 * Fixed length for search fields
 * Minor bug fixes and code cleaning
 * *NOTE: this version works on 8.0.** *and 8.1.**
-
-More ideas or bugs?? You are more than welcome to issue them on GitHub: www.github.com/fcturner/passwords/issues
 
 8.0.5
 * Compatibility with ownCloud 8.1 (this release however works with 8.0 too!)
