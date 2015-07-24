@@ -51,8 +51,8 @@ class PasswordApiController extends ApiController {
      * @param string $loginname
      * @param string $website
      */
-    public function create($loginname, $website, $pass) {
-        return $this->service->create($loginname, $website, $pass, $this->userId);
+    public function create($loginname, $website, $address, $pass) {
+        return $this->service->create($loginname, $website, $address, $pass, $this->userId);
     }
 
     /**
@@ -64,9 +64,9 @@ class PasswordApiController extends ApiController {
      * @param string $loginname
      * @param string $website
      */
-    public function update($id, $loginname, $website, $pass) {
-        return $this->handleNotFound(function () use ($id, $loginname, $website, $pass) {
-            return $this->service->update($id, $loginname, $website, $pass, $this->userId);
+    public function update($id, $loginname, $website, $address, $pass) {
+        return $this->handleNotFound(function () use ($id, $loginname, $website, $address, $pass) {
+            return $this->service->update($id, $loginname, $website, $address, $pass, $this->userId);
         });
     }
 
