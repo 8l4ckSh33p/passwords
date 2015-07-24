@@ -32,10 +32,12 @@ All passwords are encrypted with user-specific, ownCloud-specific and server-spe
 Other users or administrators are never able to decrypt passwords, since they cannot login as the user (assuming the user's password isn't known). *If the password salt is lost, all passwords of all users are lost and unretrievable.*
 
 ## Website icons
-All website icons in the password table are downloaded from a secured Google server when you load the page. Nothing fancy or unsafe (even using Google), it's just about icons. The icon for The White House's website for example (replace *whitehouse.gov* with your own domain to try): [https://www.google.com/s2/favicons?domain=www.whitehouse.gov](https://www.google.com/s2/favicons?domain=www.whitehouse.gov).
+There is a built in option to view website icons in the password table. This can be set by the administrator on the settings page of ownCloud. The admin has two services to choose from: DuckDuckGo (default) and Google. Icons are downloaded from their secured server when a user loads the page. Nothing fancy or unsafe (even using Google... although [they track you](http://donttrack.us)), it's just about icons. The icon for the ownCloud's website for example (replace *owncloud.org* with your own domain to try): 
+* [https://icons.duckduckgo.com/ip2/owncloud.org.ico](https://icons.duckduckgo.com/ip2/owncloud.org.ico) (32x32 pixels)
+* [https://www.google.com/s2/favicons?domain=owncloud.org](https://www.google.com/s2/favicons?domain=owncloud.org) (16x16 pixels)
 
 ## Installation
-Download the latest release and copy the folder 'passwords' to /owncloud/apps/. Login as admin and enable the app. The database table will be created automatically.
+Download the latest release and copy the folder 'passwords' to /owncloud/apps/ (**remember that the folder must be called 'passwords'**). Login as admin and enable the app. The database table will be created automatically.
 [View this app on apps.owncloud.org](https://apps.owncloud.com/content/show.php/Passwords?content=170480)
 
 ### Credits
