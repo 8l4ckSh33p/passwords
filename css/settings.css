@@ -1,0 +1,47 @@
+#passwords-admin red {
+	color: #a00;
+	line-height: 3;
+}
+#passwords-admin orange {
+	color: #c80;
+	line-height: 3;
+}
+#passwords-admin green {
+	color: #0a0;
+	line-height: 3;
+}
+#passwords-admin h3 {
+	margin-bottom: 5px;
+}
+#passwords-admin .https_warning {
+	color: #a00;
+	opacity: 1;
+}
+#passwords-admin .descr {
+	margin-bottom: 10px;
+}
+#passwords-admin .radiotext {
+	margin-left: 5px;
+}
+#passwords-admin .linkDDG:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+#passwords-admin .fieldDays {
+	width: 30px !important;
+	text-align: center;
+}
+#passwords-admin .msg,
+#passwords-personal .msg {
+	padding: 3px;
+}
+#passwords-admin .msg_error,
+#passwords-personal .msg_error {
+	background-color: #a00;
+	color: #fff;
+}
+#passwords-admin .msg_success,
+#passwords-personal .msg_success {
+	background-color: #0a0;
+	color: #fff;
+}
