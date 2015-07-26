@@ -15,7 +15,7 @@ OC.L10N.register(
 	"Creation date" : "Erstelldatum",
 	"Click on a <b>column head</b> to sort the column." : "Klicke auf ein <b>Spaltenkopf</b>, um die Spalte zu sortieren.",
 	"Click on a <b>user name</b> or a <b>password</b> to be able to copy it to the clipboard." : "Klicke auf ein <b>Benutzername</b> oder <b>Passwort</b>, um diese in die Zwischenablage zu kopieren.",
-	"Click on a <b>website</b> to open it in a new tab." : "Klicken Sie auf ein <b>Website</b>, um es in einem neuen Tab zu öffnen.",
+	"Click on a <b>website</b> to open it in a new tab." : "Klicke auf eine <b>Website</b>, um es in einem neuen Tab zu öffnen.",
 	"The <b>creation date</b> becomes <orange>orange after %s days</orange> and <red>red after %s days</red>." : "Das <b>Erstellungsdatum</b> wird <orange>orange nach %s Tagen</orange> und <red>rot nach %s Tagen</red>.",
 	"Full URL (optional)" : "Vollständige URL (optional)",
 	"Fill in a valid URL in the first field." : "Bitte eine gültige URL in das erste Feld eingeben",
