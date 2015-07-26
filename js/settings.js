@@ -52,8 +52,8 @@ $(document).ready(function() {
 			}).done(function( data ) {
 				deferred.resolve(data);
 			}).fail(function() {
-				$('.msg').addClass("msg_error");
-				$('.msg').text(t('passwords', 'Error while saving field') + ' ' + key + '!');
+				$('.passwordsmsg').addClass("msg_error");
+				$('.passwordsmsg').text(t('passwords', 'Error while saving field') + ' ' + key + '!');
 				deferred.reject();
 			});
 		},
@@ -69,8 +69,8 @@ $(document).ready(function() {
 			}).done(function( data ) {
 				deferred.resolve(data);
 			}).fail(function() {
-				$('.msg').addClass("msg_error");
-				$('.msg').text(t('passwords', 'Error while saving field') + ' ' + key + '!');
+				$('.passwordsmsg').addClass("msg_error");
+				$('.passwordsmsg').text(t('passwords', 'Error while saving field') + ' ' + key + '!');
 				deferred.reject();
 			});
 		},
@@ -125,7 +125,7 @@ $(document).ready(function() {
 			return false;
 		}
 
-		$('.msg').text(t('passwords', 'Saving...'));
+		$('.passwordsmsg').text(t('passwords', 'Saving...'));
 
 		settings.setAdminKey('https_check', $('#https_check').is(':checked'));
 		settings.setAdminKey('backup_allowed', $('#backup_allowed').is(':checked'));
@@ -141,12 +141,12 @@ $(document).ready(function() {
 		settings.setAdminKey('days_red', $('#days_red').val());
 
 		// no error, so:
-		if ($('.msg').text = t('passwords', 'Saving...')) {
-			$('.msg').addClass('msg_success');
-			$('.msg').text(t('passwords', 'Saved!'));	
+		if ($('.passwordsmsg').text = t('passwords', 'Saving...')) {
+			$('.passwordsmsg').addClass('msg_success');
+			$('.passwordsmsg').text(t('passwords', 'Saved!'));	
 			setTimeout(function() {
-				$('.msg').text('');
-				$('.msg').removeClass('msg_success');	
+				$('.passwordsmsg').text('');
+				$('.passwordsmsg').removeClass('msg_success');	
 			}, 3000);
 		}
 	});
@@ -178,19 +178,19 @@ $(document).ready(function() {
 	// save it all
 	$('#savepersonal').click(function() {
 
-		$('.msg').text(t('passwords', 'Saving...'));
+		$('.passwordsmsg').text(t('passwords', 'Saving...'));
 
 		settings.setUserKey('icons_show', $('#icons_show').is(':checked'));
 		settings.setUserKey('hide_usernames', $('#hide_usernames').is(':checked'));
 		settings.setUserKey('hide_passwords', $('#hide_passwords').is(':checked'));
 
 		// no error, so:
-		if ($('.msg').text = t('passwords', 'Saving...')) {
-			$('.msg').addClass('msg_success');
-			$('.msg').text(t('passwords', 'Saved!'));	
+		if ($('.passwordsmsg').text = t('passwords', 'Saving...')) {
+			$('.passwordsmsg').addClass('msg_success');
+			$('.passwordsmsg').text(t('passwords', 'Saved!'));	
 			setTimeout(function() {
-				$('.msg').text('');
-				$('.msg').removeClass('msg_success');	
+				$('.passwordsmsg').text('');
+				$('.passwordsmsg').removeClass('msg_success');	
 			}, 3000);
 		}
 	});
