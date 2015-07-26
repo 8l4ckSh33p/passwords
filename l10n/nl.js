@@ -6,7 +6,7 @@ OC.L10N.register(
 	"Number of passwords" : "Aantal wachtwoorden",
 	"Search table" : "Zoeken binnen tabel",
 	"Search for" : "Zoekterm",
-	"Clear" : "Leegmaken",
+	"Clear" : "Wissen",
 	"Website or company" : "Website of bedrijf",
 	"Login name" : "Gebruikersnaam",
 	"Password" : "Wachtwoord",
