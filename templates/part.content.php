@@ -1,3 +1,7 @@
+<?php
+$days_orange = \OCP\Config::getAppValue('passwords', 'days_orange', '150');
+$days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
+?>
 <div id="PasswordsTable">
 
 	<table id="PasswordsTableContent" class="sortable">
