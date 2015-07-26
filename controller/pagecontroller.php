@@ -22,6 +22,7 @@
             // OC >= 8.1
             $response = new TemplateResponse('passwords', 'main');
             $csp = new ContentSecurityPolicy();
+            $csp->addAllowedImageDomain('https://icons.duckduckgo.com');
             $csp->addAllowedImageDomain('https://www.google.com');
             $response->setContentSecurityPolicy($csp);
             return $response;

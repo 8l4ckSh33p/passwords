@@ -23,11 +23,12 @@ class PasswordService {
         $result = $this->mapper->findAll($userId);
         $arr = json_decode(json_encode($result), true);
 
-        $userKey = $userId;
         $serverKey = \OC_Config::getValue('passwordsalt', '');
         
         foreach($arr as $row => $value)
         {
+
+            $userKey = $arr[$row]['user_id'];
             $userSuppliedKey = $arr[$row]['website'];
             $encryptedData = $arr[$row]['pass'];
             $e2 = new Encryption(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC);
@@ -63,7 +64,7 @@ class PasswordService {
         }
     }
 
-    public function create($loginname, $website, $pass, $userId) {
+    public function create($loginname, $website, $address, $pass, $userId) {
 
         $userKey = $userId;
         $serverKey = \OC_Config::getValue('passwordsalt', '');
@@ -75,18 +76,19 @@ class PasswordService {
         $password = new Password();
         $password->setLoginname($loginname);
         $password->setWebsite($website);
+        $password->setAddress($address);
         $password->setPass($encryptedData);
-        //$password->setPass($pass);
         $password->setUserId($userId);
         $password->setCreationDate(date("Y-m-d"));
         return $this->mapper->insert($password);
     }
 
-    public function update($id, $loginname, $website, $pass, $userId) {
+    public function update($id, $loginname, $website, $address, $pass, $userId) {
         try {
             $password = $this->mapper->find($id, $userId);
             $password->setLoginname($loginname);
             $password->setWebsite($website);
+            $password->setAddress($address);
             $password->setPass($pass);
             $password->setCreationDate(date("Y-m-d"));
             return $this->mapper->update($password);
@@ -126,7 +128,7 @@ class PasswordService {
      */
     class Encryption {
 
-        public function makeKey($userKey, $serverKey, $userSuppliedKey) {
+        public static function makeKey($userKey, $serverKey, $userSuppliedKey) {
             $key = hash_hmac('sha512', $userKey, $serverKey);
             $key = hash_hmac('sha512', $key, $userSuppliedKey);
             return $key;

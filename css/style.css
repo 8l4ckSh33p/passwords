@@ -5,10 +5,12 @@ tr {
 	height: 35px;
 }
 
-#PasswordsTableContent .icon-delete {
+#PasswordsTableContent .icon-delete,
+#PasswordsTableContent .icon-share {
 	opacity: 0.5;
 }
-#PasswordsTableContent .icon-delete:hover {
+#PasswordsTableContent .icon-delete:hover,
+#PasswordsTableContent .icon-share:hover {
 	opacity: 1;
 	cursor: pointer;
 }
@@ -19,8 +21,8 @@ tr {
 .is_website a:hover {
 	text-decoration: underline;
 }
-.row_id_td,
-#column_id {
+.hide_always,
+#hide_always {
 	display: none;
 }
 .websitepic {
@@ -46,6 +48,7 @@ h3,
 #new_password_add,
 #new_generate,
 #new_website,
+#new_address,
 #new_username,
 #new_password {
 	margin-left: 3%;
@@ -120,25 +123,26 @@ h3 {
 	display: none;
 }
 #blockedcontent {
-  font-size: 16px;
-  color: #888;
-  position: absolute;
-  text-align: center;
-  top: 30%;
-  width: 75%;
-  margin-left: 12.5%;
+	font-size: 16px;
+	color: #888;
+	position: absolute;
+	text-align: center;
+	top: 30%;
+	width: 75%;
+	margin-left: 12.5%;
 }
-#blockedcontent [class^="icon-"], #blockedcontent [class*=" icon-"] {
+#blockedcontent [class^="icon-"], 
+#blockedcontent [class*=" icon-"] {
 	background-size: 64px;
 	height: 64px;
 	width: 64px;
 	margin: 0 auto 15px;
 }
 #blockedcontent h2 {
-  font-size: 22px;
-  margin-bottom: 10px; 
-  color: #a00;
-  font-weight: bold;
+	font-size: 22px;
+	margin-bottom: 10px; 
+	color: #a00;
+	font-weight: bold;
 }
 .green,
 green {
@@ -153,18 +157,20 @@ orange {
 	color: #c80 !important;
 }
 
-/* password hide */
-.hidden_password {
+.hidevalue {
 	text-indent: -9999px;
 	line-height: 0;
 }
-.hidden_password::after {
+.hidevalue:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.hidevalue::after {
 	content: "*****";
 	text-indent: 0;
 	display: block;
 	line-height: initial;
 }
-/* password hide */
 
 #PasswordsTableSearch {
 	width: 90%;
@@ -193,6 +199,12 @@ td[title]:hover:after {
 	content: attr(title);
 	position: relative !important;
 	font-style: italic;
+}
+#app-settings-header,
+#app-settings-content {
+	/* Will be shown when backup_allowed is true */
+	/* This is a bugfix for IE7 and lower */
+	display: none;
 }
 
 
@@ -227,7 +239,8 @@ td[title]:hover:after {
 		table-layout: fixed;
 		font-size: 80%;
 	}
-	#PasswordsTableContent .icon-delete {
+	#PasswordsTableContent .icon-delete,
+	#PasswordsTableContent .icon-share {
 		background-size: 20% !important;
 	}
 	#PasswordsTable table td {
