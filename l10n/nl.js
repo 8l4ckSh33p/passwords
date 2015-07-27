@@ -49,7 +49,7 @@ OC.L10N.register(
 	"November" : "november",
 	"December" : "december",
 	"Error, value:" : "Fout, waarde",
-	"Add new password" : "Nieuw wachtwoord toevoegen",
+	"Add new password" : "Nieuw wachtwoord",
 	"site.com or Name Inc." : "site.nl of Bedrijf B.V.",
 	"Login name or e-mail" : "Inlognaam of e-mail",
 	"Lowercase characters" : "Kleine letters",
