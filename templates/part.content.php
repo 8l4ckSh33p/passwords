@@ -2,6 +2,7 @@
 $days_orange = \OCP\Config::getAppValue('passwords', 'days_orange', '150');
 $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 ?>
+
 <div id="PasswordsTable">
 
 	<table id="PasswordsTableContent" class="sortable">
@@ -19,6 +20,7 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 			<th id="hide_always">ID</th>
 			<th id="hide_always">User-ID</th>
 			<th id="hide_always">Address</th>
+			<th id="column_notes"></th>
 			<th id="column_delete"></th>
 			<!-- <th id="column_share"></th> -->
 		</tr>
@@ -54,6 +56,7 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 			<td class="hide_always">{{ id }}</td>
 			<td class="hide_always">{{ user_id }}</td>
 			<td class="hide_always">{{ address }}</td>
+			<td class="icon-notes"><span>{{ notes }}</span></td>
 			<td class="icon-delete"></td>
 			<!--<td class="icon-share"></td>-->
 		</tr>

@@ -31,8 +31,8 @@
 	width: 30px !important;
 	text-align: center;
 }
-#passwords-admin .passwordsmsg,
-#passwords-personal .passwordsmsg {
+#passwords-admin .msg-passwords,
+#passwords-personal .msg-passwords {
 	padding: 3px;
 }
 #passwords-admin .msg_error,

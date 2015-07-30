@@ -16,10 +16,11 @@ class PasswordMapper extends Mapper {
 	}
 
 	public function findAll($userId) {
-		// OLD: $sql = 'SELECT * FROM *PREFIX*passwords WHERE user_id = ?';
+		$sql = 'SELECT * FROM *PREFIX*passwords WHERE user_id = ? ORDER BY LOWER(website) ASC';
+		return $this->findEntities($sql, [$userId]);
 		// Now, search for shared too on 'oc_share':
-		$sql = 'SELECT * FROM *PREFIX*passwords WHERE user_id = ? OR id IN (SELECT item_source FROM *PREFIX*share WHERE share_with = ? AND item_type = "password")';
-		return $this->findEntities($sql, [$userId, $userId]);
+		// $sql = 'SELECT * FROM *PREFIX*passwords WHERE user_id = ? OR id IN (SELECT item_source FROM *PREFIX*share WHERE share_with = ? AND item_type = "password")';
+		// return $this->findEntities($sql, [$userId, $userId]);
 	}
 
 	// public function sharedWith($id) {

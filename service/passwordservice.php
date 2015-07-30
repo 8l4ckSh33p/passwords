@@ -9,7 +9,6 @@ use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCA\Passwords\Db\Password;
 use OCA\Passwords\Db\PasswordMapper;
 
-
 class PasswordService {
 
     private $mapper;
@@ -30,11 +29,13 @@ class PasswordService {
 
             $userKey = $arr[$row]['user_id'];
             $userSuppliedKey = $arr[$row]['website'];
-            $encryptedData = $arr[$row]['pass'];
+            $encryptedPass = $arr[$row]['pass'];
+            $encryptedNotes = $arr[$row]['notes'];
             $e2 = new Encryption(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC);
             $key = Encryption::makeKey($userKey, $serverKey, $userSuppliedKey);
             
-            $arr[$row]['pass'] = $e2->decrypt($encryptedData, $key);
+            $arr[$row]['pass'] = $e2->decrypt($encryptedPass, $key);
+            $arr[$row]['notes'] = $e2->decrypt($encryptedNotes, $key);
 
         }
 
@@ -64,32 +65,43 @@ class PasswordService {
         }
     }
 
-    public function create($loginname, $website, $address, $pass, $userId) {
+    public function create($loginname, $website, $address, $pass, $notes, $userId) {
 
         $userKey = $userId;
         $serverKey = \OC_Config::getValue('passwordsalt', '');
         $userSuppliedKey = $website;
         $key = Encryption::makeKey($userKey, $serverKey, $userSuppliedKey);
         $e = new Encryption(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC);
-        $encryptedData = $e->encrypt($pass, $key);
+        $encryptedPass = $e->encrypt($pass, $key);
+        $encryptedNotes = $e->encrypt($notes, $key);
 
         $password = new Password();
         $password->setLoginname($loginname);
         $password->setWebsite($website);
         $password->setAddress($address);
-        $password->setPass($encryptedData);
+        $password->setPass($encryptedPass);
+        $password->setNotes($encryptedNotes);
         $password->setUserId($userId);
         $password->setCreationDate(date("Y-m-d"));
         return $this->mapper->insert($password);
     }
 
-    public function update($id, $loginname, $website, $address, $pass, $userId) {
+    public function update($id, $loginname, $website, $address, $pass, $notes, $userId) {
         try {
+            $userKey = $userId;
+            $serverKey = \OC_Config::getValue('passwordsalt', '');
+            $userSuppliedKey = $website;
+            $key = Encryption::makeKey($userKey, $serverKey, $userSuppliedKey);
+            $e = new Encryption(MCRYPT_BLOWFISH, MCRYPT_MODE_CBC);
+            $encryptedPass = $e->encrypt($pass, $key);
+            $encryptedNotes = $e->encrypt($notes, $key);
+            
             $password = $this->mapper->find($id, $userId);
             $password->setLoginname($loginname);
             $password->setWebsite($website);
             $password->setAddress($address);
-            $password->setPass($pass);
+            $password->setPass($encryptedPass);
+            $password->setNotes($encryptedNotes);
             $password->setCreationDate(date("Y-m-d"));
             return $this->mapper->update($password);
         } catch(Exception $e) {
@@ -106,6 +118,11 @@ class PasswordService {
             $this->handleException($e);
         }
     }
+
+    // public function sharedWith($id) {
+    //     $result = $this->mapper->sharelist($id);
+    //     return $result;
+    // }
 
 }
 

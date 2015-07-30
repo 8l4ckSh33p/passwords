@@ -6,13 +6,27 @@ tr {
 }
 
 #PasswordsTableContent .icon-delete,
+#PasswordsTableContent .icon-notes,
 #PasswordsTableContent .icon-share {
-	opacity: 0.5;
+	opacity: 0.3;
 }
 #PasswordsTableContent .icon-delete:hover,
+#PasswordsTableContent .icon-notes:hover,
 #PasswordsTableContent .icon-share:hover {
 	opacity: 1;
 	cursor: pointer;
+}
+.actual-note {
+	opacity: 0 !important;
+}
+.actual-note:hover {
+	opacity: 0.3 !important;
+}
+#PasswordsTableContent .icon-notes {
+	background-image: url(../img/notes.svg);
+}
+.icon-notes span {
+	display: none;
 }
 
 .is_website a {
@@ -20,6 +34,19 @@ tr {
 }
 .is_website a:hover {
 	text-decoration: underline;
+}
+.edit_value {
+	margin-left: 5px;
+	vertical-align: middle;
+	opacity: 0.5;
+	visibility: hidden;
+}
+td:hover > .edit_value {
+	visibility: visible;
+}
+.edit_value:hover {
+	opacity: 1;
+	cursor: pointer;
 }
 .hide_always,
 #hide_always {
@@ -33,10 +60,10 @@ tr {
 }
 #add_password_div {
 	border: 1px solid #ddd;
-	margin-top: 15px;
+	margin-top: 10px;
 	margin-left: 5%;
 	margin-right: 5%;
-	padding: 8%;
+	padding: 4%;
 }
 .icon-passwords {
 	background-image: url(../img/app_black.svg);
@@ -50,10 +77,21 @@ h3,
 #new_website,
 #new_address,
 #new_username,
-#new_password {
+#new_password,
+#new_notes {
 	margin-left: 3%;
-	margin-bottom: 3%;
-	width: 94%;
+	margin-bottom: 2%;
+	width: 85%;
+	height: 26px;
+}
+#new_password_add,
+#new_generate {
+	margin-left: 12%;
+}
+#add_password_div img {
+	width: 18px;
+	vertical-align: sub;
+	opacity: 0.5;
 }
 #new_password {
 	/*font-family: 'Consolas';*/
@@ -109,11 +147,16 @@ h3 {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-#FieldLengthCheck {
+td #FieldLengthCheck {
 	width: 200px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	display: inline;
+}
+th#FieldLengthCheck {
+	/* align head: 16px for notes img, 5px for margin-left of notes img: */
+	padding-right: 21px;
 }
 #FieldLengthCheck:hover {
 	text-decoration: underline;
@@ -123,13 +166,13 @@ h3 {
 	display: none;
 }
 #blockedcontent {
-	font-size: 16px;
-	color: #888;
-	position: absolute;
-	text-align: center;
-	top: 30%;
-	width: 75%;
-	margin-left: 12.5%;
+  font-size: 16px;
+  color: #888;
+  position: absolute;
+  text-align: center;
+  top: 30%;
+  width: 75%;
+  margin-left: 12.5%;
 }
 #blockedcontent [class^="icon-"], 
 #blockedcontent [class*=" icon-"] {
@@ -139,10 +182,10 @@ h3 {
 	margin: 0 auto 15px;
 }
 #blockedcontent h2 {
-	font-size: 22px;
-	margin-bottom: 10px; 
-	color: #a00;
-	font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 10px; 
+  color: #a00;
+  font-weight: bold;
 }
 .green,
 green {
@@ -175,17 +218,17 @@ orange {
 #PasswordsTableSearch {
 	width: 90%;
 	margin: 0 auto;
-	margin-top: 15px;
+	margin-top: 10px;
 }
 #search_clear {
-	height: 32px;
-	padding-top: 8px;
+	height: 26px;
 	float: right;
 	margin-right: 0px;
 	width: 30%;
 }
 #search_text {
 	width: 65%;
+	height: 26px;
 }
 /* x days ago */
 .creation_date:hover span {
@@ -240,6 +283,7 @@ td[title]:hover:after {
 		font-size: 80%;
 	}
 	#PasswordsTableContent .icon-delete,
+	#PasswordsTableContent .icon-notes,
 	#PasswordsTableContent .icon-share {
 		background-size: 20% !important;
 	}

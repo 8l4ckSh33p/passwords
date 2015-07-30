@@ -59,13 +59,7 @@
 			removeByID: function(id) {
 				var index = id;
 				var deferred = $.Deferred();
-				//var id = this._activePassword.id;
-				// this._passwords.forEach(function(password, counter) {
-				// 	if (password.id === id) {
-				// 		index = counter;
-				// 	}
-				// });
-
+				
 				if (index !== undefined) {
 					// delete cached active password if necessary
 					if (this._activePassword === this._passwords[index]) {
@@ -121,12 +115,8 @@
 				});
 				return deferred.promise();
 			},
-			updateActive: function(loginname, website, address, pass) {
-				var password = this.getActive();
-				password.loginname = loginname;
-				password.website = website;
-				password.address = address;
-				password.pass = pass;
+			updateActive: function(index, loginname, website, address, pass, notes) {
+				var password = {'id' : index, 'loginname' : loginname, 'website' : website, 'address' : address, 'pass' : pass, 'notes' : notes} 
 
 				return $.ajax({
 					url: this._baseUrl + '/' + password.id,
@@ -188,35 +178,103 @@
 
 				update_pwcount();
 
-				formatTable();
+				formatTable(false);
 
-				// sort on website, reset sort first
-				$('#column_id').click();
-				$('#column_website').click();
+				$('#app-settings-content').hide();
+
+				// // sort on website, reset sort first
+				// $('#column_id').click();
+				// $('#column_website').click();
 
 				$('#PasswordsTableContent td').click(function() {
 					var table = document.getElementById('PasswordsTableContent');
 					var col = $(this).parent().children().index($(this));
 					var row = $(this).parent().parent().children().index($(this).parent()) + 1;
-					
-					// clicked on trash, ask confirmation to delete
-					// if (col == 13 && table.rows[row].cells[col].className != '') { // className is removed on shared item
-					if (col == 13) {	
-						var website = table.rows[row].cells[0].textContent;
-						var user = table.rows[row].cells[1].textContent;
-						var db_id = table.rows[row].cells[10].textContent;
+					var db_id = table.rows[row].cells[10].textContent;
+					var website = table.rows[row].cells[0].textContent;
+					var user = table.rows[row].cells[1].textContent;
+					var pass = table.rows[row].cells[2].textContent;
+					var address = table.rows[row].cells[12].textContent;
+					var notes = table.rows[row].cells[13].textContent;
+					var thead = table.rows[0].cells[col].textContent;
+					thead = thead.replace('▴', '');
+					thead = thead.replace('▾', '');
+					thead = thead.trim();
 
+					if (event.target.tagName == 'DIV' && (col == 1 || col == 2)) {
+						prompt(thead + ':', table.rows[row].cells[col].textContent);
+					}
+					
+					if (event.target.className == 'edit_value' || (col == 13)) {
+					
+						var old_value = table.rows[row].cells[col].textContent;
+						if (col == 13) {
+							// notes
+							var new_value = prompt(t('passwords', 'Notes') + ':\n\n(' + t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.') + ')', old_value);
+						} else {
+							var new_value = prompt(t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.') + '\n\n' + thead + ':', old_value);
+						}
+						if (new_value == null) {
+							return false; // on Cancel
+						}
+
+						if (col == 0) {
+							// clean up website: https://www.Google.com -> google.com
+							if ((new_value.substring(0,7).toLowerCase() == 'http://' 
+									|| new_value.substring(0,8).toLowerCase() == 'https://'
+									|| new_value.substring(0,4).toLowerCase() == 'www.') 
+								&& address == '') {
+								address = new_value.toLowerCase();
+							}
+							new_value = strip_website(new_value).toLowerCase();
+
+							var new_value_address = prompt(t('passwords', 'Website or company') + ': ' + new_value + '\n\n' + t('passwords', 'Full URL (optional)') + ':', address);
+							if (new_value_address == null) {
+								new_value_address = address; // on Cancel, address not changed
+							}
+						}
+						switch (col) {
+							case 0:
+								website = new_value;
+								address = new_value_address;
+								break;
+							case 1:
+								user = new_value;
+								break;
+							case 2:
+								pass = new_value;
+								break;
+							case 13:
+								notes = new_value;
+								break;
+						}
+						var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+						var success = passwords.updateActive(db_id, user, website, address, pass, notes);
+
+						if (success) {
+							var innerHTMLtext = table.rows[row].cells[col].textContent;
+							table.rows[row].cells[col].innerHTML = innerHTMLtext.replace(old_value, new_value);
+							formatTable(true);
+							// markRow(row);
+
+						} else {
+							alert(t('passwords', 'Error: Could not update password.'));
+						}
+					}
+
+					// clicked on trash, ask confirmation to delete
+					if (col == 14) {
+						
 						if (confirm(t('passwords', "This will delete the password for") + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'.\n\n" + t('passwords', "Are you sure?"))) {
 
 							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
 							var view = new View(passwords);
 							
 							passwords.removeByID(db_id).done(function() {
-								// spinning wheel
-								$('.icon-loading-dark').css('display', 'block');
-								$('.icon-loading-dark').css('background-color', 'rgba(1, 1, 1, 0');
-								$('#slideshow input').css('display', 'none');
-								location.reload(true);
+								// now removed from db, 
+								// so delete from DOM and update count
+								table.deleteRow(row);
+								update_pwcount();
 							}).fail(function() {
 								alert(t('passwords', 'Error: Could not delete password.'));
 							});
@@ -231,7 +289,6 @@
 					// 		alert('will be shared with ' + share_uid);
 					// 	}
 					// }
-
 
 				});
 
@@ -291,8 +348,8 @@
 				$('#new_website').focusout(function() {
 					if ((this.value.substring(0,7).toLowerCase() == 'http://' 
 							|| this.value.substring(0,8).toLowerCase() == 'https://'
-							|| this.value.substring(0,4).toLowerCase() == 'www.'
-							) && $('#new_address').val() == '') {
+							|| this.value.substring(0,4).toLowerCase() == 'www.') 
+						&& $('#new_address').val() == '') {
 						$('#new_address').val(this.value.toLowerCase());
 					}
 					$('#new_website').val(strip_website(this.value).toLowerCase());
@@ -343,7 +400,8 @@
 						loginname: $('#new_username').val(),
 						website: $('#new_website').val(),
 						address: $('#new_address').val(),
-						pass: $('#new_password').val()
+						pass: $('#new_password').val(),
+						notes: $('#new_notes').val()
 					};
 
 					self._passwords.create(password).done(function() {
@@ -355,10 +413,32 @@
 						$('.icon-loading-dark').css('background-color', 'rgba(1, 1, 1, 0');
 						$('#slideshow input').css('display', 'none');
 
-						location.reload(true);
+						$('#new_username').val('');
+						$('#new_website').val('');
+						$('#new_password').val('');
+						$('#new_address').val('');
+						$('#new_notes').val('');
+						$('#generate-strength').text('');
+						$('#generate-passwordtools').fadeOut(250);
+						$('#gen_length').val('25');
+
+						var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+						var view = new View(passwords);
+						passwords.loadAll().done(function() {
+							var create_success = true;
+							view.renderContent();
+						});
+
+						update_pwcount();
+
+						// spinning wheel
+						$('.icon-loading-dark').css('display', 'none');
+						$('.icon-loading-dark').css('background-color', bg);
+						$('#slideshow input').css('display', disp);
 
 					}).fail(function() {
 						alert(t('passwords', 'Error: Could not create password.'));
+						return false;
 					});
 
 				});
@@ -403,7 +483,6 @@
 
 					// fill in
 					$('#new_password').val(generate_new);
-
 
 				});
 
@@ -471,7 +550,7 @@ function strHasSpecial(str) {
 	
 }
 
-function formatTable() {
+function formatTable(update_only) {
 
 	var table = document.getElementById('PasswordsTableContent');
 
@@ -543,8 +622,16 @@ function formatTable() {
 				table.rows[i].cells[4].setAttribute('sorttable_customkey', 1 / length);
 
 				// date
-				var datePart = table.rows[i].cells[9].textContent.split('-');
 				var dateToday = new Date();
+				
+				if (update_only) { // set date to today when updated a value
+					table.rows[i].cells[9].textContent = 
+						dateToday.getFullYear()
+						+ '-' + ('-0' + (dateToday.getMonth() + 1)).slice(-2)
+						+ '-' + ('-0' + dateToday.getDate()).slice(-2);
+				}
+
+				var datePart = table.rows[i].cells[9].textContent.split('-');
 				var dateRowEntry = new Date(table.rows[i].cells[9].textContent);
 				// colourize date
 				var days_orange = $('#app-settings').attr("days-orange");
@@ -663,12 +750,6 @@ function formatTable() {
 
 				table.rows[i].cells[9].innerHTML = "<span>" + table.rows[i].cells[9].innerHTML + "</span>";
 
-		}
-
-		// user and password clickable
-		for (var i = 1; i < table.rows.length; i++) {
-			for (var j = 0; j < table.rows[i].cells.length; j++)
-
 				var cellWebsite = table.rows[i].cells[0];
 				var cellWebsiteURL = table.rows[i].cells[12];
 				var cellUsername = table.rows[i].cells[1];
@@ -696,6 +777,7 @@ function formatTable() {
 						cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank">' + cellWebsite.textContent + '</a>';
 					}
 				} else { // no valid website url
+					cellWebsite.className = '';
 					cellWebsite.innerHTML = cellWebsite.textContent; // or else doesn't align very well
 				}
 
@@ -711,6 +793,13 @@ function formatTable() {
 					cellPassword.className += ' hidevalue';
 				}
 
+				var imgNotes = OC.linkTo('passwords', 'img/notes.svg');
+				cellWebsite.innerHTML = cellWebsite.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+				if (!update_only) {
+					cellUsername.innerHTML = cellUsername.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+					cellPassword.innerHTML = cellPassword.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+				}
+				
 				// shared password
 				// var oc_user = $('head').attr("data-user");
 				// if (table.rows[i].cells[11].textContent != oc_user) {
@@ -720,12 +809,19 @@ function formatTable() {
 				// 	table.rows[i].cells[12].className = '';
 				// }
 
-				table.rows[i].cells[1].onclick = function () { // login name
-					window.prompt(t('passwords', 'Login name') + ':', this.textContent);	
-				};
-				table.rows[i].cells[2].onclick = function () { //password
-					window.prompt(t('passwords', 'Password') + ':', this.textContent);
-				};
+				// move text to span when available (so it will be hidden)
+				if (table.rows[i].cells[13].textContent != '') {
+					table.rows[i].cells[13].innerHTML = '<span>' + table.rows[i].cells[13].textContent + '</span>';
+					table.rows[i].cells[13].style.opacity = 1;
+				} else {
+					table.rows[i].cells[13].className += ' actual-note';
+				}
+
+		}
+
+		// sort on website, reset sort first
+		if (update_only) {
+			$('#column_website').click();	
 		}
 
 	}
@@ -1007,6 +1103,12 @@ function URLtoDomain(website) {
 	};
 
 	return domain;
+}
+function markRow(row) {
+	var rows = $('tr', $('#PasswordsTableContent'));
+	rows.eq(row).animate( { backgroundColor: '#ffa' }, 400, function() {
+		$(this).animate( { backgroundColor: 'none' }, 3000);
+	});
 }
 
 function backupPasswords() {
