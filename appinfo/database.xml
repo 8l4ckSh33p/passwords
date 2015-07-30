@@ -56,3 +56,8 @@
 		</declaration>
 	</table>
 </database>
+            <field>
+                <name>notes</name>
+                <type>blob</type>
+                <notnull>false</notnull>
+            </field>

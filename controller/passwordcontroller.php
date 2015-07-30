@@ -45,8 +45,8 @@ class PasswordController extends Controller {
      * @param string $loginname
      * @param string $website
      */
-    public function create($loginname, $website, $address, $pass) {
-        return $this->service->create($loginname, $website, $address, $pass, $this->userId);
+    public function create($loginname, $website, $address, $pass, $notes) {
+        return $this->service->create($loginname, $website, $address, $pass, $notes, $this->userId);
     }
 
     /**
@@ -56,9 +56,9 @@ class PasswordController extends Controller {
      * @param string $loginname
      * @param string $website
      */
-    public function update($id, $loginname, $website, $address, $pass) {
-        return $this->handleNotFound(function () use ($id, $loginname, $website, $address, $pass) {
-            return $this->service->update($id, $loginname, $website, $address, $pass, $this->userId);
+    public function update($id, $loginname, $website, $address, $pass, $notes) {
+        return $this->handleNotFound(function () use ($id, $loginname, $website, $address, $pass, $notes) {
+            return $this->service->update($id, $loginname, $website, $address, $pass, $notes, $this->userId);
         });
     }
 

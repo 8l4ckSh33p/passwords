@@ -8,7 +8,9 @@
 		    return true;
 		}
 
-		return
+		// test if at least one is true in:
+		// (1) header, (2) port number, (3) config.php setting, (4) admin setting
+	  	return
 		(!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
 		|| $_SERVER['SERVER_PORT'] == 443
 		|| \OC_Config::getValue('forcessl', '')
