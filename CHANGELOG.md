@@ -1,3 +1,10 @@
+8.0.7
+* Added possibility to add notes to a password. These notes are encrypted just as strong as the passwords. 
+* Added possibility to edit every field (website, full address, username, password and notes). Hover over a value and click on the pencil icon to change a value. 
+* Added new icons for the form to add new passwords 
+* No more page refreshing after creating, deleting (or editing) a row or value. All edits are done directly to the loaded table, so the page doesn't need to be refreshed.
+* Other minor fixes
+
 8.0.6
 
 * Thanks to all contributors on GitHub, this is a rather big update. So thanks, you all!
