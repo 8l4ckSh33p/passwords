@@ -49,6 +49,11 @@
 				<notnull>true</notnull>
 			</field>
 			<field>
+				<name>notes</name>
+				<type>blob</type>
+				<notnull>false</notnull>
+			</field>
+			<field>
 				<name>creation_date</name>
 				<type>date</type>
 				<notnull>true</notnull>
@@ -56,8 +61,3 @@
 		</declaration>
 	</table>
 </database>
-            <field>
-                <name>notes</name>
-                <type>blob</type>
-                <notnull>false</notnull>
-            </field>
