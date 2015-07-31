@@ -45,7 +45,7 @@ class SettingsController extends Controller {
 		});
 	}
 
-	public function setadmin($setting, $value){
+	public function setadmin($setting, $value, $admin1, $admin2){
 		return $this->handleNotFound(function () use ($setting, $value, $admin1, $admin2) {
 			return $this->settingsService->setadmin($setting, $value, $admin1, $admin2);
 		});
