@@ -15,15 +15,6 @@
 		<label>
 			<input class="check" type="checkbox" id="backup_allowed"> <?php p($l->t('Allow users to download a backup as an unencrypted, plain text file')); ?>
 		</label>
-		<!-- 
-		<br>
-		<label>
-			<input class="check" type="checkbox" id="extra_auth" <?php p($_['extra_authentication']) ?>> <?php p($l->t('Require users to input their %s password when opening the Passwords app', array($theme->getName()))); ?>
-		</label>
-		<p class="descr">
-			<em><?php p($l->t('This is useful e.g. when using %s at work or a public place and users accidentically leave their computers without logging off from %s.', array($theme->getName(), $theme->getName()))); ?></em>
-		</p>
-		 -->
 	</div>
 
 	<br>
