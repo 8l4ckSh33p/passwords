@@ -201,7 +201,8 @@
 					thead = thead.replace('▾', '');
 					thead = thead.trim();
 
-					if (event.target.tagName == 'DIV' && (col == 1 || col == 2)) {
+					if ((event.target.tagName == 'DIV' && (col == 1 || col == 2)) 
+						|| (event.target.tagName == 'DIV' && (event.target.className).indexOf('hidevalue') > -1)) {
 						prompt(thead + ':', table.rows[row].cells[col].textContent);
 					}
 					
@@ -214,7 +215,7 @@
 						} else {
 							var new_value = prompt(t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.') + '\n\n' + thead + ':', old_value);
 						}
-						if (new_value == null) {
+						if (new_value == null || new_value == '') {
 							return false; // on Cancel
 						}
 
@@ -795,11 +796,13 @@ function formatTable(update_only) {
 
 				var imgNotes = OC.linkTo('passwords', 'img/notes.svg');
 				cellWebsite.innerHTML = cellWebsite.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
-				if (!update_only) {
-					cellUsername.innerHTML = cellUsername.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
-					cellPassword.innerHTML = cellPassword.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+				if ((cellUsername.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
+					cellUsername.innerHTML = '<div id="FieldLengthCheck">' + cellUsername.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
 				}
-				
+				if ((cellPassword.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
+					cellPassword.innerHTML = '<div id="FieldLengthCheck">' + cellPassword.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+				}
+			
 				// shared password
 				// var oc_user = $('head').attr("data-user");
 				// if (table.rows[i].cells[11].textContent != oc_user) {
