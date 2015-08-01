@@ -1,3 +1,8 @@
+8.0.8
+* Bugfix: some variables were undefined, leading to errors in log
+* Bugfix: hidden values now editable
+* Hidden values are now viewable on mouse hover
+
 8.0.7
 * Added possibility to add notes to a password. These notes are encrypted just as strong as the passwords. 
 * Added possibility to edit every field (website, full address, username, password and notes). Hover over a value and click on the pencil icon to change a value. 
