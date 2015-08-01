@@ -205,14 +205,18 @@ orange {
 	line-height: 0;
 }
 .hidevalue:hover {
-	text-decoration: underline;
 	cursor: pointer;
+	text-indent: 0px;
+	line-height: 1;
+}
+.hidevalue:hover::after {
+	content: "";
 }
 .hidevalue::after {
 	content: "*****";
 	text-indent: 0;
 	display: block;
-	line-height: initial;
+	line-height: 1;
 }
 
 #PasswordsTableSearch {
