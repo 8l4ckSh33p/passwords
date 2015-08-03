@@ -186,7 +186,7 @@
 				// $('#column_id').click();
 				// $('#column_website').click();
 
-				$('#PasswordsTableContent td').click(function() {
+				$('#PasswordsTableContent td').click(function(event) {
 					var table = document.getElementById('PasswordsTableContent');
 					var col = $(this).parent().children().index($(this));
 					var row = $(this).parent().parent().children().index($(this).parent()) + 1;
