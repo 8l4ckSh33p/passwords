@@ -2,7 +2,7 @@ p, h2, label, .emptyinfo {
 	color: #555;
 }
 tr {
-	height: 35px;
+	height: 40px !important;
 }
 
 #PasswordsTableContent .icon-delete,
@@ -207,7 +207,6 @@ orange {
 .hidevalue:hover {
 	cursor: pointer;
 	text-indent: 0px;
-	line-height: 1;
 }
 .hidevalue:hover::after {
 	content: "";
@@ -216,7 +215,6 @@ orange {
 	content: "*****";
 	text-indent: 0;
 	display: block;
-	line-height: 1;
 }
 
 #PasswordsTableSearch {
