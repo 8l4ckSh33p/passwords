@@ -1,3 +1,7 @@
+8.0.9
+* Bugfix for Firefox: now clicking hidden values and the pencil actually works (`event` was not defined in JS)
+* CSS fix: line-height doesn't change anymore when hovering a hidden password
+
 8.0.8
 * Bugfix: some variables were undefined, leading to errors in log
 * Bugfix: hidden values now editable
