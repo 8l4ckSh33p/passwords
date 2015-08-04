@@ -7,8 +7,7 @@ This is a Password Manager for viewing, editing and generating passwords (see 'i
 
 This app is primarily intended as a password MANAGER, e.g. for a local ownCloud instance on your own WPA2 protected LAN. If you trust yourself enough as security expert, you can use this app behind an SSL secured server for a neat cloud solution. The app will be blocked (with message) if not accessed thru https, which will result in your passwords not being loaded (decrypted) and shown. To prevent this, use ownClouds own 'Force SSL'-function on the admin page, or use HSTS (HTTP Strict Transport Security) on your server. Also, make sure your server hasn't any kind of vulnerabilities (POODLE, CSRF, XSS, SQL Injection, Privilege Escalation, Remote Code Execution, to name a few).
 
-* Not happy with the encryption or the fact that this app exists? You're welcome to create your own :)
-* Happily want to contribute to improve this app? You're welcome to contact me or create pull requests :)
+* Happily want to contribute to improve this app? You're welcome to contact me or create pull requests :smile:
 
 The script for creating passwords can be found in 'js/script.js'.
 
