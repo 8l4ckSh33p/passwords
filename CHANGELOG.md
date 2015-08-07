@@ -3,7 +3,6 @@
  * Note: This is **not** less safe than putting in passwords one by one. This is Javascript only, so reading a CSV is practically very similar to typing in new passwords yourself.
 * Added possibility in Personal settings to hide the columns |  a-z  |  A-Z  |  0-9  |  !@#  |
 
-
 8.0.9
 * Bugfix for Firefox: now clicking hidden values and the pencil actually works (`event` was not defined in JS)
 * CSS fix: line-height doesn't change anymore when hovering a hidden password
