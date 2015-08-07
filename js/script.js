@@ -1216,10 +1216,14 @@ function uploadCSV(event) {
 
 	if (!f) {
 		alert('No file loaded');
+		$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+		return false;
 	} else 
 		// validate file
 		if (!f.name.substr(f.name.length - 4, 4) == '.csv') {
 		alert(t('passwords', 'This is not a valid CSV file.'));
+		$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+		return false;
 	} else {
 		var r = new FileReader();
 		
@@ -1237,7 +1241,8 @@ function uploadCSV(event) {
 
 			if (count < 1) {
 				alert(t('passwords', 'This is not a valid CSV file.'));
-				return true;
+				$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+				return false;
 			}
 
 			var confirmed = confirm(t('passwords', 'The following file will be imported') + ':' 
@@ -1257,7 +1262,8 @@ function uploadCSV(event) {
 
 					if (line < 3) {
 						alert(t('passwords', 'This is not a valid CSV file.'));
-						return true;
+						$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+						return false;
 					}
 
 					var websiteCSV = $('#website-csv').val() - 1;
@@ -1300,4 +1306,7 @@ function uploadCSV(event) {
 		r.readAsText(f); // = execute
 
 	}
+
+	$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+
 }
