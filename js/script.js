@@ -824,7 +824,7 @@ function formatTable(update_only) {
 							cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank"><img class="websitepic" src="https://icons.duckduckgo.com/ip2/' + cellWebsite.textContent + '.ico">' + cellWebsite.textContent + '</a>';
 						}
 						if (icons_service == 'ggl') { // Google
-							cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank"><img class="websitepic" src="https://www.google.com/s2/favicons?domain=www.' + cellWebsite.textContent + '">' + cellWebsite.textContent + '</a>';
+							cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank"><img class="websitepic" src="https://www.google.com/s2/favicons?domain=' + cellWebsite.textContent + '">' + cellWebsite.textContent + '</a>';
 						}
 					} else {
 						cellWebsite.innerHTML = '<a href="' + websiteURL + '" target="_blank">' + cellWebsite.textContent + '</a>';
