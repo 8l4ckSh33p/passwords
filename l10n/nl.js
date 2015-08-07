@@ -123,7 +123,7 @@ OC.L10N.register(
 	"Size" : "Grootte",
 	"Content" : "Inhoud",
 	"File contains headers" : "Bestand bevat kolomkoppen",
-	"This is not a valid CSV file." : "Dit is geen geldig CSV-bestand."
+	"This is not a valid CSV file." : "Dit is geen geldig CSV-bestand.",
 	"Import of passwords done. This page will now reload." : "Importeren van wachtwoorden is voltooid. Deze pagina wordt nu vernieuwd."
 },
 "nplurals=2; plural=(n != 1);");
