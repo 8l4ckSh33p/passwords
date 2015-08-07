@@ -115,6 +115,7 @@
 	"Import CSV File" : "CSV-bestand importeren",
 	"Choose a format and a select a file from disk" : "Kies een formaat en selecteer een bestand",
 	"Fill in the column numbers" : "Vul de kolomnummers in",
+	"Use 'x' to exclude a field" : "Gebruik 'x' om een veld over te slaan",
 	"Other" : "Andere",
 	"The following file will be imported" : "Het volgende bestand wordt geimporteerd",
 	"Name" : "Naam",
