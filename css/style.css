@@ -92,6 +92,7 @@ h3,
 	width: 18px;
 	opacity: 0.5;
 	background-size: 100%;
+	vertical-align: sub;
 }
 #new_password {
 	/*font-family: 'Consolas';*/
