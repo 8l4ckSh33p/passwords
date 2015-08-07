@@ -30,6 +30,7 @@ class SettingsService {
 				'icons_allowed' => (string)$this->settings->getAppValue($this->appName, 'icons_allowed', 'true'),
 				'icons_service' => (string)$this->settings->getAppValue($this->appName, 'icons_service', 'ddg'),
 				// user settings
+				'hide_attributes' => (string)$this->settings->getUserValue($this->userId, $this->appName, 'hide_attributes', 'false'),
 				'hide_passwords' => (string)$this->settings->getUserValue($this->userId, $this->appName, 'hide_passwords', 'true'),
 				'hide_usernames' => (string)$this->settings->getUserValue($this->userId, $this->appName, 'hide_usernames', 'false'),
 				'icons_show' => (string)$this->settings->getUserValue($this->userId, $this->appName, 'icons_show', 'true')

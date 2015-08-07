@@ -1,3 +1,9 @@
+8.0.10
+* Added possibility to import passwords from KeePass, 1Password, LastPass, SplashID or every other source, as long as it was exported as CSV. You can set the source columns yourself. 
+ * Note: This is **not** less safe than putting in passwords one by one. This is Javascript only, so reading a CSV is practically very similar to typing in new passwords yourself.
+* Added possibility in Personal settings to hide the columns |  a-z  |  A-Z  |  0-9  |  !@#  |
+
+
 8.0.9
 * Bugfix for Firefox: now clicking hidden values and the pencil actually works (`event` was not defined in JS)
 * CSS fix: line-height doesn't change anymore when hovering a hidden password

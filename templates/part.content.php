@@ -11,11 +11,11 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 			<th id="FieldLengthCheck" class="sorttable_alpha"><?php p($l->t("Login name")); ?></th>
 			<th id="FieldLengthCheck" class="sorttable_alpha"><?php p($l->t("Password")); ?></th>
 			<th id="hide3"><?php p($l->t("Strength")); ?></th>
-			<th class="sorttable_numeric" id="hide2"><?php p($l->t("Length")); ?></th>
-			<th id="hide1">a-z</th>
-			<th id="hide1">A-Z</th>
-			<th id="hide1">0-9</th>
-			<th id="hide1">!@#</th>
+			<th class="hide_attributes sorttable_numeric" id="hide1"><?php p($l->t("Length")); ?></th>
+			<th class="hide_attributes" id="hide1">a-z</th>
+			<th class="hide_attributes" id="hide1">A-Z</th>
+			<th class="hide_attributes" id="hide1">0-9</th>
+			<th class="hide_attributes" id="hide1">!@#</th>
 			<th id="hide2"><?php p($l->t("Creation date")); ?></th>
 			<th id="hide_always">ID</th>
 			<th id="hide_always">User-ID</th>
@@ -47,11 +47,11 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 			<td><div id="FieldLengthCheck">{{ loginname }}</div></td>
 			<td><div id="FieldLengthCheck">{{ pass }}</div></td>
 			<td id="hide3">(strength)</td>
-			<td id="hide2">(length)</td>
-			<td id="hide1">(a-z)</td>
-			<td id="hide1">(A-Z)</td>
-			<td id="hide1">(0-9)</td>
-			<td id="hide1">(!@#)</td>
+			<td class="hide_attributes" id="hide1">(length)</td>
+			<td class="hide_attributes" id="hide1">(a-z)</td>
+			<td class="hide_attributes" id="hide1">(A-Z)</td>
+			<td class="hide_attributes" id="hide1">(0-9)</td>
+			<td class="hide_attributes" id="hide1">(!@#)</td>
 			<td class="creation_date" id="hide2">{{ creation_date }}</td>
 			<td class="hide_always">{{ id }}</td>
 			<td class="hide_always">{{ user_id }}</td>

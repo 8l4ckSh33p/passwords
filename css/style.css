@@ -90,8 +90,9 @@ h3,
 }
 #add_password_div img {
 	width: 18px;
-	vertical-align: sub;
 	opacity: 0.5;
+	background-size: 100%;
+	vertical-align: sub;
 }
 #new_password {
 	/*font-family: 'Consolas';*/
@@ -200,6 +201,9 @@ orange {
 	color: #c80 !important;
 }
 
+.hide_attributes {
+	display: none;
+}
 .hidevalue {
 	text-indent: -9999px;
 	line-height: 0;
@@ -215,6 +219,7 @@ orange {
 	content: "*****";
 	text-indent: 0;
 	display: block;
+	margin-top: -8px;
 }
 
 #PasswordsTableSearch {
@@ -245,11 +250,40 @@ td[title]:hover:after {
 	position: relative !important;
 	font-style: italic;
 }
-#app-settings-header,
-#app-settings-content {
+#app-settings-backup {
 	/* Will be shown when backup_allowed is true */
 	/* This is a bugfix for IE7 and lower */
 	display: none;
+}
+
+#other-csv-list {
+	display: none;
+}
+.other-csv-list input {
+	width: 30px !important;
+	text-align: center;
+	height: 23px;
+	position: absolute;
+	right: 25px;
+	margin-top: -3px;
+}
+#subtitle {
+	font-style: italic;
+	margin-bottom: 5px;
+}
+#headers-csv {
+	height: 16px;
+	margin-top: 2px;
+	margin-right: 3px;
+}
+.other-csv-list {
+	margin-bottom: 6px;
+	margin-left: 10px;
+}
+#upload_csv {
+	color: #555;
+	margin-top: 10px;
+	width: 100%;
 }
 
 
