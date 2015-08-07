@@ -333,7 +333,7 @@
 					$('#other-csv-list').show(400);
 				});
 				$('#keepass-csv').click(function() {
-					// set columns correct for KeePass CSV 1.*
+					// set columns correct for KeePass CSV 1.x
 					$('#website-csv').val('1');
 					$('#login-csv').val('2');
 					$('#password-csv').val('3');
@@ -342,8 +342,46 @@
 					$('#headers-csv').prop('checked', true);
 					$('#other-csv-list').hide(400);
 				});
-			
-				
+				$('#lastpass-csv').click(function() {
+					// set columns correct for LastPass CSV
+					$('#website-csv').val('5');
+					$('#login-csv').val('2');
+					$('#password-csv').val('3');
+					$('#url-csv').val('1');
+					$('#notes-csv').val('4');
+					$('#headers-csv').prop('checked', true);
+					$('#other-csv-list').hide(400);
+				});
+				$('#onepassword-csv').click(function() {
+					// set columns correct for 1Password
+					$('#website-csv').val('1');
+					$('#login-csv').val('3');
+					$('#password-csv').val('4');
+					$('#url-csv').val('2');
+					$('#notes-csv').val('5');
+					$('#headers-csv').prop('checked', true);
+					$('#other-csv-list').hide(400);
+				});
+				$('#splash-csv').click(function() {
+					// set columns correct for SplashID
+					$('#website-csv').val('2');
+					$('#login-csv').val('3');
+					$('#password-csv').val('4');
+					$('#url-csv').val('5');
+					$('#notes-csv').val('x');
+					$('#headers-csv').prop('checked', true);
+					$('#other-csv-list').hide(400);
+				});
+				$('#other-csv').click(function() {
+					// set columns correct for other
+					$('#website-csv').val('1');
+					$('#login-csv').val('2');
+					$('#password-csv').val('3');
+					$('#url-csv').val('4');
+					$('#notes-csv').val('x');
+					$('#headers-csv').prop('checked', true);
+				});
+
 				// clear search field
 				$('#search_clear').click(function() {
 					$('#search_text').val('');
@@ -1245,39 +1283,68 @@ function uploadCSV(event) {
 				return false;
 			}
 
-			var confirmed = confirm(t('passwords', 'The following file will be imported') + ':' 
-							+ '\n\n'
-							+ t('passwords', 'Name') + ': ' + f.name + '\n'
-							+ t('passwords', 'Size') + ': ' + f.size + ' bytes\n'
-							+ t('passwords', 'Content') + ': ' + count + ' ' + t('passwords', 'Passwords').toLowerCase());
-			
-			if (confirmed) {
-				var lines = contents.split('\n');
+			var lines = contents.split('\n');
 
-				for (i = headerCount; i < lines.length; i++) { // i = 1 with headers, so skip i = 0 (headers tested before)
-					
+			for (i = headerCount; i < lines.length; i++) { 
+				// i = 1 with headers, so skip i = 0 (headers tested before)
+
+				// loop once to check if all lines contain at least 3 values
+
+				if (lines[i].substr(0, 1) == '"') {
+					// "value1","value2","value3"
 					// cut first and last '"'
 					lines[i] = lines[i].substr(1, lines[i].trim().length - 2);
 					var line = lines[i].split('","');
+				} else {
+					// value1,value2,value3
+					var line = lines[i].split(',');
+				}
+				
+				if (line.length < 3) {
+					alert(t('passwords', 'This is not a valid CSV file.'));
+					$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+					return false;
+				}
+			}
 
-					if (line < 3) {
-						alert(t('passwords', 'This is not a valid CSV file.'));
-						$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
-						return false;
+			var confirmed = confirm(t('passwords', 'The following file will be imported') + ':' 
+						+ '\n\n'
+						+ t('passwords', 'Name') + ': ' + f.name + '\n'
+						+ t('passwords', 'Size') + ': ' + f.size + ' bytes\n'
+						+ t('passwords', 'Content') + ': ' + count + ' ' + t('passwords', 'Passwords').toLowerCase());
+
+			if (confirmed) {
+
+				var loginCSV = '';
+				var websiteCSV = '';
+				var urlCSV = '';
+				var passwordCSV = '';
+				var notesCSV = '';
+
+				for (i = headerCount; i < lines.length; i++) { // i = 1 with headers, so skip i = 0 (headers tested before)
+
+					if ($('#website-csv').val().toLowerCase() != 'x') {
+						var websiteCSV = line[$('#website-csv').val() - 1];
+					}
+					if ($('#login-csv').val().toLowerCase() != 'x') {
+						var loginCSV = line[$('#login-csv').val() - 1];
+					}
+					if ($('#password-csv').val().toLowerCase() != 'x') {
+						var passwordCSV = line[$('#password-csv').val() - 1];
+					}
+					if ($('#url-csv').val().toLowerCase() != 'x') {
+						var urlCSV = line[$('#url-csv').val() - 1];
+					}
+					if ($('#notes-csv').val().toLowerCase() != 'x') {
+						var notesCSV = line[$('#notes-csv').val() - 1];
 					}
 
-					var websiteCSV = $('#website-csv').val() - 1;
-					var loginCSV = $('#login-csv').val() - 1;
-					var passwordCSV = $('#password-csv').val() - 1;
-					var urlCSV = $('#url-csv').val() - 1;
-					var notesCSV = $('#notes-csv').val() - 1;
-
 					var password = {
-						loginname: line[loginCSV],
-						website: line[websiteCSV],
-						address: line[urlCSV],
-						pass: line[passwordCSV],
-						notes: line[notesCSV]
+						loginname: loginCSV,
+						website: websiteCSV,
+						address: urlCSV,
+						pass: passwordCSV,
+						notes: notesCSV
 					};
 
 					// add them one at the time
