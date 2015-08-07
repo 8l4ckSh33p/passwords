@@ -1,3 +1,8 @@
+8.0.10
+* Added possibility to import passwords from KeePass or every other source, as long as it was exported as CSV. **KeePass-users**: Please check that you export your KeePass database in a `KeePass CSV (1.x)`-format. This is **not** less safe than putting in passwords one by one and a perfect way to replace KeePass by ownCloud Passwords.
+* Added possibility in Personal settings to hide the columns |  a-z  |  A-Z  |  0-9  |  !@#  |
+
+
 8.0.9
 * Bugfix for Firefox: now clicking hidden values and the pencil actually works (`event` was not defined in JS)
 * CSS fix: line-height doesn't change anymore when hovering a hidden password
