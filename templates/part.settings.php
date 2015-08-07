@@ -19,10 +19,14 @@
 			<h3><?php p($l->t('Import CSV File')); ?></h3>
 			<p><?php p($l->t('Choose a format and a select a file from disk')); ?>.</p>
 			<label><input type="radio" id="keepass-csv" name="csv_type" checked>KeePass CSV (1.x)</label><br>
+			<label><input type="radio" id="onepassword-csv" name="csv_type">1Password CSV</label><br>
+			<label><input type="radio" id="lastpass-csv" name="csv_type">LastPass CSV</label><br>
+			<label><input type="radio" id="splash-csv" name="csv_type">SplashID vID</label><br>
 			<label><input type="radio" id="other-csv" name="csv_type"><?php p($l->t('Other')); ?> CSV</label>
 			<div id="other-csv-list">
 				<br>
-				<p><strong><?php p($l->t('Fill in the column numbers')); ?>:</strong></p>
+				<p><strong><?php p($l->t("Fill in the column numbers")); ?>:</strong></p>
+				<p id="subtitle"><?php p($l->t("Use 'x' to exclude a field")); ?></p>
 				<div class="other-csv-list"><label><?php p($l->t('Website or company')); ?><input type="text" id="website-csv" value="1"></label></div>
 				<div class="other-csv-list"><label><?php p($l->t('Login name')); ?><input type="text" id="login-csv" value="2"></label></div>
 				<div class="other-csv-list"><label><?php p($l->t('Password')); ?><input type="text" id="password-csv" value="3"></label></div>
