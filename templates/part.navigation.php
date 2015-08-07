@@ -17,11 +17,11 @@
 
 	<div id="add_password_div">
 		<h3><?php p($l->t("Add new password")); ?></h3>
-		<img src="" class="icon-link"><input type="text" id="new_address" placeholder="<?php p($l->t("Full URL (optional)")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-		<img src="" class="icon-rename"><input type="text" id="new_notes" placeholder="<?php p($l->t("Notes (optional)")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-		<img src="" class="icon-share"><input type="text" id="new_website" placeholder="<?php p($l->t("site.com or Name Inc.")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-		<img src="" class="icon-user"><input type="text" id="new_username" placeholder="<?php p($l->t("Login name or e-mail")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-		<img src="" class="icon-password"><input type="text" id="new_password" placeholder="<?php p($l->t("Password")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+		<img src="<?php p(\OC::$server->getURLGenerator()->imagePath('passwords', 'blank.gif')); ?>" class="icon-link"><input type="text" id="new_address" placeholder="<?php p($l->t("Full URL (optional)")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+		<img src="<?php p(\OC::$server->getURLGenerator()->imagePath('passwords', 'blank.gif')); ?>" class="icon-rename"><input type="text" id="new_notes" placeholder="<?php p($l->t("Notes (optional)")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+		<img src="<?php p(\OC::$server->getURLGenerator()->imagePath('passwords', 'blank.gif')); ?>" class="icon-share"><input type="text" id="new_website" placeholder="<?php p($l->t("site.com or Name Inc.")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+		<img src="<?php p(\OC::$server->getURLGenerator()->imagePath('passwords', 'blank.gif')); ?>" class="icon-user"><input type="text" id="new_username" placeholder="<?php p($l->t("Login name or e-mail")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+		<img src="<?php p(\OC::$server->getURLGenerator()->imagePath('passwords', 'blank.gif')); ?>" class="icon-password"><input type="text" id="new_password" placeholder="<?php p($l->t("Password")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 		<div id="generate-password">
 				<p id="generate-strength"></p>
 			<div id="generate-passwordtools">
