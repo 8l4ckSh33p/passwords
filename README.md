@@ -3,7 +3,7 @@
 2015, Fallon Turner <fcturner@users.noreply.github.com>
 
 ## Introduction
-This is a Password Manager for viewing, editing and generating passwords (see 'img'-folder for screenshots) in ownCloud. You can insert and manage your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored heavily encrypted into the ownCloud database (read Security part for details). 
+This is a Password Manager for viewing, editing and generating passwords (see 'img'-folder for screenshots) in ownCloud. You can insert or import your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored heavily encrypted into the ownCloud database (read Security part for details). 
 
 This app is primarily intended as a password MANAGER, e.g. for a local ownCloud instance on your own WPA2 protected LAN. If you trust yourself enough as security expert, you can use this app behind an SSL secured server for a neat cloud solution. The app will be blocked (with message) if not accessed thru https, which will result in your passwords not being loaded (decrypted) and shown. To prevent this, use ownClouds own 'Force SSL'-function on the admin page, or use HSTS (HTTP Strict Transport Security) on your server. Also, make sure your server hasn't any kind of vulnerabilities (POODLE, CSRF, XSS, SQL Injection, Privilege Escalation, Remote Code Execution, to name a few).
 
