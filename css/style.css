@@ -267,6 +267,10 @@ td[title]:hover:after {
 	right: 25px;
 	margin-top: -3px;
 }
+#subtitle {
+	font-style: italic;
+	margin-bottom: 5px;
+}
 #headers-csv {
 	height: 16px;
 	margin-top: 2px;
