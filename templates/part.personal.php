@@ -19,6 +19,13 @@
 		<p>
 			<?php p($l->t("This will show values as '*****', so you will need to click on a value to actually view it. This is useful to prevent others from making screenshots or taking photos of your password list")); ?>.
 		</p>
+		<br>
+	</div>
+
+	<div>
+		<label>
+			<input class="check" type="checkbox" id="hide_attributes"> <?php p($l->t('Hide columns') . ': |  a-z  |  A-Z  |  0-9  |  !@#  |'); ?>
+		</label>
 	</div>
 
 	<br>
