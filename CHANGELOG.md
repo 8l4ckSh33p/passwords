@@ -1,5 +1,6 @@
 8.0.10
-* Added possibility to import passwords from KeePass or every other source, as long as it was exported as CSV. **KeePass-users**: Please check that you export your KeePass database in a `KeePass CSV (1.x)`-format. This is **not** less safe than putting in passwords one by one and a perfect way to replace KeePass by ownCloud Passwords.
+* Added possibility to import passwords from KeePass, 1Password, LastPass, SplashID or every other source, as long as it was exported as CSV. You can set the source columns yourself. 
+ * Note: This is **not** less safe than putting in passwords one by one. This is Javascript only, so reading a CSV is practically very similar to typing in new passwords yourself.
 * Added possibility in Personal settings to hide the columns |  a-z  |  A-Z  |  0-9  |  !@#  |
 
 
