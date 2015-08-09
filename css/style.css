@@ -2,15 +2,31 @@ p, h2, label, .emptyinfo {
 	color: #555;
 }
 tr {
-	height: 35px;
+	height: 40px !important;
 }
 
-#PasswordsTableContent .icon-delete {
-	opacity: 0.5;
+#PasswordsTableContent .icon-delete,
+#PasswordsTableContent .icon-notes,
+#PasswordsTableContent .icon-share {
+	opacity: 0.3;
 }
-#PasswordsTableContent .icon-delete:hover {
+#PasswordsTableContent .icon-delete:hover,
+#PasswordsTableContent .icon-notes:hover,
+#PasswordsTableContent .icon-share:hover {
 	opacity: 1;
 	cursor: pointer;
+}
+.actual-note {
+	opacity: 0 !important;
+}
+.actual-note:hover {
+	opacity: 0.3 !important;
+}
+#PasswordsTableContent .icon-notes {
+	background-image: url(../img/notes.svg);
+}
+.icon-notes span {
+	display: none;
 }
 
 .is_website a {
@@ -19,8 +35,21 @@ tr {
 .is_website a:hover {
 	text-decoration: underline;
 }
-.row_id_td,
-#column_id {
+.edit_value {
+	margin-left: 5px;
+	vertical-align: middle;
+	opacity: 0.5;
+	visibility: hidden;
+}
+td:hover > .edit_value {
+	visibility: visible;
+}
+.edit_value:hover {
+	opacity: 1;
+	cursor: pointer;
+}
+.hide_always,
+#hide_always {
 	display: none;
 }
 .websitepic {
@@ -31,10 +60,10 @@ tr {
 }
 #add_password_div {
 	border: 1px solid #ddd;
-	margin-top: 15px;
+	margin-top: 10px;
 	margin-left: 5%;
 	margin-right: 5%;
-	padding: 8%;
+	padding: 4%;
 }
 .icon-passwords {
 	background-image: url(../img/app_black.svg);
@@ -46,11 +75,24 @@ h3,
 #new_password_add,
 #new_generate,
 #new_website,
+#new_address,
 #new_username,
-#new_password {
+#new_password,
+#new_notes {
 	margin-left: 3%;
-	margin-bottom: 3%;
-	width: 94%;
+	margin-bottom: 2%;
+	width: 85%;
+	height: 26px;
+}
+#new_password_add,
+#new_generate {
+	margin-left: 12%;
+}
+#add_password_div img {
+	width: 18px;
+	opacity: 0.5;
+	background-size: 100%;
+	vertical-align: sub;
 }
 #new_password {
 	/*font-family: 'Consolas';*/
@@ -106,11 +148,16 @@ h3 {
 	padding-top: 5px;
 	padding-bottom: 5px;
 }
-#FieldLengthCheck {
+td #FieldLengthCheck {
 	width: 200px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	display: inline;
+}
+th#FieldLengthCheck {
+	/* align head: 16px for notes img, 5px for margin-left of notes img: */
+	padding-right: 21px;
 }
 #FieldLengthCheck:hover {
 	text-decoration: underline;
@@ -128,7 +175,8 @@ h3 {
   width: 75%;
   margin-left: 12.5%;
 }
-#blockedcontent [class^="icon-"], #blockedcontent [class*=" icon-"] {
+#blockedcontent [class^="icon-"], 
+#blockedcontent [class*=" icon-"] {
 	background-size: 64px;
 	height: 64px;
 	width: 64px;
@@ -153,33 +201,41 @@ orange {
 	color: #c80 !important;
 }
 
-/* password hide */
-.hidden_password {
+.hide_attributes {
+	display: none;
+}
+.hidevalue {
 	text-indent: -9999px;
 	line-height: 0;
 }
-.hidden_password::after {
+.hidevalue:hover {
+	cursor: pointer;
+	text-indent: 0px;
+}
+.hidevalue:hover::after {
+	content: "";
+}
+.hidevalue::after {
 	content: "*****";
 	text-indent: 0;
 	display: block;
-	line-height: initial;
+	margin-top: -8px;
 }
-/* password hide */
 
 #PasswordsTableSearch {
 	width: 90%;
 	margin: 0 auto;
-	margin-top: 15px;
+	margin-top: 10px;
 }
 #search_clear {
-	height: 32px;
-	padding-top: 8px;
+	height: 26px;
 	float: right;
 	margin-right: 0px;
 	width: 30%;
 }
 #search_text {
 	width: 65%;
+	height: 26px;
 }
 /* x days ago */
 .creation_date:hover span {
@@ -193,6 +249,41 @@ td[title]:hover:after {
 	content: attr(title);
 	position: relative !important;
 	font-style: italic;
+}
+#app-settings-backup {
+	/* Will be shown when backup_allowed is true */
+	/* This is a bugfix for IE7 and lower */
+	display: none;
+}
+
+#other-csv-list {
+	display: none;
+}
+.other-csv-list input {
+	width: 30px !important;
+	text-align: center;
+	height: 23px;
+	position: absolute;
+	right: 25px;
+	margin-top: -3px;
+}
+#subtitle {
+	font-style: italic;
+	margin-bottom: 5px;
+}
+#headers-csv {
+	height: 16px;
+	margin-top: 2px;
+	margin-right: 3px;
+}
+.other-csv-list {
+	margin-bottom: 6px;
+	margin-left: 10px;
+}
+#upload_csv {
+	color: #555;
+	margin-top: 10px;
+	width: 100%;
 }
 
 
@@ -227,7 +318,9 @@ td[title]:hover:after {
 		table-layout: fixed;
 		font-size: 80%;
 	}
-	#PasswordsTableContent .icon-delete {
+	#PasswordsTableContent .icon-delete,
+	#PasswordsTableContent .icon-notes,
+	#PasswordsTableContent .icon-share {
 		background-size: 20% !important;
 	}
 	#PasswordsTable table td {
