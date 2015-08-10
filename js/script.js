@@ -1429,8 +1429,7 @@ function popUp(title, value, column, address_value) {
 			$('<br/>').appendTo($('#popupContent'));
 			$('<button/>', {id:'new_generate_popup', text:t('passwords', 'Generate password')}).appendTo($('#popupContent'));			
 		} else if (column == 0) {
-			$('<br/>').appendTo($('#popupContent'));
-			$('<br/>').appendTo($('#popupContent'));
+			$('<br/><br/>').appendTo($('#popupContent'));
 			$('<p/>', {text:t('passwords', 'Full URL (optional)')}).val(address_value).appendTo($('#popupContent'));
 			$('<input/>', {type:'text', id:"new_address_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false', style:'width:100%'}).val(address_value).appendTo($('#popupContent'));
 		}
