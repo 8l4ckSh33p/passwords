@@ -1402,7 +1402,6 @@ function popUp(title, value, column, address_value) {
 	$('<div/>', {id: 'popup'}).appendTo($('#app'));	
 	$('<div/>', {id: 'popupTitle'}).appendTo($('#popup'));	
 	$('<span/>', {text:title}).appendTo($('#popupTitle'));
-	//$('<button/>', {class: 'ui-dialog-titlebar-close',title:'close'}).appendTo($('#popupTitle'));
 
 	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));	
 	$('<p/>', {text:t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.')}).appendTo($('#popupContent'));
