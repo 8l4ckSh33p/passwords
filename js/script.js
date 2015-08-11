@@ -9,7 +9,7 @@
 			this._passwords = [];
 			this._activePassword = undefined;
 		};
-
+mod
 		Passwords.prototype = {
 			load: function(id) {
 				var self = this;
@@ -1404,7 +1404,7 @@ function popUp(title, value, column, address_value) {
 	$('<span/>', {text:title}).appendTo($('#popupTitle'));
 
 	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));	
-	$('<p/>', {text:t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.')}).appendTo($('#popupContent'));
+	$('<p/>', {text:t('passwords', 'Enter a new value and press Save to keep the new value.\nThis cannot be undone.')}).appendTo($('#popupContent'));
 	if (column == 13) {
 		$('<textarea/>', {id:"new_value_popup", rows:"5", style:'width:100%'}).val(value).appendTo($('#popupContent'));
 	} else {
@@ -1435,8 +1435,8 @@ function popUp(title, value, column, address_value) {
 	}
 
 	$('<div/>', {id: 'popupButtons'}).appendTo($('#popup'));	
-	$('<button/>', {style:'float:right', id:'cancel', text:t('passwords', 'Close')}).appendTo($('#popupButtons'));
-	$('<button/>', {style:'float:right', id:'accept', text:t('passwords', 'Modify value')}).appendTo($('#popupButtons'));
+	$('<button/>', {style:'float:right', id:'cancel', text:t('passwords', 'Cancel')}).appendTo($('#popupButtons'));
+	$('<button/>', {style:'float:right', id:'accept', text:t('passwords', 'Save')}).appendTo($('#popupButtons'));
 
 	// Popup
 	$('#overlay').click(function() {
