@@ -1,3 +1,7 @@
+8.0.11
+* A new way of editing values with an interactive popup. This will let you use the password generator and is a more easy way of editing
+* Small bugfixes
+
 8.0.10
 * Added possibility to import passwords from KeePass, 1Password, LastPass, SplashID or every other source, as long as it was exported as CSV. You can set the source columns yourself. 
  * Note: This is **not** less safe than putting in passwords one by one. This is Javascript only, so reading a CSV is practically very similar to typing in new passwords yourself.
