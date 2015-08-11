@@ -1410,21 +1410,27 @@ function popUp(title, value, column, address_value) {
 		$('<input/>', {type:'text', id:"new_value_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false'}).val(value).appendTo($('#popupContent'));
 		if (column == 2) {
 			$('<p id="generate_strength_popup"></p>').appendTo($('#popupContent'));
+			
 			$('<input>', {type:'checkbox', id:"gen_lower_popup"}).prop("checked", $('#gen_lower').is(":checked")).appendTo($('#popupContent'));
 			$('<label/>', {for:'gen_lower_popup',text:t('passwords', 'Lowercase characters')}).appendTo($('#popupContent'));
 			$('<br/>').appendTo($('#popupContent'));
+			
 			$('<input>', {type:'checkbox', id:"gen_upper_popup"}).prop("checked", $('#gen_upper').is(":checked")).appendTo($('#popupContent'));
 			$('<label/>', {for:'gen_upper_popup',text:t('passwords', 'Uppercase characters')}).appendTo($('#popupContent'));
 			$('<br/>').appendTo($('#popupContent'));
+			
 			$('<input>', {type:'checkbox', id:"gen_numbers_popup"}).prop("checked", $('#gen_numbers').is(":checked")).appendTo($('#popupContent'));
-			$('<label/>', {for:'gen_numbers',text:t('passwords', 'Numbers')}).appendTo($('#popupContent'));
+			$('<label/>', {for:'gen_numbers_popup',text:t('passwords', 'Numbers')}).appendTo($('#popupContent'));
 			$('<br/>').appendTo($('#popupContent'));
+			
 			$('<input>', {type:'checkbox', id:"gen_special_popup"}).prop("checked", $('#gen_special').is(":checked")).appendTo($('#popupContent'));
-			$('<label/>', {for:'gen_special',text:t('passwords', 'Punctuation marks')}).appendTo($('#popupContent'));
+			$('<label/>', {for:'gen_special_popup',text:t('passwords', 'Punctuation marks')}).appendTo($('#popupContent'));
 			$('<br/>').appendTo($('#popupContent'));
+			
 			$('<input/>', {type:'text', id:"gen_length_popup", value:$('#gen_length').val()}).appendTo($('#popupContent'));
 			$('<label/>', {text:t('passwords', 'characters')}).appendTo($('#popupContent'));
 			$('<br/>').appendTo($('#popupContent'));
+			
 			$('<button/>', {id:'new_generate_popup', text:t('passwords', 'Generate password')}).appendTo($('#popupContent'));			
 		} else if (column == 0) {
 			$('<br/><br/>').appendTo($('#popupContent'));
