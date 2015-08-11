@@ -289,13 +289,7 @@ td[title]:hover:after {
 	width: 100%;
 }
 
-
-/* old */
-#app-content-wrapper {
-	height: 100%;
-}
-
-/* Editor CSS */
+/* Editor */
 #overlay {
 	position: absolute;
 	top: 0;
@@ -304,9 +298,9 @@ td[title]:hover:after {
 	right: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 198;
-	background-color: Black;
-	opacity: .6;
+	z-index: 9998;
+	background-color: #000;
+	opacity: 0.6;
 }
 
 #popup {
@@ -315,29 +309,34 @@ td[title]:hover:after {
 	left: 50%;
 	width: 300px;
 	margin-left:-150px;
-	z-index: 199;
+	z-index: 9999;
 	opacity: 1;
 }
 #popupTitle {
 	width: 100%;
 	height: 40px;
 	background: #102044;
-	color: #FFF;
+	color: #fff;
 	font-size: 2em;
 	vertical-align: middle;
-	padding:10px;
+	padding: 10px;
 }
 #popupContent {
 	width: 100%;
 	height: 75%;
-	background: #EEE;
+	background: #eee;
 	padding: 10px;
 }
 #popupButtons {
 	width: 100%;
 	height: 40px;
+	background: #ddd;
 	padding: 0px 10px;
-	background: #DDD;
+}
+
+/* old */
+#app-content-wrapper {
+	height: 100%;
 }
 
 /* hide if screen too small */
