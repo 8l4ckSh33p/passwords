@@ -18,7 +18,8 @@
 		<div id="app-settings-csv">
 			<h3><?php p($l->t('Import CSV File')); ?></h3>
 			<p><?php p($l->t('Choose a format and a select a file from disk')); ?>.</p>
-			<label><input type="radio" id="keepass-csv" name="csv_type" checked>KeePass CSV (1.x)</label><br>
+			<label><input type="radio" id="owncloud-csv" name="csv_type" checked><?php p($theme->getName() . ' ' . $l->t('Passwords')); ?></label><br>
+			<label><input type="radio" id="keepass-csv" name="csv_type">KeePass CSV (1.x)</label><br>
 			<label><input type="radio" id="onepassword-csv" name="csv_type">1Password CSV</label><br>
 			<label><input type="radio" id="lastpass-csv" name="csv_type">LastPass CSV</label><br>
 			<label><input type="radio" id="splash-csv" name="csv_type">SplashID vID</label><br>
