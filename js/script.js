@@ -207,13 +207,22 @@
 						var old_value = table.rows[row].cells[col].textContent;
 						if (col == 13) {
 							// notes
-							var new_value = prompt(t('passwords', 'Notes') + ':\n\n(' + t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.') + ')', old_value);
+							popUp(t('password','Notes'), old_value, col);
+						} else if (col == 0) {
+							popUp(thead, old_value, col, address);
 						} else {
-							var new_value = prompt(t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.') + '\n\n' + thead + ':', old_value);
+							popUp(thead, old_value, col);
 						}
+						$('#accept').click(function() {
+							var new_value = $('#new_value_popup').val();
+							if (col != 13) // Allow to remove notes!
+							{
 						if (new_value == null || new_value == '') {
+							$('#overlay').remove();
+							$('#popup').remove();
 							return false; // on Cancel
 						}
+							}
 
 						if (col == 0) {
 							// clean up website: https://www.Google.com -> google.com
@@ -225,7 +234,7 @@
 							}
 							new_value = strip_website(new_value).toLowerCase();
 
-							var new_value_address = prompt(t('passwords', 'Website or company') + ': ' + new_value + '\n\n' + t('passwords', 'Full URL (optional)') + ':', address);
+							var new_value_address = $('#new_address_popup').val();
 							if (new_value_address == null) {
 								new_value_address = address; // on Cancel, address not changed
 							}
@@ -257,6 +266,9 @@
 						} else {
 							alert(t('passwords', 'Error: Could not update password.'));
 						}
+						$('#overlay').remove();
+						$('#popup').remove();
+						});
 					}
 
 					// clicked on trash, ask confirmation to delete
@@ -500,9 +512,12 @@
 
 				// generate password
 				$('#new_generate').click(function() {
-
+					var popup_exist = ($('#gen_length_popup').val() > 0)
+					
+					if (!popup_exist) {
 					// show options
 					$('#generate-passwordtools').fadeIn(500);
+					}
 
 					var lower_checked = $('#gen_lower').prop('checked');
 					var upper_checked = $('#gen_upper').prop('checked');
@@ -523,12 +538,16 @@
 					// run
 					generate_new = generatepw(lower_checked, upper_checked, numbers_checked, special_checked, length_filled);
 					
+					if (popup_exist) {
+						$('#new_value_popup').val(generate_new)
+					} else {
+
 					// calculate strength
 					strength_str(generate_new, false);
 
 					// fill in
 					$('#new_password').val(generate_new);
-
+					}
 				});
 
 			},
@@ -1376,4 +1395,77 @@ function uploadCSV(event) {
 
 	$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
 
+}
+
+function popUp(title, value, column, address_value) {
+	$('<div/>', {id: 'overlay'}).appendTo($('#app'));	
+	$('<div/>', {id: 'popup'}).appendTo($('#app'));	
+	$('<div/>', {id: 'popupTitle'}).appendTo($('#popup'));	
+	$('<span/>', {text:title}).appendTo($('#popupTitle'));
+
+	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));	
+	$('<p/>', {text:t('passwords', 'Enter a new value and press OK to save it.\nThis cannot be undone.')}).appendTo($('#popupContent'));
+	if (column == 13) {
+		$('<textarea/>', {id:"new_value_popup", rows:"5", style:'width:100%'}).val(value).appendTo($('#popupContent'));
+	} else {
+		$('<input/>', {type:'text', id:"new_value_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false', style:'width:100%'}).val(value).appendTo($('#popupContent'));
+		if (column == 2)
+		{
+			$('<input>', {type:'checkbox', id:"gen_lower_popup"}).prop("checked", $('#gen_lower').is(":checked")).appendTo($('#popupContent'));
+			$('<label/>', {for:'gen_lower_popup',text:t('passwords', 'Lowercase characters')}).appendTo($('#popupContent'));
+			$('<br/>').appendTo($('#popupContent'));
+			$('<input>', {type:'checkbox', id:"gen_upper_popup"}).prop("checked", $('#gen_upper').is(":checked")).appendTo($('#popupContent'));
+			$('<label/>', {for:'gen_upper_popup',text:t('passwords', 'Uppercase characters')}).appendTo($('#popupContent'));
+			$('<br/>').appendTo($('#popupContent'));
+			$('<input>', {type:'checkbox', id:"gen_numbers_popup"}).prop("checked", $('#gen_numbers').is(":checked")).appendTo($('#popupContent'));
+			$('<label/>', {for:'gen_numbers',text:t('passwords', 'Numbers')}).appendTo($('#popupContent'));
+			$('<br/>').appendTo($('#popupContent'));
+			$('<input>', {type:'checkbox', id:"gen_special_popup"}).prop("checked", $('#gen_special').is(":checked")).appendTo($('#popupContent'));
+			$('<label/>', {for:'gen_special',text:t('passwords', 'Punctuation marks')}).appendTo($('#popupContent'));
+			$('<br/>').appendTo($('#popupContent'));
+			$('<input/>', {type:'text', id:"gen_length_popup", value:$('#gen_length').val()}).appendTo($('#popupContent'));
+			$('<label/>', {text:t('passwords', 'characters')}).appendTo($('#popupContent'));
+			$('<br/>').appendTo($('#popupContent'));
+			$('<button/>', {id:'new_generate_popup', text:t('passwords', 'Generate password')}).appendTo($('#popupContent'));			
+		} else if (column == 0) {
+			$('<br/><br/>').appendTo($('#popupContent'));
+			$('<p/>', {text:t('passwords', 'Full URL (optional)')}).val(address_value).appendTo($('#popupContent'));
+			$('<input/>', {type:'text', id:"new_address_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false', style:'width:100%'}).val(address_value).appendTo($('#popupContent'));
+		}
+	}
+
+	$('<div/>', {id: 'popupButtons'}).appendTo($('#popup'));	
+	$('<button/>', {style:'float:right', id:'cancel', text:t('passwords', 'Close')}).appendTo($('#popupButtons'));
+	$('<button/>', {style:'float:right', id:'accept', text:t('passwords', 'Modify value')}).appendTo($('#popupButtons'));
+
+	// Popup
+	$('#overlay').click(function() {
+		$('#overlay').remove();
+		$('#popup').remove();
+	});
+	$('#cancel').click(function() {
+		$('#overlay').remove();
+		$('#popup').remove();
+	});
+	if (column == 2)
+	{
+		$('#gen_lower_popup').change(function() {
+			$('#gen_lower').prop("checked", $('#gen_lower_popup').is(":checked"));
+		});
+		$('#gen_upper_popup').change(function() {
+			$('#gen_upper').prop("checked", $('#gen_upper_popup').is(":checked"));
+		});
+		$('#gen_numbers_popup').change(function() {
+			$('#gen_numbers').prop("checked", $('#gen_numbers_popup').is(":checked"));
+		});
+		$('#gen_special_popup').change(function() {
+			$('#gen_special').prop("checked", $('#gen_special_popup').is(":checked"));
+		});
+		$('#gen_length_popup').change(function() {
+			$('#gen_length').val($('#gen_length_popup').val());
+		});
+		$('#new_generate_popup').click(function() {
+			$('#new_generate').click();
+		});
+	}
 }
