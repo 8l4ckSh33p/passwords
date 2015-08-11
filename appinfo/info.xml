@@ -13,7 +13,7 @@
         NOTE 2: Generated passwords are in fact pseudo-generated (i.e. not using atmospheric noise), since only the Javascript Math.random-function is used, of which I think is randomly 'enough'. After generation of different types of characters (your choice to include lowercase, uppercase, numbers and/or reading marks, strength will be calculated), scrambling of these characters is done using the Fisher-Yates shuffle (also known as Knuth, a de-facto unbiased shuffle algorithm). The script for generating passwords can be found in 'apps/passwords/js/script.js'.</description>
     <licence>AGPL</licence>
     <author>Fallon Turner</author>
-    <version>8.0.10</version>
+    <version>8.0.11</version>
     <namespace>Passwords</namespace>
     <category>tool</category>
     <dependencies>
