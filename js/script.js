@@ -178,10 +178,6 @@
 
 				$('#app-settings-content').hide();
 
-				// // sort on website, reset sort first
-				// $('#column_id').click();
-				// $('#column_website').click();
-
 				$('#PasswordsTableContent td').click(function(event) {
 					var table = document.getElementById('PasswordsTableContent');
 					var col = $(this).parent().children().index($(this));
@@ -207,7 +203,7 @@
 						var old_value = table.rows[row].cells[col].textContent;
 						if (col == 13) {
 							// notes
-							popUp(t('password','Notes'), old_value, col);
+							popUp(t('passwords', 'Notes'), old_value, col);
 						} else if (col == 0) {
 							popUp(thead, old_value, col, address);
 						} else {
@@ -338,14 +334,24 @@
 					uploadCSV(event);
 				});
 				$('#app-settings-content').on( "hide", function(event) {
-					$('#keepass-csv').prop('checked', true);
+					$('#owncloud-csv').prop('checked', true);
 					$('#other-csv-list').hide();
 				});
 				$('#other-csv').click(function() {
 					$('#other-csv-list').show(400);
 				});
+				$('#owncloud-csv').click(function() {
+					// set columns correctly for ownCloud Passwords (this app)
+					$('#website-csv').val('1');
+					$('#login-csv').val('2');
+					$('#password-csv').val('3');
+					$('#url-csv').val('4');
+					$('#notes-csv').val('5');
+					$('#headers-csv').prop('checked', true);
+					$('#other-csv-list').hide(400);
+				});
 				$('#keepass-csv').click(function() {
-					// set columns correct for KeePass CSV 1.x
+					// set columns correctly for KeePass CSV 1.x
 					$('#website-csv').val('1');
 					$('#login-csv').val('2');
 					$('#password-csv').val('3');
@@ -355,7 +361,7 @@
 					$('#other-csv-list').hide(400);
 				});
 				$('#lastpass-csv').click(function() {
-					// set columns correct for LastPass CSV
+					// set columns correctly for LastPass CSV
 					$('#website-csv').val('5');
 					$('#login-csv').val('2');
 					$('#password-csv').val('3');
@@ -365,7 +371,7 @@
 					$('#other-csv-list').hide(400);
 				});
 				$('#onepassword-csv').click(function() {
-					// set columns correct for 1Password
+					// set columns correctly for 1Password
 					$('#website-csv').val('1');
 					$('#login-csv').val('3');
 					$('#password-csv').val('4');
@@ -375,7 +381,7 @@
 					$('#other-csv-list').hide(400);
 				});
 				$('#splash-csv').click(function() {
-					// set columns correct for SplashID
+					// set columns correctly for SplashID
 					$('#website-csv').val('2');
 					$('#login-csv').val('3');
 					$('#password-csv').val('4');
@@ -385,7 +391,7 @@
 					$('#other-csv-list').hide(400);
 				});
 				$('#other-csv').click(function() {
-					// set columns correct for other
+					// set columns correctly for other
 					$('#website-csv').val('1');
 					$('#login-csv').val('2');
 					$('#password-csv').val('3');
@@ -480,8 +486,8 @@
 						$('#new_password').val('');
 						$('#new_address').val('');
 						$('#new_notes').val('');
-						$('#generate-strength').text('');
-						$('#generate-passwordtools').fadeOut(250);
+						$('#generate_strength').text('');
+						$('#generate_passwordtools').fadeOut(250);
 						$('#gen_length').val('25');
 
 						var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
@@ -513,10 +519,10 @@
 				// generate password
 				$('#new_generate').click(function() {
 					var popup_exist = ($('#gen_length_popup').val() > 0)
-					
+
 					if (!popup_exist) {
-					// show options
-					$('#generate-passwordtools').fadeIn(500);
+						// show options
+						$('#generate_passwordtools').fadeIn(500);
 					}
 
 					var lower_checked = $('#gen_lower').prop('checked');
@@ -538,15 +544,16 @@
 					// run
 					generate_new = generatepw(lower_checked, upper_checked, numbers_checked, special_checked, length_filled);
 					
-					if (popup_exist) {
-						$('#new_value_popup').val(generate_new)
-					} else {
-
 					// calculate strength
 					strength_str(generate_new, false);
 
 					// fill in
-					$('#new_password').val(generate_new);
+					if (popup_exist) {
+						$('#new_value_popup').val(generate_new);
+						$("#generate_strength").text('');
+						$('#generate_passwordtools').hide();
+					} else {
+						$('#new_password').val(generate_new);
 					}
 				});
 
@@ -1074,13 +1081,13 @@ function strength_str(passw, return_string_only) {
 
 	if (!return_string_only) {
 		if (passw == '') { 
-			$("#generate-strength").text(''); 
+			$("#generate_strength").text(''); 
 			return false;
 		}
 
-		$("#generate-strength").removeClass("red");
-		$("#generate-strength").removeClass("orange");
-		$("#generate-strength").removeClass("green");
+		$("#generate_strength").removeClass("red");
+		$("#generate_strength").removeClass("orange");
+		$("#generate_strength").removeClass("green");
 	}
 	
 	switch (strength_func(passw)) {
@@ -1093,8 +1100,8 @@ function strength_str(passw, return_string_only) {
 		case 6:
 		case 7:
 			if (return_string_only) { return t('passwords', 'Weak'); }
-			$("#generate-strength").text(t('passwords', 'Strength') + ': ' + t('passwords', 'Weak').toLowerCase() + ' (' + strength_func(passw) + ')');
-			$("#generate-strength").addClass("red");
+			$("#generate_strength").text(t('passwords', 'Strength') + ': ' + t('passwords', 'Weak').toLowerCase() + ' (' + strength_func(passw) + ')');
+			$("#generate_strength").addClass("red");
 			break;
 		case 8:
 		case 9:
@@ -1104,14 +1111,18 @@ function strength_str(passw, return_string_only) {
 		case 13:
 		case 14:
 			if (return_string_only) { return t('passwords', 'Moderate'); }
-			$("#generate-strength").text(t('passwords', 'Strength') + ': ' + t('passwords', 'Moderate').toLowerCase() + ' (' + strength_func(passw) + ')');
-			$("#generate-strength").addClass("orange");
+			$("#generate_strength").text(t('passwords', 'Strength') + ': ' + t('passwords', 'Moderate').toLowerCase() + ' (' + strength_func(passw) + ')');
+			$("#generate_strength").addClass("orange");
 			break;
 		default: // everything >= 15
 			if (return_string_only) { return t('passwords', 'Strong'); }
-			$("#generate-strength").text(t('passwords', 'Strength') + ': ' + t('passwords', 'Strong').toLowerCase() + ' (' + strength_func(passw) + ')');
-			$("#generate-strength").addClass("green");
+			$("#generate_strength").text(t('passwords', 'Strength') + ': ' + t('passwords', 'Strong').toLowerCase() + ' (' + strength_func(passw) + ')');
+			$("#generate_strength").addClass("green");
 	}
+
+	$("#generate_strength_popup").text($("#generate_strength").text());
+	$("#generate_strength_popup").attr("class", $("#generate_strength").attr("class"));
+
 }
 
 function update_pwcount() {
@@ -1193,35 +1204,23 @@ function backupPasswords() {
 		return false;
 	}
 
-	if (!confirm(t('passwords', 'This will download an unencrypted backup file, which contains all your passwords.') + '\n\n' + t('passwords', "Are you sure?"))) {
+	if (!confirm(t('passwords', 'This will download an unencrypted backup file, which contains all your passwords.') + '\n' + t('passwords', 'This file is fully compatible with other password services, such as KeePass, 1Password and LastPass.') + '\n\n' + t('passwords', "Are you sure?"))) {
 		return false;
 	}
 
 	var d = new Date();
-
-	var textToWrite = $('#app-settings').attr("backup-title")
-					+ ', '
-					+ d.getFullYear()
-					+ '-'
-					+ ('0' + (d.getMonth() + 1)).slice(-2)
-					+ '-' 
-					+ ('0' + d.getDate()).slice(-2)
-					+ '\r\n\r\n';
+	var textToWrite = '"Website","Username","Passwords","FullAddress","Notes",""\r\n';
 
 	var table = document.getElementById('PasswordsTableContent');
 	for (var i = 1; i < table.rows.length; i++) {
 		for (var j = 0; j < table.rows[i].cells.length; j++)
 
-			if (j == 0 || j == 1 || j == 2) { // first 3 columns: website, username, pass
-				textToWrite += table.rows[i].cells[j].textContent;
-				// add real website url if available
-				if (j == 0 && table.rows[i].cells[12].textContent != '') {
-					textToWrite += ' (' + table.rows[i].cells[12].textContent + ')';
-				}
-				textToWrite += '\r\n';
+
+			if (j == 0 || j == 1 || j == 2 || j == 12 || j == 13) { // columns: website, username, pass, address, notes
+				textToWrite += '"' + table.rows[i].cells[j].textContent + '",';
 			}
 
-			textToWrite += '\r\n';
+			textToWrite += '""\r\n';
 
 	}
 
@@ -1232,7 +1231,7 @@ function backupPasswords() {
 	var fileNameToSaveAs = d.getFullYear()
 						 + ('0' + (d.getMonth() + 1)).slice(-2)
 						 + ('0' + d.getDate()).slice(-2)
-						 + '_backup.txt';
+						 + '_backup.csv';
 
 	var downloadLink = document.createElement("a");
 	downloadLink.download = fileNameToSaveAs;
@@ -1406,11 +1405,11 @@ function popUp(title, value, column, address_value) {
 	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));	
 	$('<p/>', {text:t('passwords', 'Enter a new value and press Save to keep the new value.\nThis cannot be undone.')}).appendTo($('#popupContent'));
 	if (column == 13) {
-		$('<textarea/>', {id:"new_value_popup", rows:"5", style:'width:100%'}).val(value).appendTo($('#popupContent'));
+		$('<textarea/>', {id:"new_value_popup", rows:"5"}).val(value).appendTo($('#popupContent'));
 	} else {
-		$('<input/>', {type:'text', id:"new_value_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false', style:'width:100%'}).val(value).appendTo($('#popupContent'));
-		if (column == 2)
-		{
+		$('<input/>', {type:'text', id:"new_value_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false'}).val(value).appendTo($('#popupContent'));
+		if (column == 2) {
+			$('<p id="generate_strength_popup"></p>').appendTo($('#popupContent'));
 			$('<input>', {type:'checkbox', id:"gen_lower_popup"}).prop("checked", $('#gen_lower').is(":checked")).appendTo($('#popupContent'));
 			$('<label/>', {for:'gen_lower_popup',text:t('passwords', 'Lowercase characters')}).appendTo($('#popupContent'));
 			$('<br/>').appendTo($('#popupContent'));
@@ -1429,14 +1428,14 @@ function popUp(title, value, column, address_value) {
 			$('<button/>', {id:'new_generate_popup', text:t('passwords', 'Generate password')}).appendTo($('#popupContent'));			
 		} else if (column == 0) {
 			$('<br/><br/>').appendTo($('#popupContent'));
-			$('<p/>', {text:t('passwords', 'Full URL (optional)')}).val(address_value).appendTo($('#popupContent'));
-			$('<input/>', {type:'text', id:"new_address_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false', style:'width:100%'}).val(address_value).appendTo($('#popupContent'));
+			$('<p/>', {text:t('passwords', 'Full URL (optional)') + ':'}).val(address_value).appendTo($('#popupContent'));
+			$('<input/>', {type:'text', id:"new_address_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false'}).val(address_value).appendTo($('#popupContent'));
 		}
 	}
 
 	$('<div/>', {id: 'popupButtons'}).appendTo($('#popup'));	
-	$('<button/>', {style:'float:right', id:'cancel', text:t('passwords', 'Cancel')}).appendTo($('#popupButtons'));
-	$('<button/>', {style:'float:right', id:'accept', text:t('passwords', 'Save')}).appendTo($('#popupButtons'));
+	$('<button/>', {id:'cancel', text:t('passwords', 'Cancel')}).appendTo($('#popupButtons'));
+	$('<button/>', {id:'accept', text:t('passwords', 'Save')}).appendTo($('#popupButtons'));
 
 	// Popup
 	$('#overlay').click(function() {
@@ -1447,8 +1446,15 @@ function popUp(title, value, column, address_value) {
 		$('#overlay').remove();
 		$('#popup').remove();
 	});
-	if (column == 2)
-	{
+	if (column == 2) {
+		strength_str($("#new_value_popup").val(), false);
+		$('#generate_strength').text('');
+		$('#generate_passwordtools').hide();
+
+		$("#new_value_popup").keyup(function() {
+			strength_str(this.value, false);
+			$('#generate_strength').text('');
+		});
 		$('#gen_lower_popup').change(function() {
 			$('#gen_lower').prop("checked", $('#gen_lower_popup').is(":checked"));
 		});
@@ -1468,4 +1474,6 @@ function popUp(title, value, column, address_value) {
 			$('#new_generate').click();
 		});
 	}
+
+	$('#new_value_popup').focus();
 }
