@@ -79,6 +79,7 @@
 	"Block app when not connected to %s using a secured connection" : "App blokkeren wanneer geen beveiligde verbinding gebruikt wordt voor %s",
 	"Turning this off is HIGHLY DISCOURAGED" : "Het uitschakelen van deze functie wordt TEN ZEERSTE AFGERADEN",
 	"Allow users to download a backup as an unencrypted, plain text file" : "Gebruikers toestaan om een back-up te downloaden als een ongecodeerd, plat tekstbestand",
+	"This file is fully compatible with other password services, such as KeePass, 1Password and LastPass." : "Dit bestand volledig compatibel met andere wachtwoorddiensten, zoals KeePass, 1Password en LastPass.",
 	"Website icons" : "Website-icoontjes",
 	"Allow website icons" : "Website-icoontjes toestaan",
 	"Show website icons" : "Website-icoontjes weergeven",
