@@ -9,7 +9,7 @@
 			this._passwords = [];
 			this._activePassword = undefined;
 		};
-mod
+
 		Passwords.prototype = {
 			load: function(id) {
 				var self = this;
