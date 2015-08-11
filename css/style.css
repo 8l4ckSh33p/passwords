@@ -87,6 +87,9 @@ h3,
 #new_notes {
 	height: 52px !important;
 }
+.icon-rename {
+    margin-bottom: 22px;
+}
 #new_password_add,
 #new_generate {
 	margin-left: 12%;
