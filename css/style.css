@@ -87,12 +87,12 @@ h3,
 #new_notes {
 	height: 52px !important;
 }
-.icon-rename {
-    margin-bottom: 22px;
-}
 #new_password_add,
 #new_generate {
 	margin-left: 12%;
+}
+.icon-rename {
+	margin-bottom: 22px;
 }
 #add_password_div img {
 	width: 18px;
@@ -108,17 +108,18 @@ h3,
 #gen_numbers,
 #gen_special,
 #gen_length,
-#generate-strength {
+#generate_strength {
 	margin-left: 10%;
 }
-#generate-strength {
+#generate_strength {
 	text-align: center;
 	margin-right: 10%;
 }
-#gen_length {
+#gen_length,
+#gen_length_popup {
 	width: 38px;
 }
-#generate-passwordtools {
+#generate_passwordtools {
 	display: none;
 }
 
@@ -308,12 +309,11 @@ td[title]:hover:after {
 
 #popup {
 	position: absolute;
-	top: 25%;
+	top: 15%;
 	left: 50%;
 	width: 300px;
-	margin-left:-150px;
+	margin-left: -150px;
 	z-index: 9999;
-	opacity: 1;
 }
 #popupTitle {
 	width: 100%;
@@ -323,12 +323,36 @@ td[title]:hover:after {
 	font-size: 2em;
 	vertical-align: middle;
 	padding: 10px;
+	text-align: center;
 }
 #popupContent {
 	width: 100%;
 	height: 75%;
 	background: #eee;
 	padding: 10px;
+}
+#new_value_popup,
+#new_address_popup {
+	width: 100%;
+}
+#popupContent p {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+#gen_lower_popup,
+#gen_upper_popup,
+#gen_numbers_popup,
+#gen_special_popup,
+#gen_length_popup,
+#new_generate_popup,
+p#generate_strength_popup {
+	margin-left: 25px;
+	margin-right: 5px;
+}
+#accept,
+#cancel {
+	float: right;
+	margin-top: 6px;
 }
 #popupButtons {
 	width: 100%;
