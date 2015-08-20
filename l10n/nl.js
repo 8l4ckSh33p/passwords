@@ -56,7 +56,7 @@ OC.L10N.register(
 	"Uppercase characters" : "Hoofdletters",
 	"Numbers" : "Cijfers",
 	"Punctuation marks" : "Leestekens",
-	"characters" : "karakters",
+	"characters" : "tekens",
 	"Generate password" : "Wachtwoord genereren",
 	"Add password" : "Toevoegen",
 	"Fill in the website, user name and password." : "Vul een website, gebruikersnaam en wachtwoord in.",
