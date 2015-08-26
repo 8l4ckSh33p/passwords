@@ -1,3 +1,7 @@
+8.0.12
+* Improvement for edit popup: title now shows active website and username
+* CSS fix: overlay now actually overlays everything, including header
+
 8.0.11
 * A new way of editing values with an interactive popup. This will let you use the password generator and is a more easy way of editing.
 * Edited the backup function to make it an export function. These export files are fully compatible with KeePass, 1Password, LastPass and many other password services. Besides, Microsoft Excel can open the exported files natively as well.
