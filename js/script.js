@@ -1402,7 +1402,7 @@ function popUp(title, value, column, address_value, website, username) {
 	$('<div/>', {id: 'popupTitle'}).appendTo($('#popup'));	
 	$('<span/>', {text:website}).appendTo($('#popupTitle'));
 	$('<br/>').appendTo($('#popupTitle'));
-	$('<span/>', {text:t('passwords', 'Username') + ': ' + username, id:"popupSubTitle"}).appendTo($('#popupTitle'));
+	$('<span/>', {text:t('passwords', 'Login name') + ': ' + username, id:"popupSubTitle"}).appendTo($('#popupTitle'));
 
 	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));	
 	$('<p/>', {text:t('passwords', 'Enter a new value and press Save to keep the new value.\nThis cannot be undone.')}).appendTo($('#popupContent'));
