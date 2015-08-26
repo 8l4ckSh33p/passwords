@@ -4,7 +4,7 @@
     <name>Passwords</name>
     <description>This is a Password Manager for viewing, editing and generating passwords. 
 
-        You can insert and manage your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored into the ownCloud database with combined EtM (Encrypt-then-MAC) and MCRYPT_BLOWFISH encryption (read Security part for details). 
+        You can insert and import your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored into the ownCloud database with combined EtM (Encrypt-then-MAC) and MCRYPT_BLOWFISH encryption (read Security part in Documentation for details). 
 
         Important: passwords can only be read (decrypted) by the user who created the password, on the ownCloud-instance where the password was created in (i.e. same password salt in config.php). If you lose the password salt, all passwords of all users are lost and unretrievable.
 
@@ -13,11 +13,14 @@
         NOTE 2: Generated passwords are in fact pseudo-generated (i.e. not using atmospheric noise), since only the Javascript Math.random-function is used, of which I think is randomly 'enough'. After generation of different types of characters (your choice to include lowercase, uppercase, numbers and/or reading marks, strength will be calculated), scrambling of these characters is done using the Fisher-Yates shuffle (also known as Knuth, a de-facto unbiased shuffle algorithm). The script for generating passwords can be found in 'apps/passwords/js/script.js'.</description>
     <licence>AGPL</licence>
     <author>Fallon Turner</author>
-    <version>8.0.11</version>
+    <version>8.0.12</version>
     <namespace>Passwords</namespace>
     <category>tool</category>
     <dependencies>
         <owncloud min-version="8" />
         <lib>mcrypt</lib>
     </dependencies>
+    <documentation>
+		<user>https://github.com/fcturner/passwords/blob/master/README.md</user>
+	</documentation>
 </info>
