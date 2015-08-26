@@ -203,11 +203,11 @@
 						var old_value = table.rows[row].cells[col].textContent;
 						if (col == 13) {
 							// notes
-							popUp(t('passwords', 'Notes'), old_value, col);
+							popUp(t('passwords', 'Notes'), old_value, col, '', website, user);
 						} else if (col == 0) {
-							popUp(thead, old_value, col, address);
+							popUp(thead, old_value, col, address, website, user);
 						} else {
-							popUp(thead, old_value, col);
+							popUp(thead, old_value, col, '', website, user);
 						}
 						$('#accept').click(function() {
 							var new_value = $('#new_value_popup').val();
@@ -1396,14 +1396,18 @@ function uploadCSV(event) {
 
 }
 
-function popUp(title, value, column, address_value) {
+function popUp(title, value, column, address_value, website, username) {
 	$('<div/>', {id: 'overlay'}).appendTo($('#app'));	
 	$('<div/>', {id: 'popup'}).appendTo($('#app'));	
 	$('<div/>', {id: 'popupTitle'}).appendTo($('#popup'));	
-	$('<span/>', {text:title}).appendTo($('#popupTitle'));
+	$('<span/>', {text:website}).appendTo($('#popupTitle'));
+	$('<br/>').appendTo($('#popupTitle'));
+	$('<span/>', {text:t('passwords', 'Username') + ': ' + username, id:"popupSubTitle"}).appendTo($('#popupTitle'));
 
 	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));	
 	$('<p/>', {text:t('passwords', 'Enter a new value and press Save to keep the new value.\nThis cannot be undone.')}).appendTo($('#popupContent'));
+	$('<br/>').appendTo($('#popupContent'));
+	$('<p/>', {text:title + ':'}).appendTo($('#popupContent'));
 	if (column == 13) {
 		$('<textarea/>', {id:"new_value_popup", rows:"5"}).val(value).appendTo($('#popupContent'));
 	} else {
