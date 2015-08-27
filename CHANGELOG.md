@@ -1,6 +1,7 @@
 8.0.12
 * Improvement for edit popup: title now shows active website and username
 * CSS fix: overlay now actually overlays everything, including header
+* Edited strength algorithm. Now emphasizes length better than previous versions (using length as a 6th exponential power)
 
 8.0.11
 * A new way of editing values with an interactive popup. This will let you use the password generator and is a more easy way of editing.
