@@ -927,14 +927,10 @@ function strength_func(Password) {
 	strength_calc = 0;
 
 	// check length
-	switch(true) {
-		case passwordLength >= 8:
-			strength_calc = 1;
-			break;
-		case passwordLength <= 4:
-			// password smaller than 5 chars is always bad
-			return 0;
-			break;
+	if (passwordLength <= 4) {
+		// password smaller than 5 chars is always bad
+		return 0;
+		break;
 	}
 
 	// loop ONCE through password
@@ -991,6 +987,9 @@ function strength_func(Password) {
 	}
 	
 	strength_calc = strength_calc + (Math.floor(passwordLength / 8) * ((hasLowerCase ? 1 : 0) + (hasUpperCase ? 1 : 0) + (hasNumber ? 1 : 0) + (hasSpecialChar1 ? 1 : 0) + (hasSpecialChar2 ? 1 : 0) + (hasSpecialChar3 ? 1 : 0) + (hasSpecialChar4 ? 1 : 0)));
+	// emphasize length, since longer is better
+	var power = 6;
+	strength_calc = strength_calc + Math.round(Math.pow(passwordLength, power) / Math.pow(10, power + 1));
 	
 	return strength_calc;
 
