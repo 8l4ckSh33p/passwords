@@ -11,7 +11,7 @@
         Important: passwords can only be read (decrypted) by the user who created the password, on the ownCloud-instance where the password was created in (i.e. same password salt in config.php). If you lose the password salt, all passwords of all users are lost and unretrievable.
 
         Please read the documentation for more information about the generation of passwords and its security.
-	</description>
+    </description>
     <licence>AGPL</licence>
     <author>Fallon Turner</author>
     <version>8.0.12</version>
@@ -22,6 +22,6 @@
         <lib>mcrypt</lib>
     </dependencies>
     <documentation>
-		<user>https://github.com/fcturner/passwords/blob/master/README.md</user>
-	</documentation>
+	<user>https://github.com/fcturner/passwords/blob/master/README.md</user>
+    </documentation>
 </info>
