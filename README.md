@@ -11,7 +11,7 @@ This app is primarily intended as a password MANAGER, e.g. for a local ownCloud 
 
 * Happily want to contribute to improve this app? You're welcome to contact me or create pull requests :smile:
 
-The script for creating passwords can be found in 'js/script.js'.
+The script for creating passwords can be found in [`/js/script.js`](/js/script.js).
 
 ## Security
 ### Password generation
