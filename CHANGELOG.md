@@ -1,7 +1,7 @@
 8.0.12
 * Improvement for edit popup: title now shows active website and username
 * CSS fix: overlay now actually overlays everything, including header
-* Edited strength algorithm. Now emphasizes length better than previous versions (using length as a 6th exponential power)
+* Edited strength algorithm. Now emphasizes length better by adding `l`<sub>`n`</sub><sup>`6`</sup>` / 10`<sup>`7`</sup> to the calculated strength, where `l`<sub>`n`</sub> stands for the amount of characters (i.e. length). This gives a more accurate value when passwords are longer than +/- 15 characters and grows exponentially.
 
 8.0.11
 * A new way of editing values with an interactive popup. This will let you use the password generator and is a more easy way of editing.
