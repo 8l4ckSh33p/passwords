@@ -2,6 +2,8 @@
 #### for ownCloud Server 8
 2015, Fallon Turner <fcturner@users.noreply.github.com>
 
+##### This app cannot be installed from within ownCloud, since this system demands repackaging of releases and kills the possibility to freely use GitHub master versions. #####
+
 ## Introduction
 This is a Password Manager for viewing, editing and generating passwords (see 'img'-folder for screenshots) in ownCloud. You can insert or import your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored heavily encrypted into the ownCloud database (read Security part for details). 
 
