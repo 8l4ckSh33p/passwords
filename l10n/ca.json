@@ -71,7 +71,7 @@
 	"for a secured connection, or" : "per una connexió segura, o",
 	"to continue without a secure connection." : "per continuar sense una connexió segura.",
 	"Please note that without a secure connection, your passwords may be accessible by everyone who is also connected to your network (WiFi or 3G/4G). The only security that remains, is the security of the network you are connected to. A company network is safer than a public network like in restaurants or shops." : "Recorda que sense una connexió segura, les teves contrasenyes podrien ser accesibles per qualsevol que estigui connectat a la mateixa xarxa que tu (WiFi o 3G/4G). L'única seguretat que hi haurà és la seguretat de la xarxa a la que estiguis connectat. Una xarxa d'empresa serà més segura que una pública, com la de restaurants o tendes.",
-	"Full URL (optional)" : "URL complerta (opcional)",
+	"Full URL (optional)" : "URL completa (opcional)",
 	"Fill in a valid URL in the first field." : "Ompli una adreça URL vàlida en el primer camp.",
 	"Note: This field is optional and can be left blank." : "Nota: Aquest camp és opcional i pot deixar-se en blanc.",
 	"Downloaded from %s by %s" : "Descarregat de %s per %s",
