@@ -68,7 +68,7 @@ OC.L10N.register(
 	"No passwords yet" : "Sin contraseñas todavía",
 	"Create some new passwords!" : "¡Crea nuevas contraseñas!",
 	"ACCESS BLOCKED" : "ACCESO BLOQUEADO",
-	"There is no secure, encrypted connection." : "La conexión no es segura o cifrada.",
+	"There is no secure, encrypted connection." : "La conexión no es segura ni está cifrada.",
 	"Click here" : "Haga clic aquí",
 	"for a secured connection, or" : "para una conexión segura, o",
 	"to continue without a secure connection." : "para continuar sin una conexión segura.",
