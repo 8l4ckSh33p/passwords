@@ -808,7 +808,7 @@ function formatTable(update_only) {
 						table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' de ' + Month + ' de ' + datePart[0];
 				
 				} else {
-					table.rows[i].cells[9].innerHTML = Math.floor(Month) + ' ' + datePart[2] + ', ' + datePart[0];
+					table.rows[i].cells[9].innerHTML = Month + ' ' + Math.floor(datePart[2]) + ', ' + datePart[0];
 				}
 
 				table.rows[i].cells[9].innerHTML = "<span>" + table.rows[i].cells[9].innerHTML + "</span>";
