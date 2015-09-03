@@ -709,6 +709,8 @@ function formatTable(update_only) {
 					case 1:
 						if (t('passwords', 'lang_en') == 'lang_es') {
 							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'day ago'));
+						}else if (t('passwords', 'lang_en') == 'lang_ca') {
+							table.rows[i].cells[9].setAttribute('title', 'fa ' + diffInDays + ' ' + t('passwords', 'day ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'day ago'));
 						}
@@ -716,6 +718,8 @@ function formatTable(update_only) {
 					default:
 						if (t('passwords', 'lang_en') == 'lang_es') {
 							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'days ago'));
+						}else if (t('passwords', 'lang_en') == 'lang_ca') {
+							table.rows[i].cells[9].setAttribute('title', 'fa ' + diffInDays + ' ' + t('passwords', 'days ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'days ago'));
 						}
@@ -796,9 +800,15 @@ function formatTable(update_only) {
 				} else if (t('passwords', 'lang_en') == 'lang_es') {
 					// Spanish: 14 de marzo de 2015
 					table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' de ' + Month + ' de ' + datePart[0];
+				} else if (t('passwords', 'lang_en') == 'lang_es') {
+					// Catalan: 14 de març de 2015
+					if ((Month[0] == 'a') || (Month[0] == 'o'))
+						table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' d\'' + Month + ' de ' + datePart[0];
+					else
+						table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' de ' + Month + ' de ' + datePart[0];
 				
 				} else {
-					table.rows[i].cells[9].innerHTML = Math.floor(Month + ' ' + datePart[2]) + ', ' + datePart[0];
+					table.rows[i].cells[9].innerHTML = Math.floor(Month) + ' ' + datePart[2] + ', ' + datePart[0];
 				}
 
 				table.rows[i].cells[9].innerHTML = "<span>" + table.rows[i].cells[9].innerHTML + "</span>";
