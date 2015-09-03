@@ -800,7 +800,7 @@ function formatTable(update_only) {
 				} else if (t('passwords', 'lang_en') == 'lang_es') {
 					// Spanish: 14 de marzo de 2015
 					table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' de ' + Month + ' de ' + datePart[0];
-				} else if (t('passwords', 'lang_en') == 'lang_es') {
+				} else if (t('passwords', 'lang_en') == 'lang_ca') {
 					// Catalan: 14 de març de 2015
 					if ((Month[0] == 'a') || (Month[0] == 'o'))
 						table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' d\'' + Month + ' de ' + datePart[0];
