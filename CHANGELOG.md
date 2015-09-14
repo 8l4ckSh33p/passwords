@@ -1,6 +1,6 @@
 8.0.12
 * Added trash bin: deleted password are now moved to the trash bin, so they can be reverted or permanently deleted (this triggers the ownCloud update screen, since a mandatory database edit to the passwords table will be made)
-* Added option to save old values when when editing a website, username or password, so you can look them up when needed
+* Added option to save old values when editing a website, username or password, so you can look them up when needed
 * Edited strength algorithm. Now emphasizes length better by adding the rounded value of n<sub></sub><sup>x</sup> / 10<sup>x + 1</sup> to the calculated strength, where `n` stands for the amount of characters (i.e. length) and `x` is the power. By using `x = 6`, this gives a more accurate value when passwords are longer than +/- 15 characters and grows exponentially.
 * Improvement for edit popup: title now shows active website and username
 * Fix: CSV files with empty lines aren't considered invalid anymore (so KeePass import should work again!)
