@@ -3,6 +3,7 @@
 * When editing a website, username or password old values are moved to the trash
 * Edited strength algorithm. Now emphasizes length better by adding the rounded value of n<sub></sub><sup>x</sup> / 10<sup>x + 1</sup> to the calculated strength, where `n` stands for the amount of characters (i.e. length) and `x` is the power. By using `x = 6`, this gives a more accurate value when passwords are longer than +/- 15 characters and grows exponentially.
 * Improvement for edit popup: title now shows active website and username
+* JS fix: CSV files with empty lines aren't considered invalid anymore (so KeePass import should work again!)
 * CSS fix: overlay now actually overlays everything, including header
 * CSS fix: align popup vertically, independant of its content and height
 
