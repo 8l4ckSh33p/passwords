@@ -120,6 +120,7 @@
 "Turning this off is HIGHLY DISCOURAGED" : ""
 "Uppercase characters" : ""
 "Use 'x' to exclude a field" : ""
+"Use DuckDuckGo" : ""
 "Use Google" : ""
 "Weak" : ""
 "Website icons" : ""
