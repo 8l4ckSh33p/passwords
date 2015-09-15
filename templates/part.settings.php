@@ -1,12 +1,8 @@
-<?php	
-	$user = \OC::$server->getUserSession()->getUser()->getUID();
-?>
-
-<div id="app-settings" backup-title="<?php p($l->t('Downloaded from %s by %s', array($theme->getName(), $user))); ?>">
+<div id="app-settings" active-table="active">
 	<div id="app-settings-header">
 		<button class="settings-button"
 				data-apps-slide-toggle="#app-settings-content"
-		></button>
+		><?php p($l->t('Backup and import')); ?></button>
 	</div>
 	<div id="app-settings-content">
 		<div id="app-settings-backup">

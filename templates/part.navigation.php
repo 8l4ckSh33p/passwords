@@ -1,10 +1,18 @@
 
 <ul>
-	<li class="with-counter active">
-		<a href="#"><?php p($l->t("Number of passwords")); ?></a>
+	<li id="list_active" class="with-counter active">
+		<a href="#"><?php p($l->t("Active passwords")); ?></a>
 		<div class="app-navigation-entry-utils">
 			<ul>
-				<li class="app-navigation-entry-utils-counter menu_passwords_active">0</li>
+				<li class="app-navigation-entry-utils-counter menu_passwords_active"></li>
+			</ul>
+		</div>
+	</li>
+	<li id="list_trash" class="with-counter">
+		<a href="#"><?php p($l->t("Trash bin")); ?></a>
+		<div class="app-navigation-entry-utils">
+			<ul>
+				<li class="app-navigation-entry-utils-counter menu_passwords_trashbin"></li>
 			</ul>
 		</div>
 	</li>
@@ -23,8 +31,8 @@
 		<img src="<?php p(\OC::$server->getURLGenerator()->imagePath('passwords', 'blank.svg')); ?>" class="icon-user"><input type="text" id="new_username" placeholder="<?php p($l->t("Login name or e-mail")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 		<img src="<?php p(\OC::$server->getURLGenerator()->imagePath('passwords', 'blank.svg')); ?>" class="icon-password"><input type="text" id="new_password" placeholder="<?php p($l->t("Password")); ?>" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 		<div id="generate-password">
-			<p id="generate-strength"></p>
-			<div id="generate-passwordtools">
+			<p id="generate_strength"></p>
+			<div id="generate_passwordtools">
 				<label>
 					<input class="check" type="checkbox" id="gen_lower" checked> <?php p($l->t("Lowercase characters")); ?>
 				</label>

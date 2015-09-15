@@ -7,11 +7,13 @@ tr {
 
 #PasswordsTableContent .icon-delete,
 #PasswordsTableContent .icon-notes,
+#PasswordsTableContent .icon-history,
 #PasswordsTableContent .icon-share {
 	opacity: 0.3;
 }
 #PasswordsTableContent .icon-delete:hover,
 #PasswordsTableContent .icon-notes:hover,
+#PasswordsTableContent .icon-history:hover,
 #PasswordsTableContent .icon-share:hover {
 	opacity: 1;
 	cursor: pointer;
@@ -25,7 +27,8 @@ tr {
 #PasswordsTableContent .icon-notes {
 	background-image: url(../img/notes.svg);
 }
-.icon-notes span {
+.icon-notes span,
+.icon-history span {
 	display: none;
 }
 
@@ -156,15 +159,23 @@ h3 {
 	padding-bottom: 5px;
 }
 td #FieldLengthCheck {
-	width: 200px;
+	max-width: 150px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	display: inline;
+	display: inline-block;
 }
 th#FieldLengthCheck {
 	/* align head: 16px for notes img, 5px for margin-left of notes img: */
 	padding-right: 21px;
+	width: 200px;
+}
+div#FieldLengthCheck:not(.hidevalue) {
+	vertical-align: middle;
+}
+#hide2 {
+	/* creation date */
+	width: 150px;
 }
 #FieldLengthCheck:hover {
 	text-decoration: underline;
@@ -172,6 +183,30 @@ th#FieldLengthCheck {
 }
 #emptycontent {
 	display: none;
+}
+#emptytrashbin {
+	display: none;
+	font-size: 16px;
+	color: #888;
+	position: absolute;
+	text-align: center;
+	top: 30%;
+	width: 100%;
+}
+#emptytrashbin h2 {
+	font-size: 22px;
+	margin-bottom: 10px;
+}
+#emptytrashbin [class^="icon-"], 
+.emptytrashbin [class^="icon-"], 
+#emptytrashbin [class*=" icon-"], 
+.emptytrashbin [class*=" icon-"] {
+	background-size: 64px;
+	height: 64px;
+	width: 64px;
+	margin: 0 auto 15px;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
+	opacity: .4;
 }
 #blockedcontent {
   font-size: 16px;
@@ -195,6 +230,7 @@ th#FieldLengthCheck {
   color: #a00;
   font-weight: bold;
 }
+
 .green,
 green {
 	color: #0a0 !important;
@@ -213,11 +249,16 @@ orange {
 }
 .hidevalue {
 	text-indent: -9999px;
-	line-height: 0;
+	line-height: 1;
 }
 .hidevalue:hover {
 	cursor: pointer;
+	text-decoration: underline;
 	text-indent: 0px;
+}
+.hidevalue #FieldLengthCheck #FieldLengthCheck {
+	margin-bottom: 4px;
+	line-height: normal;
 }
 .hidevalue:hover::after {
 	content: "";
@@ -227,12 +268,17 @@ orange {
 	text-indent: 0;
 	display: block;
 	margin-top: -8px;
+	/* align: 16px for notes img, 5px for margin-left of notes img: */
+	margin-right: 21px;
 }
 
 #PasswordsTableSearch {
 	width: 90%;
 	margin: 0 auto;
 	margin-top: 10px;
+}
+#PasswordsTableSearch p {
+	font-style: italic;
 }
 #search_clear {
 	height: 26px;
@@ -296,20 +342,20 @@ td[title]:hover:after {
 /* Editor */
 #overlay {
 	position: absolute;
-	top: 0;
+	top: -50%;
 	bottom: 0;
 	left: 0;
 	right: 0;
 	width: 100%;
-	height: 100%;
+	height: 150%;
 	z-index: 9998;
 	background-color: #000;
 	opacity: 0.6;
 }
 
 #popup {
-	position: absolute;
-	top: 15%;
+	position: fixed;
+	top: 0;
 	left: 50%;
 	width: 300px;
 	margin-left: -150px;
@@ -317,13 +363,18 @@ td[title]:hover:after {
 }
 #popupTitle {
 	width: 100%;
-	height: 40px;
+	height: 60px;
 	background: #102044;
 	color: #fff;
 	font-size: 2em;
 	vertical-align: middle;
 	padding: 10px;
 	text-align: center;
+	overflow: hidden;
+}
+#popupSubTitle {
+	font-size: 0.5em;
+	font-style: italic;
 }
 #popupContent {
 	width: 100%;
@@ -345,10 +396,15 @@ td[title]:hover:after {
 #gen_special_popup,
 #gen_length_popup,
 #new_generate_popup,
+#keep_old_popup,
 p#generate_strength_popup {
 	margin-left: 25px;
 	margin-right: 5px;
 }
+#keep_old_popup {
+	margin-top: 15px;
+}
+
 #accept,
 #cancel {
 	float: right;

@@ -1,3 +1,18 @@
+8.0.12
+* Added trash bin: deleted password are now moved to the trash bin, so they can be reverted or permanently deleted (this triggers the ownCloud update screen, since a mandatory database edit to the passwords table will be made)
+* Added option to save old values to the trash bin when editing a website, username or password, so you can look them up when needed
+* Edited strength algorithm. Now emphasizes length better by adding the rounded value of n<sub></sub><sup>x</sup> / 10<sup>x + 1</sup> to the calculated strength, where `n` stands for the amount of characters (i.e. length) and `x` is the power. By using `x = 6`, this gives a more accurate value when passwords are longer than +/- 15 characters and grows exponentially.
+* Added Catalan language, including date format
+* Improvement: title of edit popup now shows active website with username in subtitle
+* Improvement: read user language from html tag, instead of language files
+* Fix: date format for foreign languages (i.e. undefined in this app) 
+* Fix: CSV files with empty lines aren't considered invalid anymore (so KeePass import should work again!)
+* Fix: overlay now actually overlays everything, including header
+* Fix: align popup vertically, independant of its content and height
+* Fix: no more jumping widths when hovering values
+* Small other bugfixes
+* Add you own language! Strings all sorted out here: [TRANSLATION.js](TRANSLATION.js).
+
 8.0.11
 * A new way of editing values with an interactive popup. This will let you use the password generator and is a more easy way of editing.
 * Edited the backup function to make it an export function. These export files are fully compatible with KeePass, 1Password, LastPass and many other password services. Besides, Microsoft Excel can open the exported files natively as well.

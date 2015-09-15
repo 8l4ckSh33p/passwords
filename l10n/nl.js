@@ -1,7 +1,6 @@
 OC.L10N.register(
 	"passwords",
 	{
-	"lang_en" : "lang_nl",
 	"Passwords" : "Wachtwoorden",
 	"Number of passwords" : "Aantal wachtwoorden",
 	"Search table" : "Zoeken binnen tabel",
@@ -56,7 +55,7 @@ OC.L10N.register(
 	"Uppercase characters" : "Hoofdletters",
 	"Numbers" : "Cijfers",
 	"Punctuation marks" : "Leestekens",
-	"characters" : "karakters",
+	"characters" : "tekens",
 	"Generate password" : "Wachtwoord genereren",
 	"Add password" : "Toevoegen",
 	"Fill in the website, user name and password." : "Vul een website, gebruikersnaam en wachtwoord in.",
@@ -81,7 +80,7 @@ OC.L10N.register(
 	"Block app when not connected to %s using a secured connection" : "App blokkeren wanneer geen beveiligde verbinding gebruikt wordt voor %s",
 	"Turning this off is HIGHLY DISCOURAGED" : "Het uitschakelen van deze functie wordt TEN ZEERSTE AFGERADEN",
 	"Allow users to download a backup as an unencrypted, plain text file" : "Gebruikers toestaan om een back-up te downloaden als een ongecodeerd, plat tekstbestand",
-	"This file is fully compatible with other password services, such as KeePass, 1Password and LastPass." : "Dit bestand volledig compatibel met andere wachtwoorddiensten, zoals KeePass, 1Password en LastPass.",
+	"This file is fully compatible with other password services, such as KeePass, 1Password and LastPass." : "Dit bestand is volledig compatibel met andere wachtwoorddiensten, zoals KeePass, 1Password en LastPass.",
 	"Website icons" : "Website-icoontjes",
 	"Allow website icons" : "Website-icoontjes toestaan",
 	"Show website icons" : "Website-icoontjes weergeven",
@@ -128,6 +127,15 @@ OC.L10N.register(
 	"Content" : "Inhoud",
 	"File contains headers" : "Bestand bevat kolomkoppen",
 	"This is not a valid CSV file." : "Dit is geen geldig CSV-bestand.",
-	"Import of passwords done. This page will now reload." : "Importeren van wachtwoorden is voltooid. Deze pagina wordt nu vernieuwd."
+	"Import of passwords done. This page will now reload." : "Importeren van wachtwoorden is voltooid. Deze pagina wordt nu vernieuwd.",
+	"Backup and import" : "Back-up en importeren",
+	"Active passwords" : "Actieve wachtwoorden",
+	"Trash bin" : "Prullenbak",
+	"The password was reverted to the active passwords." : "Het wachtwoord is hersteld en staat nu bij Actieve wachtwoorden.",
+	"The password was moved to the trash bin." : "Het wachtwoord is naar de prullenbak verplaatst.",
+	"Move old value to trash bin" : "Oude waarde naar prullenbak",
+	"The old value was moved to the trash bin." : "De oude waarde is verplaatst naar de prullenbak.",
+	"Empty trash bin" : "Prullenbak is leeg",
+	"Deleted passwords will be shown here!" : "Verwijderde wachtwoorden worden hier weergegeven."
 },
 "nplurals=2; plural=(n != 1);");
