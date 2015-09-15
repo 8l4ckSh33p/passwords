@@ -126,6 +126,13 @@
 	"Content" : "Inhoud",
 	"File contains headers" : "Bestand bevat kolomkoppen",
 	"This is not a valid CSV file." : "Dit is geen geldig CSV-bestand.",
-	"Import of passwords done. This page will now reload." : "Importeren van wachtwoorden is voltooid. Deze pagina wordt nu vernieuwd."
+	"Import of passwords done. This page will now reload." : "Importeren van wachtwoorden is voltooid. Deze pagina wordt nu vernieuwd.",
+	"Backup and import" : "Back-up en importeren",
+	"Active passwords" : "Actieve wachtwoorden",
+	"Trash bin" : "Prullenbak",
+	"The password was reverted to the active passwords." : "Het wachtwoord is hersteld en staat nu bij Actieve wachtwoorden.",
+	"The password was moved to the trash bin." : "Het wachtwoord is naar de prullenbak verplaatst.",
+	"Move old value to trash bin" : "Oude waarde naar prullenbak",
+	"The old value was moved to the trash bin." : "De oude waarde is verplaatst naar de prullenbak."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
