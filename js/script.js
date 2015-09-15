@@ -803,12 +803,16 @@ function formatTable(update_only) {
 				// date
 				var dateToday = new Date();
 				
-				if (update_only) { // set date to today when updated a value
+				var dateText = table.rows[i].cells[9].textContent;
+				if (dateText.indexOf(" ") != -1) {
+					var dateThis = table.rows[i].cells[9].getAttribute('sorttable_customkey');
+
 					table.rows[i].cells[9].textContent = 
-						dateToday.getFullYear()
-						+ '-' + ('-0' + (dateToday.getMonth() + 1)).slice(-2)
-						+ '-' + ('-0' + dateToday.getDate()).slice(-2);
+						dateThis.substring(0, 4)
+						+ '-' + dateThis.substring(4, 6)
+						+ '-' + dateThis.substring(6, 8);
 				}
+				table.rows[i].cells[9].setAttribute('sorttable_customkey', '');
 
 				var datePart = table.rows[i].cells[9].textContent.split('-');
 				var dateRowEntry = new Date(table.rows[i].cells[9].textContent);
