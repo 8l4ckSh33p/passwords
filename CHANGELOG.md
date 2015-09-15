@@ -3,7 +3,8 @@
 * Added option to save old values to the trash bin when editing a website, username or password, so you can look them up when needed
 * Edited strength algorithm. Now emphasizes length better by adding the rounded value of n<sub></sub><sup>x</sup> / 10<sup>x + 1</sup> to the calculated strength, where `n` stands for the amount of characters (i.e. length) and `x` is the power. By using `x = 6`, this gives a more accurate value when passwords are longer than +/- 15 characters and grows exponentially.
 * Added Catalan language, including date format
-* Improvement for edit popup: title now shows active website with username in subtitle
+* Improvement: title of edit popup now shows active website with username in subtitle
+* Improvement: read user language from html tag, instead of language files
 * Fix: date format for foreign languages (i.e. undefined in this app) 
 * Fix: CSV files with empty lines aren't considered invalid anymore (so KeePass import should work again!)
 * Fix: overlay now actually overlays everything, including header
