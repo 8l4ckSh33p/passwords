@@ -1,7 +1,6 @@
 OC.L10N.register(
 	"passwords",
 	{
-	"lang_en" : "lang_es",
 	"Passwords" : "Contraseñas",
 	"Number of passwords" : "Número de contraseñas",
 	"Search table" : "Buscar tabla",
