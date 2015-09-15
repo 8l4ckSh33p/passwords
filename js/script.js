@@ -111,9 +111,9 @@
 				});
 				return deferred.promise();
 			},
-			updateActive: function(index, loginname, website, address, pass, notes) {
-				var password = {'id' : index, 'loginname' : loginname, 'website' : website, 'address' : address, 'pass' : pass, 'notes' : notes} 
-
+			updateActive: function(index, loginname, website, address, pass, notes, deleted) {
+				var password = {'id' : index, 'loginname' : loginname, 'website' : website, 'address' : address, 'pass' : pass, 'notes' : notes, 'deleted' : deleted} 
+				
 				return $.ajax({
 					url: this._baseUrl + '/' + password.id,
 					method: 'PUT',
@@ -184,11 +184,17 @@
 					var row = $(this).parent().parent().children().index($(this).parent()) + 1;
 					var db_id = table.rows[row].cells[10].textContent;
 					var website = table.rows[row].cells[0].textContent;
+					var website_old = website;
 					var user = table.rows[row].cells[1].textContent;
+					var user_old = user;
 					var pass = table.rows[row].cells[2].textContent;
+					var pass_old = pass;
 					var address = table.rows[row].cells[12].textContent;
+					var address_old = address;
 					var notes = table.rows[row].cells[13].textContent;
+					var deleted = table.rows[row].cells[15].textContent;
 					var thead = table.rows[0].cells[col].textContent;
+					var active_table = $('#app-settings').attr("active-table");
 					thead = thead.replace('▴', '');
 					thead = thead.replace('▾', '');
 					thead = thead.trim();
@@ -201,7 +207,22 @@
 					if (event.target.className == 'edit_value' || (col == 13)) {
 					
 						var old_value = table.rows[row].cells[col].textContent;
-						if (col == 13) {
+
+						if (col == 13 && active_table == 'trashbin') {
+							// revert from trash bin to active passwords
+							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+							var success = passwords.updateActive(db_id, user, website, address, pass, notes, "0");
+
+							if (success) {
+								table.rows[row].cells[15].innerHTML = 0;
+								formatTable(true);
+								update_pwcount();
+								alert(t('passwords', 'The password was reverted to the active passwords.'));
+							} else {
+								alert(t('passwords', 'Error: Could not update password.'));
+							}
+
+						} else if (col == 13) {
 							// notes
 							popUp(t('passwords', 'Notes'), old_value, col, '', website, user);
 						} else if (col == 0) {
@@ -211,66 +232,113 @@
 						}
 						$('#accept').click(function() {
 							var new_value = $('#new_value_popup').val();
-							if (col != 13) // Allow to remove notes!
-							{
-						if (new_value == null || new_value == '') {
+							if (col != 13) {
+								// Allow to remove notes
+								if (new_value == null || new_value == '') {
+									$('#overlay').remove();
+									$('#popup').remove();
+									return false; // on Cancel
+								}
+							}
+
+							if (col == 0) {
+								// clean up website: https://www.Google.com -> google.com
+								if ((new_value.substring(0,7).toLowerCase() == 'http://' 
+										|| new_value.substring(0,8).toLowerCase() == 'https://'
+										|| new_value.substring(0,4).toLowerCase() == 'www.') 
+									&& address == '') {
+									address = new_value.toLowerCase();
+								}
+								new_value = strip_website(new_value).toLowerCase();
+
+								var new_value_address = $('#new_address_popup').val();
+								if (new_value_address == null) {
+									new_value_address = address; // on Cancel, address not changed
+								}
+							}
+							switch (col) {
+								case 0:
+									website = new_value;
+									address = new_value_address;
+									break;
+								case 1:
+									user = new_value;
+									break;
+								case 2:
+									pass = new_value;
+									break;
+								case 13:
+									notes = new_value;
+									break;
+							}
+
+							// do the update to the database
+							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+							var success = passwords.updateActive(db_id, user, website, address, pass, notes, deleted);
+							if (success) {
+								var innerHTMLtext = table.rows[row].cells[col].textContent;
+								table.rows[row].cells[col].innerHTML = innerHTMLtext.replace(old_value, new_value);
+								formatTable(true);
+							} else {
+								alert(t('passwords', 'Error: Could not update password.'));
+							}
+
+							$('#overlay').hide();
+							$('#popup').hide();
+
+							if ($('#keep_old_popup').prop('checked') == true) {
+								// save old pass to trash bin
+								var password = {
+									website: website_old,
+									loginname: user_old,
+									address: address_old,
+									pass: pass_old,
+									notes: notes,
+									deleted: "1"
+								};
+
+								passwords.create(password).done(function() {
+
+									var passwords2 = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+									var view = new View(passwords2);
+									passwords2.loadAll().done(function() {
+										view.renderContent();
+									});
+									
+
+								}).fail(function() {
+									alert(t('passwords', 'Error: Could not create password.'));
+									return false;
+								});
+
+								update_pwcount();
+								alert(t('passwords', 'The old value was moved to the trash bin.'));
+							}
+
 							$('#overlay').remove();
 							$('#popup').remove();
-							return false; // on Cancel
-						}
-							}
-
-						if (col == 0) {
-							// clean up website: https://www.Google.com -> google.com
-							if ((new_value.substring(0,7).toLowerCase() == 'http://' 
-									|| new_value.substring(0,8).toLowerCase() == 'https://'
-									|| new_value.substring(0,4).toLowerCase() == 'www.') 
-								&& address == '') {
-								address = new_value.toLowerCase();
-							}
-							new_value = strip_website(new_value).toLowerCase();
-
-							var new_value_address = $('#new_address_popup').val();
-							if (new_value_address == null) {
-								new_value_address = address; // on Cancel, address not changed
-							}
-						}
-						switch (col) {
-							case 0:
-								website = new_value;
-								address = new_value_address;
-								break;
-							case 1:
-								user = new_value;
-								break;
-							case 2:
-								pass = new_value;
-								break;
-							case 13:
-								notes = new_value;
-								break;
-						}
-						var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
-						var success = passwords.updateActive(db_id, user, website, address, pass, notes);
-
-						if (success) {
-							var innerHTMLtext = table.rows[row].cells[col].textContent;
-							table.rows[row].cells[col].innerHTML = innerHTMLtext.replace(old_value, new_value);
-							formatTable(true);
-							// markRow(row);
-
-						} else {
-							alert(t('passwords', 'Error: Could not update password.'));
-						}
-						$('#overlay').remove();
-						$('#popup').remove();
 						});
 					}
 
 					// clicked on trash, ask confirmation to delete
 					if (col == 14) {
-						
-						if (confirm(t('passwords', "This will delete the password for") + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'.\n\n" + t('passwords', "Are you sure?"))) {
+
+						// in active view, move to trash
+						if (active_table == 'active') {
+							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+							var success = passwords.updateActive(db_id, user, website, address, pass, notes, "1");
+
+							if (success) {
+								table.rows[row].cells[15].innerHTML = 1;
+								formatTable(true);
+								update_pwcount();
+								alert(t('passwords', 'The password was moved to the trash bin.'));
+							} else {
+								alert(t('passwords', 'Error: Could not update password.'));
+							}
+							
+						// from trash, remove from database
+						} else if (confirm(t('passwords', "This will delete the password for") + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'.\n\n" + t('passwords', "Are you sure?"))) {
 
 							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
 							var view = new View(passwords);
@@ -418,6 +486,22 @@
 					}).hide();
 				});
 
+				// click on other list item
+				$('#list_active').click(function() {
+					$('#list_active').addClass('active');
+					$('#list_trash').removeClass('active');
+					$('#app-settings').attr("active-table", 'active');
+					formatTable(true);
+					update_pwcount();
+				});
+				$('#list_trash').click(function() {
+					$('#list_active').removeClass('active');
+					$('#list_trash').addClass('active');
+					$('#app-settings').attr("active-table", 'trashbin');
+					formatTable(true);
+					update_pwcount();
+				});
+
 				// clean up website: https://www.Google.com -> google.com
 				$('#new_website').focusout(function() {
 					if ((this.value.substring(0,7).toLowerCase() == 'http://' 
@@ -425,8 +509,11 @@
 							|| this.value.substring(0,4).toLowerCase() == 'www.') 
 						&& $('#new_address').val() == '') {
 						$('#new_address').val(this.value.toLowerCase());
-					}
-					$('#new_website').val(strip_website(this.value).toLowerCase());
+						$('#new_website').val(strip_website(this.value).toLowerCase());
+					} //else {
+						//$('#new_website').val(strip_website(this.value).toLowerCase());	
+					//}
+					
 				});
 				// try to set a domain entry on website field
 				$('#new_address').focusout(function() {
@@ -472,11 +559,12 @@
 					}
 
 					var password = {
-						loginname: $('#new_username').val(),
 						website: $('#new_website').val(),
+						loginname: $('#new_username').val(),
 						address: $('#new_address').val(),
 						pass: $('#new_password').val(),
-						notes: $('#new_notes').val()
+						notes: $('#new_notes').val(),
+						deleted: "0"
 					};
 
 					self._passwords.create(password).done(function() {
@@ -523,6 +611,7 @@
 					if (!popup_exist) {
 						// show options
 						$('#generate_passwordtools').fadeIn(500);
+						document.getElementById('generate_passwordtools').scrollIntoView();
 					}
 
 					var lower_checked = $('#gen_lower').prop('checked');
@@ -632,12 +721,23 @@ function formatTable(update_only) {
 		var has_number;
 		var has_special;
 
+		var active_table = $('#app-settings').attr("active-table");
+
 		var hide_attributes = $('#app-settings').attr("hide-attributes");
 		if (hide_attributes == 'false') {
 			$('.hide_attributes').removeClass('hide_attributes');
 		}
 
 		for (var i = 1; i < table.rows.length; i++) {
+
+			// set table for active passwords or trash bin
+			if (active_table == 'active' && table.rows[i].cells[15].textContent == 1
+			|| active_table == 'trashbin' && table.rows[i].cells[15].textContent == 0) {
+				table.rows[i].className = 'hide_always';
+			} else {
+				table.rows[i].className = '';
+			}
+
 			for (var j = 0; j < table.rows[i].cells.length; j++)
 
 				if (hide_attributes != 'true') {
@@ -735,7 +835,7 @@ function formatTable(update_only) {
 					case 1:
 						if (t('passwords', 'lang_en') == 'lang_es') {
 							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'day ago'));
-						}else if (t('passwords', 'lang_en') == 'lang_ca') {
+						} else if (t('passwords', 'lang_en') == 'lang_ca') {
 							table.rows[i].cells[9].setAttribute('title', 'fa ' + diffInDays + ' ' + t('passwords', 'day ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'day ago'));
@@ -744,7 +844,7 @@ function formatTable(update_only) {
 					default:
 						if (t('passwords', 'lang_en') == 'lang_es') {
 							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'days ago'));
-						}else if (t('passwords', 'lang_en') == 'lang_ca') {
+						} else if (t('passwords', 'lang_en') == 'lang_ca') {
 							table.rows[i].cells[9].setAttribute('title', 'fa ' + diffInDays + ' ' + t('passwords', 'days ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'days ago'));
@@ -828,12 +928,14 @@ function formatTable(update_only) {
 					table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' de ' + Month + ' de ' + datePart[0];
 				} else if (t('passwords', 'lang_en') == 'lang_ca') {
 					// Catalan: 14 de març de 2015
-					if ((Month[0] == 'a') || (Month[0] == 'o'))
+					if ((Month[0] == 'a') || (Month[0] == 'o')) {
 						table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' d\'' + Month + ' de ' + datePart[0];
-					else
+					} else {
 						table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' de ' + Month + ' de ' + datePart[0];
-				
+					}
+
 				} else {
+					// all others: March 14, 2015
 					table.rows[i].cells[9].innerHTML = Month + ' ' + Math.floor(datePart[2]) + ', ' + datePart[0];
 				}
 
@@ -872,6 +974,10 @@ function formatTable(update_only) {
 
 				cellWebsiteURL = ''; // reset
 
+				table.rows[i].cells[13].className = 'icon-notes';
+				table.rows[i].cells[13].removeAttribute("style");
+
+				
 				// hide username and/or password according to user settings
 				var hide_usernames = $('#app-settings').attr("hide-usernames");
 				var hide_passwords = $('#app-settings').attr("hide-passwords");
@@ -882,14 +988,34 @@ function formatTable(update_only) {
 					cellPassword.className += ' hidevalue';
 				}
 
-				var imgNotes = OC.linkTo('passwords', 'img/notes.svg');
-				cellWebsite.innerHTML = cellWebsite.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
-				if ((cellUsername.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
-					cellUsername.innerHTML = '<div id="FieldLengthCheck">' + cellUsername.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+				if (active_table == 'active') {
+					var imgNotes = OC.linkTo('passwords', 'img/notes.svg');
+					cellWebsite.innerHTML = cellWebsite.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+					if ((cellUsername.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
+						cellUsername.innerHTML = '<div id="FieldLengthCheck">' + cellUsername.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+					}
+					if ((cellPassword.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
+						cellPassword.innerHTML = '<div id="FieldLengthCheck">' + cellPassword.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+					}	
+
+					// move text to span when available (so it will be hidden)
+					if (table.rows[i].cells[13].textContent != '') {
+						table.rows[i].cells[13].innerHTML = '<span>' + table.rows[i].cells[13].textContent + '</span>';
+						table.rows[i].cells[13].style.opacity = 1;
+					} else {
+						table.rows[i].cells[13].className += ' actual-note';
+					}
+
+				} else {
+					// trash bin
+					cellUsername.innerHTML = '<div id="FieldLengthCheck">' + cellUsername.textContent + '</div>';
+					cellPassword.innerHTML = '<div id="FieldLengthCheck">' + cellPassword.textContent + '</div>';
+					
+					// revert icon
+					table.rows[i].cells[13].className = 'icon-history';
 				}
-				if ((cellPassword.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
-					cellPassword.innerHTML = '<div id="FieldLengthCheck">' + cellPassword.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
-				}
+
+				
 			
 				// shared password
 				// var oc_user = $('head').attr("data-user");
@@ -900,20 +1026,14 @@ function formatTable(update_only) {
 				// 	table.rows[i].cells[12].className = '';
 				// }
 
-				// move text to span when available (so it will be hidden)
-				if (table.rows[i].cells[13].textContent != '') {
-					table.rows[i].cells[13].innerHTML = '<span>' + table.rows[i].cells[13].textContent + '</span>';
-					table.rows[i].cells[13].style.opacity = 1;
-				} else {
-					table.rows[i].cells[13].className += ' actual-note';
-				}
+				
 
 		}
 
 		// sort on website, reset sort first
-		if (update_only) {
-			$('#column_website').click();	
-		}
+		// if (update_only) {
+		// 	$('#column_website').click();	
+		// }
 
 	}
 }
@@ -937,10 +1057,14 @@ function strength_func(Password) {
 	strength_calc = 0;
 
 	// check length
-	if (passwordLength <= 4) {
-		// password smaller than 5 chars is always bad
-		return 0;
-		break;
+	switch(true) {
+		case passwordLength >= 8:
+			//strength_calc = 1;
+			break;
+		case passwordLength <= 4:
+			// password smaller than 5 chars is always bad
+			return 0;
+			break;
 	}
 
 	// loop ONCE through password
@@ -997,10 +1121,10 @@ function strength_func(Password) {
 	}
 	
 	strength_calc = strength_calc + (Math.floor(passwordLength / 8) * ((hasLowerCase ? 1 : 0) + (hasUpperCase ? 1 : 0) + (hasNumber ? 1 : 0) + (hasSpecialChar1 ? 1 : 0) + (hasSpecialChar2 ? 1 : 0) + (hasSpecialChar3 ? 1 : 0) + (hasSpecialChar4 ? 1 : 0)));
-	// emphasize length, since longer is better
+	
 	var power = 6;
 	strength_calc = strength_calc + Math.round(Math.pow(passwordLength, power) / Math.pow(10, power + 1));
-	
+
 	return strength_calc;
 
 }
@@ -1135,12 +1259,37 @@ function strength_str(passw, return_string_only) {
 }
 
 function update_pwcount() {
-	var count = $('#PasswordsTableContent tbody tr').length;
-	$(".menu_passwords_active").text(count);
-	if (count == 0) {
+
+	$("#emptycontent").hide();
+	$("#emptytrashbin").hide();
+	$("#PasswordsTable").show();
+
+	var table = document.getElementById('PasswordsTableContent');
+	var active = 0;
+	var trash = 0;
+
+	for (var i = 1; i < table.rows.length; i++) {
+		if (table.rows[i].cells[15].textContent == '0') {
+			active = active + 1;
+		}
+		if (table.rows[i].cells[15].textContent == '1') {
+			trash = trash + 1;
+		}
+	}
+
+	$(".menu_passwords_active").text(active);
+	$(".menu_passwords_trashbin").text(trash);
+
+	if ($('#app-settings').attr('active-table') == 'active' && active == 0) {
 		$("#emptycontent").show();
 		$("#PasswordsTable").hide();
 	}
+
+	if ($('#app-settings').attr('active-table') == 'trashbin' && trash == 0) {
+		$("#emptytrashbin").show();
+		$("#PasswordsTable").hide();
+	}
+
 }
 
 function isUrl(url) {
@@ -1327,7 +1476,7 @@ function uploadCSV(event) {
 					var line = lines[i].split(',');
 				}
 				
-				if (line.length < 3) {
+				if (line.length < 3 && lines[i] != '') {
 					alert(t('passwords', 'This is not a valid CSV file.'));
 					$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
 					return false;
@@ -1367,11 +1516,12 @@ function uploadCSV(event) {
 					}
 
 					var password = {
-						loginname: loginCSV,
 						website: websiteCSV,
+						loginname: loginCSV,
 						address: urlCSV,
 						pass: passwordCSV,
-						notes: notesCSV
+						notes: notesCSV,
+						deleted: "0"
 					};
 
 					// add them one at the time
@@ -1444,12 +1594,20 @@ function popUp(title, value, column, address_value, website, username) {
 			$('<label/>', {text:t('passwords', 'characters')}).appendTo($('#popupContent'));
 			$('<br/>').appendTo($('#popupContent'));
 			
-			$('<button/>', {id:'new_generate_popup', text:t('passwords', 'Generate password')}).appendTo($('#popupContent'));			
+			$('<button/>', {id:'new_generate_popup', text:t('passwords', 'Generate password')}).appendTo($('#popupContent'));	
+			$('<br/>').appendTo($('#popupContent'));
+
 		} else if (column == 0) {
 			$('<br/><br/>').appendTo($('#popupContent'));
 			$('<p/>', {text:t('passwords', 'Full URL (optional)') + ':'}).val(address_value).appendTo($('#popupContent'));
 			$('<input/>', {type:'text', id:"new_address_popup", autocorrect:'off', autocapitalize:'off', spellcheck:'false'}).val(address_value).appendTo($('#popupContent'));
 		}
+
+		if (column == 0 || column == 1 || column == 2) {
+			$('<input>', {type:'checkbox', id:"keep_old_popup"}).prop("checked", 'true').appendTo($('#popupContent'));
+			$('<label/>', {for:'keep_old_popup', id:"keep_old_popuplbl", text:t('passwords', 'Move old value to trash bin')}).appendTo($('#popupContent'));
+		}
+
 	}
 
 	$('<div/>', {id: 'popupButtons'}).appendTo($('#popup'));	
@@ -1495,4 +1653,16 @@ function popUp(title, value, column, address_value, website, username) {
 	}
 
 	$('#new_value_popup').focus();
+
+	// align to vertical center
+	var popupHeight = document.getElementById('popup').clientHeight;
+	var browserHeight = Math.max(
+		document.body.scrollHeight, document.documentElement.scrollHeight,
+		document.body.offsetHeight, document.documentElement.offsetHeight,
+		document.body.clientHeight, document.documentElement.clientHeight
+	);
+	if (browserHeight > popupHeight) {
+		document.getElementById("popup").style.top = (browserHeight - popupHeight) / 4 + "px";	
+	}
+	
 }
