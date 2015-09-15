@@ -59,7 +59,6 @@
 "January" : ""
 "July" : ""
 "June" : ""
-"lang_en" : ""
 "Length" : ""
 "Login name" : ""
 "Login name or e-mail" : ""
