@@ -1,7 +1,6 @@
 OC.L10N.register(
 	"passwords",
 	{
-	"lang_en" : "lang_ca",
 	"Passwords" : "Claus d'accés",
 	"Number of passwords" : "Número de contrasenyes",
 	"Search table" : "Cercar taula",
