@@ -828,23 +828,26 @@ function formatTable(update_only) {
 				} else if(diffInDays < days_orange) {
 					table.rows[i].cells[9].className += ' green'; // < default: 150 days
 				}
+
+				var language = $('html').attr('lang');
+
 				switch (diffInDays) {
 					case 0:
 						table.rows[i].cells[9].setAttribute('title', t('passwords', 'today'));
 						break;
 					case 1:
-						if (t('passwords', 'lang_en') == 'lang_es') {
+						if (language == 'es') {
 							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'day ago'));
-						} else if (t('passwords', 'lang_en') == 'lang_ca') {
+						} else if (language == 'ca') {
 							table.rows[i].cells[9].setAttribute('title', 'fa ' + diffInDays + ' ' + t('passwords', 'day ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'day ago'));
 						}
 						break;
 					default:
-						if (t('passwords', 'lang_en') == 'lang_es') {
+						if (language == 'es') {
 							table.rows[i].cells[9].setAttribute('title', 'hace ' + diffInDays + ' ' + t('passwords', 'days ago'));
-						} else if (t('passwords', 'lang_en') == 'lang_ca') {
+						} else if (language == 'ca') {
 							table.rows[i].cells[9].setAttribute('title', 'fa ' + diffInDays + ' ' + t('passwords', 'days ago'));
 						} else {
 							table.rows[i].cells[9].setAttribute('title', diffInDays + ' ' + t('passwords', 'days ago'));
@@ -895,7 +898,7 @@ function formatTable(update_only) {
 						break;
 				}
 
-				if (t('passwords', 'lang_en') == 'lang_en') {
+				if (language == 'en') {
 					// format: 14th March 2011, most Brittish according to https://www.englishclub.com/vocabulary/time-date.htm
 					var suffix;
 					switch (Math.floor(datePart[2])) {
@@ -917,16 +920,16 @@ function formatTable(update_only) {
 							break;
 					}
 					table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + '<sup>' + suffix + '</sup> ' + Month + ' ' + datePart[0];
-				} else if (t('passwords', 'lang_en') == 'lang_nl') {
+				} else if (language == 'nl') {
 					// Dutch: 14 maart 2015
 					table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' ' + Month + ' ' + datePart[0];
-				} else if (t('passwords', 'lang_en') == 'lang_de') {
+				} else if (language == 'de') {
 					// German: 14. März 2015
 					table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + '. ' + Month + ' ' + datePart[0];
-				} else if (t('passwords', 'lang_en') == 'lang_es') {
+				} else if (language == 'es') {
 					// Spanish: 14 de marzo de 2015
 					table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' de ' + Month + ' de ' + datePart[0];
-				} else if (t('passwords', 'lang_en') == 'lang_ca') {
+				} else if (language == 'ca') {
 					// Catalan: 14 de març de 2015
 					if ((Month[0] == 'a') || (Month[0] == 'o')) {
 						table.rows[i].cells[9].innerHTML = Math.floor(datePart[2]) + ' d\'' + Month + ' de ' + datePart[0];
