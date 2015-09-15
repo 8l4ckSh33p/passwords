@@ -9,6 +9,7 @@
 * Fix: overlay now actually overlays everything, including header
 * Fix: align popup vertically, independant of its content and height
 * Small other bugfixes
+* Add you own language! Strings all sorted out here: [TRANSLATION.js](TRANSLATION.js).
 
 8.0.11
 * A new way of editing values with an interactive popup. This will let you use the password generator and is a more easy way of editing.
