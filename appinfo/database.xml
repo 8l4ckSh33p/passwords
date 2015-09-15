@@ -58,6 +58,12 @@
 				<type>date</type>
 				<notnull>true</notnull>
 			</field>
+			<field>
+				<name>deleted</name>
+				<type>boolean</type>
+				<default>0</default>
+				<notnull>true</notnull>
+			</field>
 		</declaration>
 	</table>
 </database>
