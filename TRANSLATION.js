@@ -1,5 +1,5 @@
 // LIST OF ALL STRINGS
-// Translate these strings in your own language to help this app be understandable by everyone!
+// Translate these strings in your own language to help this app be understandable by everyone! You can then create a new issue with the translated text. Thanks!
 // Please mind use of capitals. 
 // Up to date with v 8.0.12
 
