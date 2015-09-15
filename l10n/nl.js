@@ -135,6 +135,8 @@ OC.L10N.register(
 	"The password was reverted to the active passwords." : "Het wachtwoord is hersteld en staat nu bij Actieve wachtwoorden.",
 	"The password was moved to the trash bin." : "Het wachtwoord is naar de prullenbak verplaatst.",
 	"Move old value to trash bin" : "Oude waarde naar prullenbak",
-	"The old value was moved to the trash bin." : "De oude waarde is verplaatst naar de prullenbak."
+	"The old value was moved to the trash bin." : "De oude waarde is verplaatst naar de prullenbak.",
+	"Empty trash bin" : "Prullenbak is leeg",
+	"Deleted passwords will be shown here!" : "Verwijderde wachtwoorden worden hier weergegeven."
 },
 "nplurals=2; plural=(n != 1);");
