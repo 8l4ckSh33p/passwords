@@ -22,6 +22,7 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 			<th id="hide_always">Address</th>
 			<th id="column_notes"></th>
 			<th id="column_delete"></th>
+			<th id="hide_always">Deleted</th>
 			<!-- <th id="column_share"></th> -->
 		</tr>
 
@@ -58,6 +59,7 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 			<td class="hide_always">{{ address }}</td>
 			<td class="icon-notes"><span>{{ notes }}</span></td>
 			<td class="icon-delete"></td>
+			<td class="hide_always">{{ deleted }}</td>
 			<!--<td class="icon-share"></td>-->
 		</tr>
 	{{/each}}
@@ -68,4 +70,9 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 	<div class="icon-passwords"></div>
 	<h2><?php p($l->t("No passwords yet")); ?></h2>
 	<p><?php p($l->t("Create some new passwords!")); ?></p> 
+</div>
+<div id="emptytrashbin">
+	<div class="icon-trash"></div>
+	<h2><?php p($l->t("Empty trash bin")); ?></h2>
+	<p><?php p($l->t("Deleted passwords will be shown here!")); ?></p> 
 </div>
