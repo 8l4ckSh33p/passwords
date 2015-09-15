@@ -8,6 +8,7 @@
 * Fix: CSV files with empty lines aren't considered invalid anymore (so KeePass import should work again!)
 * Fix: overlay now actually overlays everything, including header
 * Fix: align popup vertically, independant of its content and height
+* Fix: no more jumping widths when hovering values
 * Small other bugfixes
 * Add you own language! Strings all sorted out here: [TRANSLATION.js](TRANSLATION.js).
 
