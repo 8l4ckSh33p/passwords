@@ -59,7 +59,6 @@
 
 	<br>
 
-	<button id="saveadmin"><?php p($l->t('Save settings')); ?></button>
 	<span class="msg-passwords"></span>
 
 </div>
