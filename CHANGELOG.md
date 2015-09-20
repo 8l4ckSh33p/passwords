@@ -1,12 +1,11 @@
 8.0.13
 * Added search icon in search bar, saving another non-whitespaced line on navigation pane
-* Added auto-save for settings (no more button clicking)
-* Fix for importing CSV, with added error description for every possible error
-* Fix for usernames and passwords containing < or >
+* Added auto-save in settings, both admin and personal (no more button clicking)
+* Totally rewrote (and fixed) the import function (for CSV files), with added error description for every possible error
+* Fix for usernames and passwords containing HTML-characters like < or >
 * Fix for editing a website value which became lowercase even when not a valid URL
 * Fix for icon not showing on empty trash bin
 * CSS fix for button texts
-* Changes in translation [here](https://github.com/fcturner/passwords/commit/c3240d258b8ae2f555024a1bcd5d93e6bb239811)
 
 8.0.12
 * Added trash bin: deleted password are now moved to the trash bin, so they can be reverted or permanently deleted (this triggers the ownCloud update screen, since a mandatory database edit to the passwords table will be made)
