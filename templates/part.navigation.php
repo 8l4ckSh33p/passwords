@@ -1,4 +1,3 @@
-
 <ul>
 	<li id="list_active" class="with-counter active">
 		<a href="#"><?php p($l->t("Active passwords")); ?></a>
@@ -18,7 +17,6 @@
 	</li>
 
 	<div id="PasswordsTableSearch">
-		<p><?php p($l->t("Search table")); ?>:</p>
 		<input id="search_text" type="text" placeholder="<?php p($l->t("Search for")); ?>..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
 		<input id="search_clear" type="button" value="<?php p($l->t("Clear")); ?>">
 	</div>
