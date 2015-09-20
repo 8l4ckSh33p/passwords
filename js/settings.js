@@ -112,58 +112,44 @@ $(document).ready(function() {
 	updateOrange();
 	updateRed();
 
-	// save it all
-	$('#saveadmin').click(function() {
+	// Admin settings
+	$('#https_check').change(function () {
+		settings.setAdminKey('https_check', $(this).is(":checked"));
+	});
 
-		// test for numeric values in days
-		if(!isNumeric($('#days_orange').val()) 
-			|| !isNumeric($('#days_red').val())) {
-				alert(t('passwords', 'Fill in a valid number for the days.'));
-				return false;
-		}
-		// test if red < orange
-		if($('#days_orange').val() >= $('#days_red').val()) {
-			alert(t('passwords', 'The days from red should be higher than the days from orange.'));
-			return false;
-		}
+	$('#backup_allowed').change(function () {
+		settings.setAdminKey('backup_allowed', $(this).is(":checked"));
+	});
 
-		$('.msg-passwords').text(t('passwords', 'Saving...'));
+	$('#icons_allowed').change(function () {
+		settings.setAdminKey('icons_allowed', $(this).is(":checked"));
+		updateIconService();
+	});
 
-		settings.setAdminKey('https_check', $('#https_check').is(':checked'));
-		settings.setAdminKey('backup_allowed', $('#backup_allowed').is(':checked'));
+	$('#ddg_value').change(function () {
+		settings.setAdminKey('icons_service', 'ddg');
+	});
 
-		settings.setAdminKey('icons_allowed', $('#icons_allowed').is(':checked'));
-		if ($('#ddg_value').is(':checked')) {
-			settings.setAdminKey('icons_service', 'ddg');	
-		}
-		if ($('#ggl_value').is(':checked')) {
-			settings.setAdminKey('icons_service', 'ggl');	
-		}
-		settings.setAdminKey('days_orange', $('#days_orange').val());
-		settings.setAdminKey('days_red', $('#days_red').val());
-
-		// no error, so:
-		if ($('.msg-passwords').text = t('passwords', 'Saving...')) {
-			$('.msg-passwords').addClass('msg_success');
-			$('.msg-passwords').text(t('passwords', 'Saved!'));	
-			setTimeout(function() {
-				$('.msg-passwords').text('');
-				$('.msg-passwords').removeClass('msg_success');	
-			}, 3000);
-		}
+	$('#ggl_value').change(function () {
+		settings.setAdminKey('icons_service', 'ggl');
 	});
 
 	$('#days_red').keyup(function() {
-		updateRed();
+		var val = Number($('#days_red').val());
+		if ((val > 0) && (val < 10000) && (val > Number($('#days_orange').val()))) {
+			settings.setAdminKey('days_red', val);
+			updateRed();
+		}
 	});
 
 	$('#days_orange').keyup(function() {
-		updateOrange();
+		var val = Number($('#days_orange').val());
+		if ((val > 0) && (val < 10000) && (val < Number($('#days_red').val())) && (Number($('#days_red').val()) > 0)) {
+			settings.setAdminKey('days_orange', val);
+			updateOrange();
+		}
 	});
 
-	$('#icons_allowed').click(function() {
-		updateIconService();
-	});
 
 // PERSONAL SETTINGS
 	
@@ -177,26 +163,22 @@ $(document).ready(function() {
 	$('#hide_usernames').prop('checked', (settings.getKey('hide_usernames').toLowerCase() == 'true'));
 	$('#hide_passwords').prop('checked', (settings.getKey('hide_passwords').toLowerCase() == 'true'));
 	$('#hide_attributes').prop('checked', (settings.getKey('hide_attributes').toLowerCase() == 'true'));
-	
-	// save it all
-	$('#savepersonal').click(function() {
 
-		$('.msg-passwords').text(t('passwords', 'Saving...'));
+	// Personal settings
+	$('#icons_show').change(function () {
+		settings.setUserKey('icons_show', $(this).is(":checked"));
+	});
 
-		settings.setUserKey('icons_show', $('#icons_show').is(':checked'));
-		settings.setUserKey('hide_usernames', $('#hide_usernames').is(':checked'));
-		settings.setUserKey('hide_passwords', $('#hide_passwords').is(':checked'));
-		settings.setUserKey('hide_attributes', $('#hide_attributes').is(':checked'));
+$('#hide_usernames').change(function () {
+	settings.setUserKey('hide_usernames', $(this).is(":checked"));
+});
 
-		// no error, so:
-		if ($('.msg-passwords').text = t('passwords', 'Saving...')) {
-			$('.msg-passwords').addClass('msg_success');
-			$('.msg-passwords').text(t('passwords', 'Saved!'));	
-			setTimeout(function() {
-				$('.msg-passwords').text('');
-				$('.msg-passwords').removeClass('msg_success');	
-			}, 3000);
-		}
+	$('#hide_passwords').change(function () {
+		settings.setUserKey('hide_passwords', $(this).is(":checked"));
+	});
+
+	$('#hide_attributes').change(function () {
+		settings.setUserKey('hide_attributes', $(this).is(":checked"));
 	});
 
 });
