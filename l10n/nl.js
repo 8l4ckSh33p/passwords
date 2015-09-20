@@ -136,6 +136,11 @@ OC.L10N.register(
 	"Move old value to trash bin" : "Oude waarde naar prullenbak",
 	"The old value was moved to the trash bin." : "De oude waarde is verplaatst naar de prullenbak.",
 	"Empty trash bin" : "Prullenbak is leeg",
-	"Deleted passwords will be shown here!" : "Verwijderde wachtwoorden worden hier weergegeven."
+	"Deleted passwords will be shown here!" : "Verwijderde wachtwoorden worden hier weergegeven.",
+	"Only files with CSV as file extension are allowed." : "Only files with CSV as file extension are allowed.",
+	"This file contains no passwords." : "Dit bestand bevat geen wachtwoorden.",
+	"This file contains one or more values without quotation marks." : "Dit bestand bevat een of meerdere waarden zonder aanhalingstekens.",
+	"This file contains one or more lines with less than 3 columns." : "Dit bestand bevat een of meerdere regels met minder dan 3 kolommen.",
+	"This is not a valid URL, so this value will not be saved:" : "Dit is geen geldige URL, waardoor deze niet wordt opgeslagen:"
 },
 "nplurals=2; plural=(n != 1);");
