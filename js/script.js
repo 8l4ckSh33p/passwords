@@ -1472,7 +1472,7 @@ function uploadCSV(event) {
 
 			var count = (contents.match(/\n/g) || []).length + 1 - headerCount;
 
-			if ((count - headerCount) < 1) {
+			if (count < 1) {
 				InvalidCSV(t('passwords', 'This file contains no passwords.'));
 			}
 
@@ -1565,19 +1565,24 @@ function uploadCSV(event) {
 						};
 
 						// add them one at the time
+						var deferred = $.Deferred();
+
 						$.ajax({
 							url: OC.generateUrl('/apps/passwords/passwords'),
 							method: 'POST',
 							contentType: 'application/json',
 							data: JSON.stringify(password)
-						}).done(function() {
+						}).done(function(password) {
+							deferred.resolve();
 						}).fail(function() {
+							deferred.reject();
 							alert(t('passwords', 'Error: Could not create password.') 
 								+ '\n\n'
 								+ t('passwords', 'Website or company') + ': ' + line[0] + '\n'
 								+ t('passwords', 'Login name') + ': ' + line[1] + '\n'
 								+ t('passwords', 'Password') + ': ' + line[2] + '\n');
 						});
+
 					}
 				}	
 
