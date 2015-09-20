@@ -4,7 +4,6 @@ p, h2, label, .emptyinfo {
 tr {
 	height: 40px !important;
 }
-
 #PasswordsTableContent .icon-delete,
 #PasswordsTableContent .icon-notes,
 #PasswordsTableContent .icon-history,
@@ -86,6 +85,7 @@ h3,
 	margin-bottom: 2%;
 	width: 85%;
 	height: 26px;
+	padding-top: 3px;
 }
 #new_notes {
 	height: 52px !important;
@@ -285,8 +285,12 @@ orange {
 	float: right;
 	margin-right: 0px;
 	width: 30%;
+	padding-top: 3px;
 }
 #search_text {
+	background: #fff url(../../../core/img/actions/search.svg) no-repeat 6px center;
+	padding-left: 26px;
+	padding-top: 3px;
 	width: 65%;
 	height: 26px;
 }
