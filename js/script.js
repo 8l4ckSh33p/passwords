@@ -1499,11 +1499,17 @@ function uploadCSV(event) {
 				}
 			}
 
+			var count_str;
+			if (count == 1) {
+				count_str = t('passwords', 'Password').toLowerCase()
+			} else {
+				count_str = t('passwords', 'Passwords').toLowerCase()
+			}
 			var confirmed = confirm(t('passwords', 'The following file will be imported') + ':' 
 						+ '\n\n'
 						+ t('passwords', 'Name') + ': ' + f.name + '\n'
 						+ t('passwords', 'Size') + ': ' + f.size + ' bytes\n'
-						+ t('passwords', 'Content') + ': ' + count + ' ' + t('passwords', 'Passwords').toLowerCase());
+						+ t('passwords', 'Content') + ': ' + count + ' ' + count_str);
 
 			if (confirmed) {
 
@@ -1556,33 +1562,32 @@ function uploadCSV(event) {
 							}
 						}
 						var password = {
-							'website' : websiteCSV,
-							'loginname' : loginCSV,
-							'address' : urlCSV,
-							'pass' : passwordCSV,
-							'notes' : notesCSV,
-							'deleted' : "0"
+							website : websiteCSV,
+							loginname : loginCSV,
+							address : urlCSV,
+							pass : passwordCSV,
+							notes : notesCSV,
+							deleted : "0"
 						};
 
 						// add them one at the time
-						var deferred = $.Deferred();
+						var success = $.ajax({
+								url: OC.generateUrl('/apps/passwords/passwords'),
+								method: 'POST',
+								contentType: 'application/json',
+								data: JSON.stringify(password)
+							});
 
-						$.ajax({
-							url: OC.generateUrl('/apps/passwords/passwords'),
-							method: 'POST',
-							contentType: 'application/json',
-							data: JSON.stringify(password)
-						}).done(function(password) {
-							deferred.resolve();
-						}).fail(function() {
-							deferred.reject();
+						if (success) {
+						} else {
 							alert(t('passwords', 'Error: Could not create password.') 
 								+ '\n\n'
-								+ t('passwords', 'Website or company') + ': ' + line[0] + '\n'
-								+ t('passwords', 'Login name') + ': ' + line[1] + '\n'
-								+ t('passwords', 'Password') + ': ' + line[2] + '\n');
-						});
-
+								+ t('passwords', 'Website or company') + ': ' + websiteCSV + '\n'
+								+ t('passwords', 'Full URL (optional)') + ': ' + urlCSV + '\n'
+								+ t('passwords', 'Login name') + ': ' + loginCSV + '\n'
+								+ t('passwords', 'Password') + ': ' + passwordCSV + '\n'
+								+ t('passwords', 'Notes') + ':\n' + notesCSV);
+						}
 					}
 				}	
 
