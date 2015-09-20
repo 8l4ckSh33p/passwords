@@ -249,7 +249,10 @@
 									&& address == '') {
 									address = new_value.toLowerCase();
 								}
-								new_value = strip_website(new_value).toLowerCase();
+								new_value = strip_website(new_value);
+								if (isUrl(new_value)) {
+									new_value = new_value.toLowerCase();
+								}
 
 								var new_value_address = $('#new_address_popup').val();
 								if (new_value_address == null) {
@@ -313,6 +316,11 @@
 
 								update_pwcount();
 								alert(t('passwords', 'The old value was moved to the trash bin.'));
+							}
+
+							// URL needs to be updated; requires reload of page
+							if (address != address_old) {
+								location.reload(true);				
 							}
 
 							$('#overlay').remove();
@@ -822,7 +830,7 @@ function formatTable(update_only) {
 				var diffInDays = Math.floor((dateToday - dateRowEntry) / (1000*60*60*24));
 				var thisClass = table.rows[i].cells[3].className;
 				if(diffInDays > days_red - 1) {
-					table.rows[i].cells[9].className += ' red'; // default: > 365 dagen
+					table.rows[i].cells[9].className += ' red'; // default: > 365 days
 					table.rows[i].cells[2].className += ' red'; // force red colour on password
 				} else if(diffInDays > days_orange - 1) {
 					table.rows[i].cells[9].className += ' orange'; // default: 150-364 days
@@ -995,15 +1003,18 @@ function formatTable(update_only) {
 					cellPassword.className += ' hidevalue';
 				}
 
+				// escape HTML to cope with usernames and passwords containing < or >
+				table.rows[i].cells[1].textContent = escapeHTML(table.rows[i].cells[1].textContent);
+				table.rows[i].cells[2].textContent = escapeHTML(table.rows[i].cells[2].textContent);
 				if (active_table == 'active') {
 					var imgNotes = OC.linkTo('passwords', 'img/notes.svg');
 					cellWebsite.innerHTML = cellWebsite.innerHTML + '<img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
 					if ((cellUsername.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
-						cellUsername.innerHTML = '<div id="FieldLengthCheck">' + cellUsername.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+						cellUsername.innerHTML = '<div id="FieldLengthCheck">' + cellUsername.textContent + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
 					}
 					if ((cellPassword.innerHTML).indexOf('<img class="edit_value"') == -1 ) {
-						cellPassword.innerHTML = '<div id="FieldLengthCheck">' + cellPassword.innerHTML + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
-					}	
+						cellPassword.innerHTML = '<div id="FieldLengthCheck">' + cellPassword.textContent + '</div><img class="edit_value" src="' + imgNotes.replace('index.php/', '') + '">';
+					}
 
 					// move text to span when available (so it will be hidden)
 					if (table.rows[i].cells[13].textContent != '') {
@@ -1298,13 +1309,16 @@ function update_pwcount() {
 	}
 
 }
-
+function escapeHTML(text) {
+    return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
 function isUrl(url) {
 
 	// not starting with a whitespace char or / or $ or . or ? or #
 	// overall no spaces allowed
 	// at least 1 char before and 2 chars after a dot
 	// test for ^[^\s/$.?#]\S{1,}\.[a-z]{2,}$
+	url = url.toLowerCase();
 	var strRegex = '^[^\\s/$.?#]\\S{1,}\\.[a-z]{2,}$';
 
 	var re = new RegExp(strRegex);
@@ -1441,10 +1455,8 @@ function uploadCSV(event) {
 		return false;
 	} else 
 		// validate file
-		if (!f.name.substr(f.name.length - 4, 4) == '.csv') {
-		alert(t('passwords', 'This is not a valid CSV file.'));
-		$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
-		return false;
+		if (f.name.substr(f.name.length - 4, 4) != '.csv') {
+		InvalidCSV(t('passwords', 'Only files with CSV as file extension are allowed.'));
 	} else {
 		var r = new FileReader();
 		
@@ -1460,33 +1472,30 @@ function uploadCSV(event) {
 
 			var count = (contents.match(/\n/g) || []).length + 1 - headerCount;
 
-			if (count < 1) {
-				alert(t('passwords', 'This is not a valid CSV file.'));
-				$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
-				return false;
+			if ((count - headerCount) < 1) {
+				InvalidCSV(t('passwords', 'This file contains no passwords.'));
 			}
 
 			var lines = contents.split('\n');
 
-			for (i = headerCount; i < lines.length; i++) { 
+			for (i = headerCount; i < lines.length; i++) {
 				// i = 1 with headers, so skip i = 0 (headers tested before)
 
 				// loop once to check if all lines contain at least 3 values
-
-				if (lines[i].substr(0, 1) == '"') {
-					// "value1","value2","value3"
-					// cut first and last '"'
-					lines[i] = lines[i].substr(1, lines[i].trim().length - 2);
-					var line = lines[i].split('","');
-				} else {
-					// value1,value2,value3
-					var line = lines[i].split(',');
-				}
 				
-				if (line.length < 3 && lines[i] != '') {
-					alert(t('passwords', 'This is not a valid CSV file.'));
-					$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
-					return false;
+				if (lines[i] != '') {
+					if (lines[i].substr(0, 1) != '"') {
+						InvalidCSV(t('passwords', 'This file contains one or more values without quotation marks.'));
+					}
+					var line = lines[i].split('","');
+					if (line.length < 3) {
+						InvalidCSV(t('passwords', 'This file contains one or more lines with less than 3 columns.'));
+					}
+					// line is "value1","value2","value3"
+					// and thus cut first and last '"'
+					lines[i] = lines[i].substr(1, lines[i].trim().length - 2);
+				} else {
+					count = count - 1;
 				}
 			}
 
@@ -1498,54 +1507,78 @@ function uploadCSV(event) {
 
 			if (confirmed) {
 
-				var loginCSV = '';
-				var websiteCSV = '';
-				var urlCSV = '';
-				var passwordCSV = '';
-				var notesCSV = '';
+				for (i = headerCount; i < lines.length; i++) {
 
-				for (i = headerCount; i < lines.length; i++) { // i = 1 with headers, so skip i = 0 (headers tested before)
+					if (lines[i] != '') {
 
-					if ($('#website-csv').val().toLowerCase() != 'x') {
-						var websiteCSV = line[$('#website-csv').val() - 1];
-					}
-					if ($('#login-csv').val().toLowerCase() != 'x') {
-						var loginCSV = line[$('#login-csv').val() - 1];
-					}
-					if ($('#password-csv').val().toLowerCase() != 'x') {
-						var passwordCSV = line[$('#password-csv').val() - 1];
-					}
-					if ($('#url-csv').val().toLowerCase() != 'x') {
-						var urlCSV = line[$('#url-csv').val() - 1];
-					}
-					if ($('#notes-csv').val().toLowerCase() != 'x') {
-						var notesCSV = line[$('#notes-csv').val() - 1];
-					}
+						var line = lines[i].split('","');
 
-					var password = {
-						website: websiteCSV,
-						loginname: loginCSV,
-						address: urlCSV,
-						pass: passwordCSV,
-						notes: notesCSV,
-						deleted: "0"
-					};
+						var loginCSV = '';
+						var websiteCSV = '';
+						var urlCSV = '';
+						var passwordCSV = '';
+						var notesCSV = '';
 
-					// add them one at the time
-					$.ajax({
-						url: OC.generateUrl('/apps/passwords/passwords'),
-						method: 'POST',
-						contentType: 'application/json',
-						data: JSON.stringify(password)
-					//}).done(function() {
-					}).fail(function() {
-						alert(t('passwords', 'Error: Could not create password.') 
-							+ '\n\n'
-							+ t('passwords', 'Website or company') + ': ' + line[0] + '\n'
-							+ t('passwords', 'Login name') + ': ' + line[1] + '\n'
-							+ t('passwords', 'Password') + ': ' + line[2] + '\n');
-					});
+						if ($('#website-csv').val().toLowerCase() != 'x') {
+							var websiteCSV = line[$('#website-csv').val() - 1];
+						}
+						if ($('#login-csv').val().toLowerCase() != 'x') {
+							var loginCSV = line[$('#login-csv').val() - 1];
+						}
+						if ($('#password-csv').val().toLowerCase() != 'x') {
+							var passwordCSV = line[$('#password-csv').val() - 1];
+						}
+						if ($('#url-csv').val().toLowerCase() != 'x') {
+							var urlCSV = line[$('#url-csv').val() - 1];
+						}
+						if ($('#notes-csv').val().toLowerCase() != 'x') {
+							var notesCSV = line[$('#notes-csv').val() - 1];
+						}
 
+						urlCSV = urlCSV.toLowerCase();
+
+						// validate URL, must have protocol like http(s)						
+						if (urlCSV != '' 
+							&& urlCSV.substring(0,7).toLowerCase() != 'http://' 
+							&& urlCSV.substring(0,8).toLowerCase() != 'https://') 
+						{
+							if (isUrl(urlCSV)) {
+								// valid ULR, so add http
+								urlCSV = 'http://' + urlCSV;
+								// now check if valid
+								if (!isUrl(urlCSV)) {
+									alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
+									urlCSV = '';
+								}
+							} else {
+								alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
+								urlCSV = '';
+							}
+						}
+						var password = {
+							'website' : websiteCSV,
+							'loginname' : loginCSV,
+							'address' : urlCSV,
+							'pass' : passwordCSV,
+							'notes' : notesCSV,
+							'deleted' : "0"
+						};
+
+						// add them one at the time
+						$.ajax({
+							url: OC.generateUrl('/apps/passwords/passwords'),
+							method: 'POST',
+							contentType: 'application/json',
+							data: JSON.stringify(password)
+						}).done(function() {
+						}).fail(function() {
+							alert(t('passwords', 'Error: Could not create password.') 
+								+ '\n\n'
+								+ t('passwords', 'Website or company') + ': ' + line[0] + '\n'
+								+ t('passwords', 'Login name') + ': ' + line[1] + '\n'
+								+ t('passwords', 'Password') + ': ' + line[2] + '\n');
+						});
+					}
 				}	
 
 				alert(t('passwords', 'Import of passwords done. This page will now reload.'));
@@ -1560,6 +1593,12 @@ function uploadCSV(event) {
 
 	$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
 
+}
+function InvalidCSV(error_description) {
+	$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+	alert(t('passwords', 'This is not a valid CSV file.') + ' ' 
+		+ error_description);
+	throw new Error('Error: ' + error_description);
 }
 
 function popUp(title, value, column, address_value, website, username) {
