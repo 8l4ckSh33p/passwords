@@ -72,7 +72,7 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 	<p><?php p($l->t("Create some new passwords!")); ?></p> 
 </div>
 <div id="emptytrashbin">
-	<div class="icon-trash"></div>
+	<div class="icon-delete"></div>
 	<h2><?php p($l->t("Empty trash bin")); ?></h2>
 	<p><?php p($l->t("Deleted passwords will be shown here!")); ?></p> 
 </div>
