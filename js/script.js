@@ -1310,7 +1310,7 @@ function update_pwcount() {
 
 }
 function escapeHTML(text) {
-    return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 function isUrl(url) {
 
@@ -1389,6 +1389,7 @@ function backupPasswords() {
 
 	var d = new Date();
 	var textToWrite = '"Website","Username","Passwords","FullAddress","Notes",""\r\n';
+	var rowValue;
 
 	var table = document.getElementById('PasswordsTableContent');
 	for (var i = 1; i < table.rows.length; i++) {
@@ -1396,7 +1397,10 @@ function backupPasswords() {
 
 
 			if (j == 0 || j == 1 || j == 2 || j == 12 || j == 13) { // columns: website, username, pass, address, notes
-				textToWrite += '"' + table.rows[i].cells[j].textContent + '",';
+				rowValue = table.rows[i].cells[j].textContent;
+				// escape " and \ by putting a \ before them
+				rowValue = rowValue.replace('"', '\\"').replace('\\', '\\\\');
+				textToWrite += '"' + rowValue + '",';
 			}
 
 			textToWrite += '""\r\n';
@@ -1561,6 +1565,9 @@ function uploadCSV(event) {
 								urlCSV = '';
 							}
 						}
+
+						// unescape " and \ by deleting the \ before them
+						passwordCSV = passwordCSV.replace('\\"', '"').replace('\\\\', '\\');
 						var password = {
 							website : websiteCSV,
 							loginname : loginCSV,
