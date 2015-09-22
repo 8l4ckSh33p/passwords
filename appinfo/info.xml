@@ -14,7 +14,7 @@
     </description>
     <licence>AGPL</licence>
     <author>Fallon Turner</author>
-    <version>8.0.13</version>
+    <version>8.0.14alpha</version>
     <namespace>Passwords</namespace>
     <category>tool</category>
     <dependencies>
