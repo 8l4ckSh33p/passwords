@@ -201,7 +201,16 @@
 		
 					if ((event.target.tagName == 'DIV' && (col == 1 || col == 2)) 
 						|| (event.target.tagName == 'DIV' && (event.target.className).indexOf('hidevalue') > -1)) {
-						prompt(thead + ':', table.rows[row].cells[col].textContent);
+						var copySupported = document.queryCommandSupported('copy');
+						if (copySupported) {
+							var sandbox = $('#sandbox').val(str).select();
+							document.execCommand('copy');
+							sandbox.val('');
+							alert(t('passwords', 'Value copied to clipboard.'));
+						} else {
+							prompt(thead + ':', table.rows[row].cells[col].textContent);
+						}
+						
 					}
 					
 					if (event.target.className == 'edit_value' || (col == 13)) {
