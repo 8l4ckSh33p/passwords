@@ -203,7 +203,7 @@
 						|| (event.target.tagName == 'DIV' && (event.target.className).indexOf('hidevalue') > -1)) {
 						var copySupported = document.queryCommandSupported('copy');
 						if (copySupported) {
-							var sandbox = $('#sandbox').val(str).select();
+							var sandbox = $('#sandbox').val(table.rows[row].cells[col].textContent).select();
 							document.execCommand('copy');
 							sandbox.val('');
 							alert(t('passwords', 'Value copied to clipboard.'));
