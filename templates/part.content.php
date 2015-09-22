@@ -77,4 +77,7 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 	<p><?php p($l->t("Deleted passwords will be shown here!")); ?></p> 
 </div>
 
-<textarea id="sandbox"></textarea>
+<div id="sandbox_hide">
+	<textarea id="sandbox"></textarea>
+</div>
+
