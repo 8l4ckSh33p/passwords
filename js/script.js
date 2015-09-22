@@ -178,6 +178,13 @@
 
 				$('#app-settings-content').hide();
 
+				$('#PasswordsTableContent td #FieldLengthCheck').mouseenter(function(event) {
+					selectElementText(event.target);
+				});
+				$('#PasswordsTableContent td #FieldLengthCheck').mouseleave(function() {
+					unselectElementText(this);
+				});
+
 				$('#PasswordsTableContent td').click(function(event) {
 					var table = document.getElementById('PasswordsTableContent');
 					var col = $(this).parent().children().index($(this));
@@ -198,22 +205,11 @@
 					thead = thead.replace('▴', '');
 					thead = thead.replace('▾', '');
 					thead = thead.trim();
-		
+
 					if ((event.target.tagName == 'DIV' && (col == 1 || col == 2)) 
-						|| (event.target.tagName == 'DIV' && (event.target.className).indexOf('hidevalue') > -1)) {
-						var copySupported = document.queryCommandSupported('copy');
-						if (copySupported) {
-							var sandbox = $('#sandbox').val(table.rows[row].cells[col].textContent).select();
-							document.execCommand('copy');
-							sandbox.val('');
-							alert(t('passwords', 'Value copied to clipboard.'));
-						} else {
-							prompt(thead + ':', table.rows[row].cells[col].textContent);
-						}
-						
-					}
-					
-					if (event.target.className == 'edit_value' || (col == 13)) {
+					 	|| (event.target.tagName == 'DIV' && (event.target.className).indexOf('hidevalue') > -1)
+						|| event.target.className == 'edit_value' 
+						|| col == 13) {
 					
 						var old_value = table.rows[row].cells[col].textContent;
 
@@ -1725,6 +1721,7 @@ function popUp(title, value, column, address_value, website, username) {
 	}
 
 	$('#new_value_popup').focus();
+	$('#new_value_popup').select();
 
 	// align to vertical center
 	var popupHeight = document.getElementById('popup').clientHeight;
@@ -1737,4 +1734,37 @@ function popUp(title, value, column, address_value, website, username) {
 		document.getElementById("popup").style.top = (browserHeight - popupHeight) / 4 + "px";	
 	}
 	
+}
+function selectElementText(el, win) {
+    el.focus();
+    win = win || window;
+    var doc = win.document, sel, range;
+    if (win.getSelection && doc.createRange) {
+        sel = win.getSelection();
+        range = doc.createRange();
+        range.selectNodeContents(el);
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (doc.body.createTextRange) {
+        range = doc.body.createTextRange();
+        range.moveToElementText(el);
+        range.select();
+    }
+    var copyText;
+    if (navigator.userAgent.toLowerCase().indexOf("android") == -1
+	&& navigator.userAgent.toLowerCase().indexOf("iphone")  == -1
+	&& navigator.userAgent.toLowerCase().indexOf("ipad")  == -1
+	&& navigator.userAgent.toLowerCase().indexOf("ipod")  == -1) {
+    	if (navigator.userAgent.toLowerCase().indexOf("mac os x")) {
+			copyText = '\u2318+C';
+		} else {
+			copyText = 'Ctrl+C';
+		}
+		$('#notification').css('display', 'inline-block');
+		$('#notification').text(('Press %s to copy this selected value to clipboard').replace('%s', copyText));
+    }
+}
+function unselectElementText(el) {
+	$('#notification').css('display', 'none');
+	$('#new_password').click();
 }
