@@ -209,7 +209,9 @@ div#FieldLengthCheck:not(.hidevalue) {
 	opacity: .4;
 }
 #sandbox {
-	display: none;
+	position: absolute;
+	left: -9999px;
+	top: -9999px;
 }
 #blockedcontent {
   font-size: 16px;
