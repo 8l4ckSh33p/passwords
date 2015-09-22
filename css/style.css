@@ -208,6 +208,9 @@ div#FieldLengthCheck:not(.hidevalue) {
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
 	opacity: .4;
 }
+#sandbox {
+	display: none;
+}
 #blockedcontent {
   font-size: 16px;
   color: #888;
