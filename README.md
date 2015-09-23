@@ -7,7 +7,7 @@
 ## Introduction
 This is a Password Manager for viewing, editing and generating passwords (see 'img'-folder for screenshots) in ownCloud. You can insert or import your own passwords or randomly generate new ones. Some characters are excluded upon password generation for readability purposes (1, I, l and B, 8 and o, O, 0). Passwords are stored heavily encrypted into the ownCloud database (read Security part for details). 
 
-This app is translated to [the 10 most spoken languages in the world](http://www.wolframalpha.com/input/?i=Top+10+spoken+languages) (1-10: Mandarin, English, Hindi, Spanish, Russian, Portuguese, Indonesian, Bengali, Arabic and Malay) and Catalan, Dutch, German and Italian.
+This app is translated to [the 10 most spoken languages in the world](http://www.wolframalpha.com/input/?i=Top+10+spoken+languages) (1-10: Mandarin, English, Hindi, Spanish, Russian, Portuguese, Indonesian, Bengali, Arabic and Malay) and West-European languages: Catalan, Dutch, French, German and Italian.
 
 This app is primarily intended as a password MANAGER, e.g. for a local ownCloud instance on your own WPA2 protected LAN. If you trust yourself enough as security expert, you can use this app behind an SSL secured server for a neat cloud solution. The app will be blocked (with message) if not accessed thru https, which will result in your passwords not being loaded (decrypted) and shown. To prevent this, use ownClouds own 'Force SSL'-function on the admin page, or use HSTS (HTTP Strict Transport Security) on your server. Also, make sure your server hasn't any kind of vulnerabilities (POODLE, CSRF, XSS, SQL Injection, Privilege Escalation, Remote Code Execution, to name a few).
 
