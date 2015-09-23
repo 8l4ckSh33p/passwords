@@ -38,8 +38,8 @@ There is a built in option to view website icons in the password table. This can
 * [https://www.google.com/s2/favicons?domain=owncloud.org](https://www.google.com/s2/favicons?domain=owncloud.org) (16x16 pixels)
 
 ## Installation
-Download the latest release and copy the folder 'passwords' to /owncloud/apps/ (**remember that the folder must be called 'passwords'**). Login as admin and enable the app. The database table will be created automatically.
-[View this app on apps.owncloud.org](https://apps.owncloud.com/content/show.php/Passwords?content=170480)
+Download [this latest release](https://github.com/fcturner/passwords/releases/latest) and copy the folder 'passwords' to /owncloud/apps/ (**remember that the folder must be called 'passwords'**). Login as admin and enable the app. The database table will be created automatically.
+[View this app on apps.owncloud.org.](https://apps.owncloud.com/content/show.php/Passwords?content=170480)
 
 ### Credits
 I would like to thank Anthony Ferrara ([ircmaxell](http://careers.stackoverflow.com/ircmaxell)), for [teaching the world how to properly set up](http://stackoverflow.com/questions/5089841/two-way-encryption-i-need-to-store-passwords-that-can-be-retrieved/5093422#5093422) security in PHP.
