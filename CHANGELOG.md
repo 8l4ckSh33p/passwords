@@ -1,7 +1,7 @@
 8.0.14
 * Added button in trash to permanently delete all passwords in trash bin
 * Auto-select on hover of passwords and usernames, with notification text to copy them with Ctrl+C or Cmd+C (detects system automatically). This is disabled for Android and iOS (of course)
-* Renamed *Creation date* tot *Last changed*
+* Renamed *Creation date* to *Last changed*
 * Fix for CSV files containing double quotation marks `"` or backslash `\` in values 
 * Fix for CSV files containing notes with multiple lines
 * Fix for CSV files containing a file extension in uppercase
