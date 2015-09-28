@@ -1746,8 +1746,9 @@ function popUp(title, value, column, address_value, website, username) {
 		});
 	}
 
-	$('#new_value_popup').focus();
-	$('#new_value_popup').select();
+	// no focus, to annoying for iPad and iPhone
+	// $('#new_value_popup').focus();
+	// $('#new_value_popup').select();
 
 	// align to vertical center
 	var popupHeight = document.getElementById('popup').clientHeight;
