@@ -178,11 +178,33 @@
 
 				$('#app-settings-content').hide();
 
-				$('#PasswordsTableContent td #FieldLengthCheck').mouseenter(function(event) {
+				$('td #FieldLengthCheck').mouseenter(function(event) {
 					selectElementText(event.target);
 				});
-				$('#PasswordsTableContent td #FieldLengthCheck').mouseleave(function() {
+				$('td #FieldLengthCheck').mouseleave(function() {
 					unselectElementText(this);
+				});
+
+				$('#delete_trashbin').click(function() {
+
+					if (!confirm(t('passwords', 'This will permanently delete all passwords in this trash bin.') + "\n\n" + t('passwords', "Are you sure?"))) {
+						return false;
+						throw new Error();
+					}
+
+					var table = document.getElementById('PasswordsTableContent');
+					var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+					for (var i = 1; i < table.rows.length; i++) {
+						// check for deleted status (1) and delete
+						if (table.rows[i].cells[15].textContent == '1') {
+							var db_id = table.rows[i].cells[10].textContent;
+					
+							passwords.removeByID(db_id).done(function() {
+							}).fail(function() {
+							});
+						}
+					}
+					location.reload(true);
 				});
 
 				$('#PasswordsTableContent td').click(function(event) {
@@ -207,7 +229,7 @@
 					thead = thead.trim();
 
 					if ((event.target.tagName == 'DIV' && (col == 1 || col == 2)) 
-					 	|| (event.target.tagName == 'DIV' && (event.target.className).indexOf('hidevalue') > -1)
+						|| (event.target.tagName == 'DIV' && (event.target.className).indexOf('hidevalue') > -1)
 						|| event.target.className == 'edit_value' 
 						|| col == 13) {
 					
@@ -504,6 +526,7 @@
 					$('#list_active').addClass('active');
 					$('#list_trash').removeClass('active');
 					$('#app-settings').attr("active-table", 'active');
+					$('#cleartrashbin').hide();
 					formatTable(true);
 					update_pwcount();
 				});
@@ -513,6 +536,9 @@
 					$('#app-settings').attr("active-table", 'trashbin');
 					formatTable(true);
 					update_pwcount();
+					if ($(".menu_passwords_trashbin").text() > 0) {
+						$('#cleartrashbin').show();
+					}
 				});
 
 				// clean up website: https://www.Google.com -> google.com
@@ -1464,7 +1490,7 @@ function uploadCSV(event) {
 		return false;
 	} else 
 		// validate file
-		if (f.name.substr(f.name.length - 4, 4) != '.csv') {
+		if (f.name.substr(f.name.length - 4, 4).toLowerCase() != '.csv') {
 		InvalidCSV(t('passwords', 'Only files with CSV as file extension are allowed.'));
 	} else {
 		var r = new FileReader();
@@ -1479,13 +1505,13 @@ function uploadCSV(event) {
 				var headerCount = 0;
 			}
 
-			var count = (contents.match(/\n/g) || []).length + 1 - headerCount;
+			var count = (contents.match(/\r\n/g) || []).length + 1 - headerCount;
 
 			if (count < 1) {
 				InvalidCSV(t('passwords', 'This file contains no passwords.'));
 			}
 
-			var lines = contents.split('\n');
+			var lines = contents.split('\r\n');
 
 			for (i = headerCount; i < lines.length; i++) {
 				// i = 1 with headers, so skip i = 0 (headers tested before)
@@ -1736,33 +1762,33 @@ function popUp(title, value, column, address_value, website, username) {
 	
 }
 function selectElementText(el, win) {
-    el.focus();
-    win = win || window;
-    var doc = win.document, sel, range;
-    if (win.getSelection && doc.createRange) {
-        sel = win.getSelection();
-        range = doc.createRange();
-        range.selectNodeContents(el);
-        sel.removeAllRanges();
-        sel.addRange(range);
-    } else if (doc.body.createTextRange) {
-        range = doc.body.createTextRange();
-        range.moveToElementText(el);
-        range.select();
-    }
-    var copyText;
-    if (navigator.userAgent.toLowerCase().indexOf("android") == -1
+	el.focus();
+	win = win || window;
+	var doc = win.document, sel, range;
+	if (win.getSelection && doc.createRange) {
+		sel = win.getSelection();
+		range = doc.createRange();
+		range.selectNodeContents(el);
+		sel.removeAllRanges();
+		sel.addRange(range);
+	} else if (doc.body.createTextRange) {
+		range = doc.body.createTextRange();
+		range.moveToElementText(el);
+		range.select();
+	}
+	var copyText;
+	if (navigator.userAgent.toLowerCase().indexOf("android") == -1
 	&& navigator.userAgent.toLowerCase().indexOf("iphone")  == -1
 	&& navigator.userAgent.toLowerCase().indexOf("ipad")  == -1
 	&& navigator.userAgent.toLowerCase().indexOf("ipod")  == -1) {
-    	if (navigator.userAgent.toLowerCase().indexOf("mac os x")) {
-			copyText = '\u2318+C';
-		} else {
+		if (navigator.userAgent.toLowerCase().indexOf("mac os x") == -1) {
 			copyText = 'Ctrl+C';
+		} else {
+			copyText = '\u2318+C'; //Cmd-logo + C
 		}
 		$('#notification').css('display', 'inline-block');
-		$('#notification').text(('Press %s to copy this selected value to clipboard').replace('%s', copyText));
-    }
+		$('#notification').text((t('passwords', 'Press %s to copy this selected value to clipboard')).replace('%s', copyText));
+	}
 }
 function unselectElementText(el) {
 	$('#notification').css('display', 'none');
