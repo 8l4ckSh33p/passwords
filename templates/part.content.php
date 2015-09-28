@@ -3,6 +3,10 @@ $days_orange = \OCP\Config::getAppValue('passwords', 'days_orange', '150');
 $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 ?>
 
+<div id="cleartrashbin">
+	<input type="button" id="delete_trashbin" value="<?php p($l->t("Delete all items in trash bin")); ?>">
+</div>
+
 <div id="PasswordsTable">
 
 	<table id="PasswordsTableContent" class="sortable">
@@ -16,7 +20,7 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 			<th class="hide_attributes" id="hide1">A-Z</th>
 			<th class="hide_attributes" id="hide1">0-9</th>
 			<th class="hide_attributes" id="hide1">!@#</th>
-			<th id="hide2"><?php p($l->t("Creation date")); ?></th>
+			<th id="hide2"><?php p($l->t("Last changed")); ?></th>
 			<th id="hide_always">ID</th>
 			<th id="hide_always">User-ID</th>
 			<th id="hide_always">Address</th>
