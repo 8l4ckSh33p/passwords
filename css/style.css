@@ -197,6 +197,16 @@ div#FieldLengthCheck:not(.hidevalue) {
 	font-size: 22px;
 	margin-bottom: 10px;
 }
+#cleartrashbin {
+	text-align: center;
+	display: none;
+}
+#cleartrashbin #delete_trashbin {
+	font-weight: bold !important;
+	padding: 10px;
+	border-width: 3px !important;
+}
+
 #emptytrashbin [class^="icon-"], 
 .emptytrashbin [class^="icon-"], 
 #emptytrashbin [class*=" icon-"], 
