@@ -1,5 +1,5 @@
 ####15
-* Changed version numbering: 8.0.15 is replaced by 15, since future release may support for versions than OC8 only, and it suggests an ownCloud version more than an app version
+* Changed version numbering: 8.0.15 is replaced by 15, since future release may support more versions than OC8 only, and it suggests an ownCloud version more than an app version
 * Fix for editing values containing `<` or `>`, which did not showed up right
 
 ####8.0.14
