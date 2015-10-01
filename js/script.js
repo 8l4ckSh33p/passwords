@@ -307,7 +307,7 @@
 							var success = passwords.updateActive(db_id, user, website, address, pass, notes, deleted);
 							if (success) {
 								var innerHTMLtext = table.rows[row].cells[col].textContent;
-								table.rows[row].cells[col].innerHTML = innerHTMLtext.replace(old_value, new_value);
+								table.rows[row].cells[col].innerHTML = innerHTMLtext.replace(old_value, escapeHTML(new_value));
 								formatTable(true);
 							} else {
 								alert(t('passwords', 'Error: Could not update password.'));
