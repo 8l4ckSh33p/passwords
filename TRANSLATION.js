@@ -149,6 +149,7 @@
 "When the password date exceeds the limit for the green colour, the password will become orange or red too" : ""
 "with user name" : ""
 "Yes" : ""
+"Your administrator does not allow you to download backups" : ""
 
 // Found JS-strings (regex):
 // (t\('passwords['"], ['"]).+?(['"]\))
