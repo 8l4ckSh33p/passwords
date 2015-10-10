@@ -4,7 +4,7 @@
 * Added Italian language support
 * Added note for users when admin has blocked downloading of back-ups
 * Fix for editing values containing `<` or `>`
-* Language update? Look at [TRANSLATION.js](TRANSLATION.js), or [its change from v8.0.14 to v15](https://github.com/fcturner/passwords/commit/a378df2d07cc25891c7f08ff8048fdfd7fcb53e5).
+* Language update? Look at [TRANSLATION.js](TRANSLATION.js)
 
 ####8.0.14
 * Added button in trash to permanently delete all passwords in trash bin
