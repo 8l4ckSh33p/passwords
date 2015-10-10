@@ -1,3 +1,102 @@
+#CSVcontent,
+#CSVcolumnCount {
+	display: none;
+}
+#CSVbuttons button.CSVbuttonOff {
+	background-color: #ddd !important;
+	color: #555 !important;
+	transition: all 200ms !important;
+}
+#CSVbuttons button {
+	background-color: #0a0 !important;
+	color: #fff !important;
+	width: 175px;
+	height: 50px;
+	transition: all 200ms !important;
+	float: left;
+	border: 0 !important;
+	border-radius: 10px !important;
+	font-weight: normal;
+}
+#CSVbuttons button:hover {
+	opacity: 0.75 !important;
+	transition: all 200ms !important;
+}
+#CSVtableDIV {
+	display: none;
+	position: fixed;
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #999;
+	max-width: 95%;
+}
+#CSVtableScroll {
+	overflow-y: auto;
+	margin-top: 5px;
+	overflow-x: hidden;
+}
+#CSVtableDIV h2 {
+	font-size: 2em;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+#CSVtableDIV h3 {
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: left;
+	margin: 0;
+}
+#CSVtable {
+	border-collapse: collapse;
+}
+#CSVtable td {
+	border: 0 !important;
+	text-align: center;
+}
+#CSVtable thead td {
+	border-top: 0;
+	text-align: center;
+}
+#CSVtable tr {
+	border-bottom: 1px solid #ddd !important;
+}
+#CSVtable textarea {
+	height: 50px;
+	width: 100%;
+	text-align: center;
+	resize: none;
+	background: transparent !important;
+	border: 0 !important;
+	color: #000 !important;
+}
+#CSVtable select {
+	margin: 5px;
+	opacity: 0.9;
+	text-indent: 5px;
+	width: 90%;
+}
+#CSVtable input[type="checkbox"] {
+	-ms-transform: scale(2, 2);
+	-webkit-transform: scale(2, 2);
+	transform: scale(2, 2);
+}
+.CSVcolumnInvalid {
+	background: #a00;
+}
+#importStart,
+#importCancel {
+	float: right;
+	margin-top: 10px;
+}
+#CSVerrorfield {
+	padding-top: 10px;
+}
+#CSVerrorfield p {
+	background: #a00;
+	color: #fff;
+	padding: 5px;
+	font-weight: bold;
+}
 p, h2, label, .emptyinfo {
 	color: #555;
 }
@@ -323,30 +422,11 @@ td[title]:hover:after {
 	display: none;
 }
 
-#other-csv-list {
-	display: none;
-}
-.other-csv-list input {
-	width: 30px !important;
-	text-align: center;
-	height: 23px;
-	position: absolute;
-	right: 25px;
-	margin-top: -3px;
-}
 #subtitle {
 	font-style: italic;
 	margin-bottom: 5px;
 }
-#headers-csv {
-	height: 16px;
-	margin-top: 2px;
-	margin-right: 3px;
-}
-.other-csv-list {
-	margin-bottom: 6px;
-	margin-left: 10px;
-}
+
 #upload_csv {
 	color: #555;
 	margin-top: 10px;
