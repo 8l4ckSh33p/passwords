@@ -102,8 +102,6 @@ OC.L10N.register(
 	"Select at least one option to generate a password." : "Selecteer minimaal een optie om een wachtwoord te genereren.",
 	"Select none" : "Geen",
 	"Select options" : "Selecteer opties",
-	"Select this password to be able to copy it" : "Selecteer dit wachtwoord om het te kunnen kopiëren",
-	"Select this user name to be able to copy it" : "Selecteer deze gebruikersnaam om het te kunnen kopiëren",
 	"September" : "september",
 	"Show website icons" : "Website-icoontjes weergeven",
 	"site.com or Name Inc." : "site.nl of Bedrijf B.V.",
