@@ -37,9 +37,9 @@ $days_red = \OCP\Config::getAppValue('passwords', 'days_red', '365');
 	<p align="center"><?php print_unescaped($l->t("Click on a <b>user name</b> or a <b>password</b> to be able to copy it to the clipboard.")); ?></p>
 	<p align="center"><?php print_unescaped($l->t("Click on a <b>website</b> to open it in a new tab.")); ?></p>
 	<br>
-	<p align="center"><?php print_unescaped($l->t("The <b>creation date</b> becomes <orange>orange after %s days</orange> and <red>red after %s days</red>.", array($days_orange, $days_red))); ?></p>
+	<p align="center"><?php print_unescaped($l->t("The <b>password date</b> becomes <orange>orange after %s days</orange> and <red>red after %s days</red>.", array($days_orange, $days_red))); ?></p>
 	<p align="center"><?php print_unescaped($l->t("The <b>strength value</b> is interpreted as") . " <red>" . strtolower($l->t("Weak")) .  "</red> (0-7), <orange>" . strtolower($l->t("Moderate")) . "</orange> (8-14) " . $l->t("or") . " <green>" . strtolower($l->t("Strong")) . "</green> (>= 15)."); ?></p>
-	<p align="center"><?php print_unescaped($l->t("The <b>password colour</b> is determined by the password strength and the creation date (whichever comes first in weakness).")); ?></p>
+	<p align="center"><?php print_unescaped($l->t("The <b>password colour</b> is determined by the password strength and date (whichever comes first in weakness).")); ?></p>
 	<br>
 
 </div>
