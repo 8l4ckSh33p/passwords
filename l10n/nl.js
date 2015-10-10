@@ -147,6 +147,7 @@ OC.L10N.register(
 	"Website or company" : "Website of bedrijf",
 	"When the password date exceeds the limit for the green colour, the password will become orange or red too" : "Wanneer de wachtwoorddatum het limiet overschrijdt van de groene kleur, wordt het wachtwoord ook oranje of rood",
 	"with user name" : "met gebruikersnaam",
-	"Yes" : "Ja"
+	"Yes" : "Ja",
+	"Your administrator does not allow you to download backups" : "Uw beheerder staat u niet toe om back-ups te downloaden"
 },
 "nplurals=2; plural=(n != 1);");
