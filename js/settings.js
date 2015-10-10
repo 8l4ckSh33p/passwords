@@ -1,6 +1,6 @@
 
 // ADMIN SETTINGS
-// backup_allow
+// backup_allowed
 //		Allow unencrypted backups to be downloaded by users
 // days_orange
 //		Days from which creation date (and password) gets orange color
