@@ -42,8 +42,8 @@
 
 	<br>
 	<div>
-		<h3><?php p($l->t('Colour of creation date')); ?></h3>
-		<p><?php p($l->t('When the creation date of a password exceeds the limit for the green colour, the password will become orange or red too')); ?>.</p>
+		<h3><?php p($l->t('Colour of password date')); ?></h3>
+		<p><?php p($l->t('When the password date exceeds the limit for the green colour, the password will become orange or red too')); ?>.</p>
 		<label> 
 			<green><?php p($l->t('Green') . ': 0 ' . $l->t('to')); ?> <input type="text" id="days_orange" class="fieldDays" value=""> <?php p($l->t('days')); ?></green>
 		</label>
