@@ -181,11 +181,11 @@
 				$('td #FieldLengthCheck').mouseenter(function(event) {
 					selectElementText(event.target);
 				});
-				$('td #FieldLengthCheck').mouseleave(function() {
-					unselectElementText(this);
+				$('td #FieldLengthCheck').mouseleave(function(event) {
+					unselectElementText(event.target);
 				});
 
-				$('#delete_trashbin').click(function() {
+				$('#delete_trashbin').click(function(event) {
 
 					if (!confirm(t('passwords', 'This will permanently delete all passwords in this trash bin.') + "\n\n" + t('passwords', "Are you sure?"))) {
 						return false;
@@ -402,7 +402,7 @@
 
 								
 			},
-			renderNavigation: function() {		
+			renderNavigation: function() {
 
 				// set settings
 				var settings = new Settings(OC.generateUrl('/apps/passwords/settings'));
@@ -433,75 +433,46 @@
 				});
 
 				// CSV import
-				$('#upload_csv').on( "change", function(event) {
+				$('#upload_csv').on('change', function(event) {
 					uploadCSV(event);
 				});
-				$('#app-settings-content').on( "hide", function(event) {
-					$('#owncloud-csv').prop('checked', true);
-					$('#other-csv-list').hide();
+				$('#importStart').click(function() {
+					checkCSVsettings();
+					importCSV();
 				});
-				$('#other-csv').click(function() {
-					$('#other-csv-list').show(400);
+				$('#importCancel').click(function() {
+					$('#CSVtableDIV').hide();
+					$('#CSVcontent').text('');
+					$('#CSVheadersBtn').removeClass('CSVbuttonOff');
+					$('#CSVquotationmarksBtn').removeClass('CSVbuttonOff');
+					$('#CSVescapeslashBtn').removeClass('CSVbuttonOff');
+					$('#CSVsplit_rnBtn').removeClass('CSVbuttonOff');
 				});
-				$('#owncloud-csv').click(function() {
-					// set columns correctly for ownCloud Passwords (this app)
-					$('#website-csv').val('1');
-					$('#login-csv').val('2');
-					$('#password-csv').val('3');
-					$('#url-csv').val('4');
-					$('#notes-csv').val('5');
-					$('#headers-csv').prop('checked', true);
-					$('#other-csv-list').hide(400);
+				$('#CSVheadersBtn').click(function() {
+					$('#CSVheadersBtn').toggleClass('CSVbuttonOff');
+					renderCSV(false);
 				});
-				$('#keepass-csv').click(function() {
-					// set columns correctly for KeePass CSV 1.x
-					$('#website-csv').val('1');
-					$('#login-csv').val('2');
-					$('#password-csv').val('3');
-					$('#url-csv').val('4');
-					$('#notes-csv').val('5');
-					$('#headers-csv').prop('checked', true);
-					$('#other-csv-list').hide(400);
+				$('#CSVquotationmarksBtn').click(function() {
+					$('#CSVquotationmarksBtn').toggleClass('CSVbuttonOff');
+					renderCSV(false);
 				});
-				$('#lastpass-csv').click(function() {
-					// set columns correctly for LastPass CSV
-					$('#website-csv').val('5');
-					$('#login-csv').val('2');
-					$('#password-csv').val('3');
-					$('#url-csv').val('1');
-					$('#notes-csv').val('4');
-					$('#headers-csv').prop('checked', true);
-					$('#other-csv-list').hide(400);
+				$('#CSVescapeslashBtn').click(function() {
+					$('#CSVescapeslashBtn').toggleClass('CSVbuttonOff');
+					renderCSV(false);
 				});
-				$('#onepassword-csv').click(function() {
-					// set columns correctly for 1Password
-					$('#website-csv').val('1');
-					$('#login-csv').val('3');
-					$('#password-csv').val('4');
-					$('#url-csv').val('2');
-					$('#notes-csv').val('5');
-					$('#headers-csv').prop('checked', true);
-					$('#other-csv-list').hide(400);
+				$('#CSVsplit_rnBtn').click(function() {
+					$('#CSVsplit_rnBtn').toggleClass('CSVbuttonOff');
+					renderCSV(false);
 				});
-				$('#splash-csv').click(function() {
-					// set columns correctly for SplashID
-					$('#website-csv').val('2');
-					$('#login-csv').val('3');
-					$('#password-csv').val('4');
-					$('#url-csv').val('5');
-					$('#notes-csv').val('x');
-					$('#headers-csv').prop('checked', true);
-					$('#other-csv-list').hide(400);
+				$('#selectAll').click(function() {
+					var checkboxes = $('#CSVtable td').find(':checkbox');
+					checkboxes.prop('checked', true);
 				});
-				$('#other-csv').click(function() {
-					// set columns correctly for other
-					$('#website-csv').val('1');
-					$('#login-csv').val('2');
-					$('#password-csv').val('3');
-					$('#url-csv').val('4');
-					$('#notes-csv').val('x');
-					$('#headers-csv').prop('checked', true);
+				$('#selectNone').click(function() {
+					var checkboxes = $('#CSVtable td').find(':checkbox');
+					checkboxes.prop('checked', false);
 				});
+				
 
 				// clear search field
 				$('#search_clear').click(function() {
@@ -549,17 +520,15 @@
 						&& $('#new_address').val() == '') {
 						$('#new_address').val(this.value.toLowerCase());
 						$('#new_website').val(strip_website(this.value).toLowerCase());
-					} //else {
-						//$('#new_website').val(strip_website(this.value).toLowerCase());	
-					//}
+					}
 					
 				});
 				// try to set a domain entry on website field
 				$('#new_address').focusout(function() {
 					if ((this.value.substring(0,7).toLowerCase() == 'http://' 
 							|| this.value.substring(0,8).toLowerCase() == 'https://'
-							|| this.value.substring(0,4).toLowerCase() == 'www.'
-							) && $('#new_website').val() == '') {
+							|| this.value.substring(0,4).toLowerCase() == 'www.') 
+						&& $('#new_website').val() == '') {
 						$('#new_website').val(URLtoDomain(this.value));
 					}
 				});
@@ -723,7 +692,7 @@ function strHasSpecial(str) {
 
 	var number;
 
-	for (i = 0; i < str.length; i++) {
+	for (var i = 0; i < str.length; i++) {
 	
 		number = 0;
 		number = str.substring(i, i + 1).charCodeAt(0);
@@ -1117,7 +1086,7 @@ function strength_func(Password) {
 	}
 
 	// loop ONCE through password
-	for (i = 1; i < passwordLength + 1; i++) {
+	for (var i = 1; i < passwordLength + 1; i++) {
 		
 		charInStr = Password.slice(i, i + 1);
 		charInt = charInStr.charCodeAt(0);
@@ -1341,7 +1310,11 @@ function update_pwcount() {
 
 }
 function escapeHTML(text) {
-	return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	if (typeof text !== 'undefined') {
+		return text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+	} else {
+		return text;
+	}
 }
 function isUrl(url) {
 
@@ -1430,7 +1403,7 @@ function backupPasswords() {
 			if (j == 0 || j == 1 || j == 2 || j == 12 || j == 13) { // columns: website, username, pass, address, notes
 				rowValue = table.rows[i].cells[j].textContent;
 				// escape " and \ by putting a \ before them
-				rowValue = rowValue.replace('"', '\\"').replace('\\', '\\\\');
+				rowValue = rowValue.replace(/"/g, '\\"').replace(/\\/g, '\\\\');
 				textToWrite += '"' + rowValue + '",';
 			}
 
@@ -1438,7 +1411,7 @@ function backupPasswords() {
 
 	}
 
-	var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'});
+	var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'}); 
 	var d = new Date();
 
 	// filename as YYYYMMDD_backup.txt
@@ -1448,7 +1421,7 @@ function backupPasswords() {
 						 + '_backup.csv';
 
 	var downloadLink = document.createElement("a");
-	downloadLink.download = fileNameToSaveAs;
+	downloadLink.download = fileNameToSaveAs; 
 	downloadLink.innerHTML = "Download File";
 	
 	if (window.webkitURL != null) {
@@ -1488,176 +1461,406 @@ function uploadCSV(event) {
 		alert('No file loaded');
 		$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
 		return false;
-	} else 
+	} else if (f.name.substr(f.name.length - 4, 4).toLowerCase() != '.csv') {
 		// validate file
-		if (f.name.substr(f.name.length - 4, 4).toLowerCase() != '.csv') {
-		InvalidCSV(t('passwords', 'Only files with CSV as file extension are allowed.'));
+		alert(t('passwords', 'This is not a valid CSV file.') + ' '
+		+ ('passwords', 'Only files with CSV as file extension are allowed.'));
+		$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+		return false;
 	} else {
+
 		var r = new FileReader();
 		
-		r.onload = function(event) { 
-			var contents = event.target.result;
+		r.onload = function(event) {
+			var fileContent = event.target.result;
+			$('#CSVcontent').text(fileContent);
+			renderCSV(true);
+		}
+		r.readAsText(f); // = execute
+	}
 
-			var headersCSV = $('#headers-csv').prop('checked');
-			if (headersCSV) {
-				var headerCount = 1;
-			} else {
-				var headerCount = 0;
+	$('#CSVtableDIV h2').text(t('passwords', 'Import CSV File') + ": '" + f.name + "' (~" + Math.round(f.size / 1024) + ' kB)');
+	$('#CSVpreviewTitle').text(t('passwords', 'Preview') + ":");
+
+	// reset upload file field
+	$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
+
+}
+function renderCSV(firstTime) {
+
+	// clear first
+	if (firstTime) {
+		$('#CSVtable').empty();
+	} else {
+		$('#CSVtable tbody').empty();
+	}
+	$('#CSVerrorfield').empty();
+
+	var contents = $('#CSVcontent').text();
+
+	if ($('#CSVsplit_rnBtn').hasClass('CSVbuttonOff')) {
+		var count = (contents.match(/\n/g) || []).length + 1;
+		var lines = contents.split('\n');
+	} else {
+		var count = (contents.match(/\r\n/g) || []).length + 1;
+		var lines = contents.split('\r\n');
+	}
+	if ($('#CSVheadersBtn').hasClass('CSVbuttonOff')) {
+		var startRow = 0;
+	} else {
+		var startRow = 1;
+	}
+	if ($('#CSVquotationmarksBtn').hasClass('CSVbuttonOff')) {
+		var quotationMarks = false;
+		var splitDelimiter = ',';
+	} else {
+		var quotationMarks = true;
+		var splitDelimiter = '","';
+	}
+	if ($('#CSVescapeslashBtn').hasClass('CSVbuttonOff')) {
+		var escapeSlash = false;
+	} else {
+		var escapeSlash = true;
+	}
+
+	if (count < 1) {
+		InvalidCSV(t('passwords', 'This file contains no passwords.'));
+	}
+
+	var countColumns = 0;
+
+	for (var i = startRow; i < lines.length; i++) {
+		// i = 1 with headers, so skip i = 0 (headers tested before)
+
+		// loop once to check if all lines contain at least 3 values
+		
+		if (lines[i] != '') {
+			if (!quotationMarks && lines[i].substr(0, 1) != '"') {
+				InvalidCSV(t('passwords', 'This file contains one or more values without quotation marks.'));
 			}
 
-			var count = (contents.match(/\r\n/g) || []).length + 1 - headerCount;
+			var line = lines[i].split(splitDelimiter);
 
-			if (count < 1) {
-				InvalidCSV(t('passwords', 'This file contains no passwords.'));
+			if (countColumns < line.length) {
+				countColumns = line.length;
 			}
+			if (line.length < 3) {
+				InvalidCSV(t('passwords', 'This file contains one or more lines with less than 3 columns.'));
+			}
+			if (quotationMarks) {
+				// line is "value1","value2","value3"
+				// and thus cut first and last '"'
+				lines[i] = lines[i].substr(1, lines[i].trim().length - 2);
+			}
+		} else {
+			count = count - 1;
+		}
+	}
 
-			var lines = contents.split('\r\n');
+	// create tableheads
+	var CSVtable = $('#CSVtable');
 
-			for (i = headerCount; i < lines.length; i++) {
-				// i = 1 with headers, so skip i = 0 (headers tested before)
+	if (firstTime) {
+		var tableHead = '<thead><tr><td id="CSVcolumnCheck">' + t('passwords', 'Import') + ':</td>'
+		for (i = 1; i < countColumns + 1; i++) {
+			tableHead = tableHead +
+				'<td id="CSVcolumnTD' + i + '">' +
+					'<select id="CSVcolumn' + i + '">' +
+						'<option value="website">' + t('passwords', 'Website or company') + '</option>' +
+						'<option value="username">' + t('passwords', 'Login name') + '</option>' +
+						'<option value="password">' + t('passwords', 'Password') + '</option>' +
+						'<option value="url">' + t('passwords', 'Full URL') + '</option>' +
+						'<option value="notes">' + t('passwords', 'Notes') + '</option>' +
+						'<option value="empty" selected>(' + t('passwords', 'Do not import') + ')</option>' +
+					'</select>' +
+				'</td>';
+		}
 
-				// loop once to check if all lines contain at least 3 values
-				
-				if (lines[i] != '') {
-					if (lines[i].substr(0, 1) != '"') {
-						InvalidCSV(t('passwords', 'This file contains one or more values without quotation marks.'));
+		tableHead = tableHead + '</tr></thead>';
+		CSVtable.append(tableHead);
+
+		$('#CSVcolumn1 option').eq(0).prop('selected', true);
+		$('#CSVcolumn2 option').eq(1).prop('selected', true);
+		$('#CSVcolumn3 option').eq(2).prop('selected', true);
+		$('#CSVcolumn4 option').eq(3).prop('selected', true);
+		$('#CSVcolumn5 option').eq(4).prop('selected', true);
+	}
+
+	var tableBody = '<tbody>';
+	for (i = startRow; i < lines.length; i++) {
+		if (lines[i] != '') {
+			var line = lines[i].split(splitDelimiter);
+			
+			tableBody = tableBody + '<tr><td><input type="checkbox" id="CSVcheckRow' + i + '" checked></td>';	
+
+			for (var j = 0; j < countColumns; j++) {
+				if (typeof line[j] !== 'undefined') {
+					if (escapeSlash) {
+						tableBody = tableBody + '<td><textarea disabled>' + escapeHTML(line[j]).replace(/\\"/g, '"').replace(/\\\\/g, '\\') + '</textarea></td>';
+					 } else {
+						tableBody = tableBody + '<td><textarea disabled>' + escapeHTML(line[j]) + '</textarea></td>';
 					}
-					var line = lines[i].split('","');
-					if (line.length < 3) {
-						InvalidCSV(t('passwords', 'This file contains one or more lines with less than 3 columns.'));
-					}
-					// line is "value1","value2","value3"
-					// and thus cut first and last '"'
-					lines[i] = lines[i].substr(1, lines[i].trim().length - 2);
-				} else {
-					count = count - 1;
+				}
+			}
+			tableBody = tableBody + '</tr>';
+		}
+	}
+	tableBody = tableBody + '</tbody>';
+	CSVtable.append(tableBody);
+
+	if (firstTime) {
+		// align to horizontal center
+		$('#CSVtableDIV').show();
+		var CSVtableDIVWidth = document.getElementById('CSVtableDIV').clientWidth;
+		var browserWidth = Math.max(
+			document.body.scrollWidth, document.documentElement.scrollWidth,
+			document.body.offsetWidth, document.documentElement.offsetWidth,
+			document.body.clientWidth, document.documentElement.clientWidth
+		);
+		// align to vertical center
+		var CSVtableDIVHeight = document.getElementById('CSVtableDIV').clientHeight;
+		var browserHeight = Math.max(
+			document.body.scrollHeight, document.documentElement.scrollHeight,
+			document.body.offsetHeight, document.documentElement.offsetHeight,
+			document.body.clientHeight, document.documentElement.clientHeight
+		);
+		$('#CSVtableScroll').css('maxHeight', browserHeight * 0.45);
+		document.getElementById("CSVtableDIV").style.left = (browserWidth - CSVtableDIVWidth) / 2 + "px";
+		document.getElementById("CSVtableDIV").style.top = (browserHeight - CSVtableDIVHeight) / 3 + "px";	
+		$('#CSVtableDIV').hide();
+		$('#app-settings-content').hide();
+		$('#CSVtableDIV').show(400);
+	}
+
+	// set title of preview + password count
+	if ((count - startRow) == 1) {
+		$('#CSVpreviewTitle').text(t('passwords', 'Preview') + ' (' + (count - startRow) + ' ' + t('passwords', 'Password').toLowerCase() + '):');
+	} else {
+		$('#CSVpreviewTitle').text(t('passwords', 'Preview') + ' (' + (count - startRow) + ' ' + t('passwords', 'Passwords').toLowerCase() + '):');
+	}
+
+	$('#CSVcolumnCount').val(countColumns);
+
+	checkCSVsettings();
+
+}
+function checkCSVsettings() {
+
+	var countColumns = $('#CSVcolumnCount').val();
+
+	var selectedOptions = '';
+	var multipleColumnError = false;
+	var hasWebsite = false;
+	var hasUsername = false;
+	var hasPassword = false;
+
+	for (var i = 0; i < countColumns; i++) {
+		$('#CSVcolumnTD' + i).removeClass('CSVcolumnInvalid');
+		selectedOptions = selectedOptions + $('#CSVcolumn' + i).val();
+		if ($('#CSVcolumn' + i).val() == 'website') {
+			hasWebsite = true;
+		}
+		if ($('#CSVcolumn' + i).val() == 'username') {
+			hasUsername = true;
+		}
+		if ($('#CSVcolumn' + i).val() == 'password') {
+			hasPassword = true;
+		}
+	}
+
+	// check website on multiple occurences
+	if ((selectedOptions.match(/website/g) || []).length > 1) {
+		for (i = 0; i < countColumns; i++) {
+			if ($('#CSVcolumn' + i).val() == 'website') {
+				$('#CSVcolumnTD' + i).addClass('CSVcolumnInvalid');
+				multipleColumnError = true;
+			}
+		}
+	}
+	// check username on multiple occurences
+	if ((selectedOptions.match(/username/g) || []).length > 1) {
+		for (i = 0; i < countColumns; i++) {
+			if ($('#CSVcolumn' + i).val() == 'username') {
+				$('#CSVcolumnTD' + i).addClass('CSVcolumnInvalid');
+				multipleColumnError = true;
+			}
+		}
+	}
+	// check password on multiple occurences
+	if ((selectedOptions.match(/password/g) || []).length > 1) {
+		for (i = 0; i < countColumns; i++) {
+			if ($('#CSVcolumn' + i).val() == 'password') {
+				$('#CSVcolumnTD' + i).addClass('CSVcolumnInvalid');
+				multipleColumnError = true;
+			}
+		}
+	}
+	// check url on multiple occurences
+	if ((selectedOptions.match(/url/g) || []).length > 1) {
+		for (i = 0; i < countColumns; i++) {
+			if ($('#CSVcolumn' + i).val() == 'url') {
+				$('#CSVcolumnTD' + i).addClass('CSVcolumnInvalid');
+				multipleColumnError = true;
+			}
+		}
+	}
+	// check notes on multiple occurences
+	if ((selectedOptions.match(/notes/g) || []).length > 1) {
+		for (i = 0; i < countColumns; i++) {
+			if ($('#CSVcolumn' + i).val() == 'notes') {
+				$('#CSVcolumnTD' + i).addClass('CSVcolumnInvalid');
+				multipleColumnError = true;
+			}
+		}
+	}
+
+	// check if no red text appeared, else disable import button
+	if ($('#CSVerrorfield').text() != '') {
+		$('#importStart').css ('opacity', 0.5);
+		$('#importStart')[0].disabled = true;
+		throw new Error('Invalid values. Check red text.');
+	} else {
+		$('#importStart').css ('opacity', 1);
+		$('#importStart')[0].disabled = false;
+	}
+	if (multipleColumnError) {
+		throw new Error('Invalid values. Check red text.');
+	}
+
+}
+function importCSV() {
+
+	var countColumns = $('#CSVcolumnCount').val();
+	var websiteColumn = -1;
+	var loginColumn = -1;
+	var passwordColumn = -1;
+	var urlColumn = -1;
+	var notesColumn = -1;
+
+	for (var i = 0; i < countColumns; i++) {
+		if ($('#CSVcolumn' + i).val() == 'website') {
+			websiteColumn = i;
+		}
+		if ($('#CSVcolumn' + i).val() == 'username') {
+			loginColumn = i;
+		}
+		if ($('#CSVcolumn' + i).val() == 'password') {
+			passwordColumn = i;
+		}
+		if ($('#CSVcolumn' + i).val() == 'url') {
+			urlColumn = i;
+		}
+		if ($('#CSVcolumn' + i).val() == 'notes') {
+			notesColumn = i;
+		}
+	}
+
+	if (websiteColumn == -1 || loginColumn == -1 || passwordColumn == -1) {
+		alert(t('passwords', 'Fill in the website, user name and password.'));
+		throw new Error('Select a column for website, username and password.');
+	}
+
+	var CSVtable = document.getElementById('CSVtable');
+	var loginCSV = '';
+	var websiteCSV = '';
+	var urlCSV = '';
+	var passwordCSV = '';
+	var notesCSV = '';
+	var passwordsDone = 0;
+
+	for (var r = 1; r < CSVtable.rows.length; r++) {
+		if ($('#CSVcheckRow' + r).is(":checked")) {
+			for (var c = 0; c < countColumns; c++) {
+				if (c == websiteColumn) {
+					websiteCSV = CSVtable.rows[r].cells[c].textContent;
+				}
+				if (c == loginColumn) {
+					loginCSV = CSVtable.rows[r].cells[c].textContent;
+				}
+				if (c == passwordColumn) {
+					passwordCSV = CSVtable.rows[r].cells[c].textContent;
+				}
+				if (c == urlColumn) {
+					urlCSV = CSVtable.rows[r].cells[c].textContent;
+				}
+				if (c == notesColumn) {
+					notesCSV = CSVtable.rows[r].cells[c].textContent;
 				}
 			}
 
-			var count_str;
-			if (count == 1) {
-				count_str = t('passwords', 'Password').toLowerCase()
-			} else {
-				count_str = t('passwords', 'Passwords').toLowerCase()
-			}
-			var confirmed = confirm(t('passwords', 'The following file will be imported') + ':' 
-						+ '\n\n'
-						+ t('passwords', 'Name') + ': ' + f.name + '\n'
-						+ t('passwords', 'Size') + ': ' + f.size + ' bytes\n'
-						+ t('passwords', 'Content') + ': ' + count + ' ' + count_str);
+			urlCSV = urlCSV.toLowerCase();
 
-			if (confirmed) {
-
-				for (i = headerCount; i < lines.length; i++) {
-
-					if (lines[i] != '') {
-
-						var line = lines[i].split('","');
-
-						var loginCSV = '';
-						var websiteCSV = '';
-						var urlCSV = '';
-						var passwordCSV = '';
-						var notesCSV = '';
-
-						if ($('#website-csv').val().toLowerCase() != 'x') {
-							var websiteCSV = line[$('#website-csv').val() - 1];
-						}
-						if ($('#login-csv').val().toLowerCase() != 'x') {
-							var loginCSV = line[$('#login-csv').val() - 1];
-						}
-						if ($('#password-csv').val().toLowerCase() != 'x') {
-							var passwordCSV = line[$('#password-csv').val() - 1];
-						}
-						if ($('#url-csv').val().toLowerCase() != 'x') {
-							var urlCSV = line[$('#url-csv').val() - 1];
-						}
-						if ($('#notes-csv').val().toLowerCase() != 'x') {
-							var notesCSV = line[$('#notes-csv').val() - 1];
-						}
-
-						urlCSV = urlCSV.toLowerCase();
-
-						// validate URL, must have protocol like http(s)						
-						if (urlCSV != '' 
-							&& urlCSV.substring(0,7).toLowerCase() != 'http://' 
-							&& urlCSV.substring(0,8).toLowerCase() != 'https://') 
-						{
-							if (isUrl(urlCSV)) {
-								// valid ULR, so add http
-								urlCSV = 'http://' + urlCSV;
-								// now check if valid
-								if (!isUrl(urlCSV)) {
-									alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
-									urlCSV = '';
-								}
-							} else {
-								alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
-								urlCSV = '';
-							}
-						}
-
-						// unescape " and \ by deleting the \ before them
-						passwordCSV = passwordCSV.replace('\\"', '"').replace('\\\\', '\\');
-						var password = {
-							website : websiteCSV,
-							loginname : loginCSV,
-							address : urlCSV,
-							pass : passwordCSV,
-							notes : notesCSV,
-							deleted : "0"
-						};
-
-						// add them one at the time
-						var success = $.ajax({
-								url: OC.generateUrl('/apps/passwords/passwords'),
-								method: 'POST',
-								contentType: 'application/json',
-								data: JSON.stringify(password)
-							});
-
-						if (success) {
-						} else {
-							alert(t('passwords', 'Error: Could not create password.') 
-								+ '\n\n'
-								+ t('passwords', 'Website or company') + ': ' + websiteCSV + '\n'
-								+ t('passwords', 'Full URL (optional)') + ': ' + urlCSV + '\n'
-								+ t('passwords', 'Login name') + ': ' + loginCSV + '\n'
-								+ t('passwords', 'Password') + ': ' + passwordCSV + '\n'
-								+ t('passwords', 'Notes') + ':\n' + notesCSV);
-						}
+			// validate URL, must have protocol like http(s)						
+			if (urlCSV != '' 
+				&& urlCSV.substring(0,7).toLowerCase() != 'http://' 
+				&& urlCSV.substring(0,8).toLowerCase() != 'https://') 
+			{
+				if (isUrl(urlCSV)) {
+					// valid ULR, so add http
+					urlCSV = 'http://' + urlCSV;
+					// now check if valid
+					if (!isUrl(urlCSV)) {
+						alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
+						urlCSV = '';
 					}
-				}	
-
-				alert(t('passwords', 'Import of passwords done. This page will now reload.'));
-				location.reload(true);
-
+				} else {
+					alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
+					urlCSV = '';
+				}
 			}
-			
-		}
-		r.readAsText(f); // = execute
 
+			var password = {
+				website : websiteCSV,
+				loginname : loginCSV,
+				address : urlCSV,
+				pass : passwordCSV,
+				notes : notesCSV,
+				deleted : "0"
+			};
+
+			//add them one at the time
+			var success = $.ajax({
+					url: OC.generateUrl('/apps/passwords/passwords'),
+					method: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(password)
+				});
+
+			if (success) {
+				passwordsDone = passwordsDone + 1;
+			} else {
+				alert(t('passwords', 'Error: Could not create password.') 
+					+ '\n\n'
+					+ t('passwords', 'Website or company') + ': ' + websiteCSV + '\n'
+					+ t('passwords', 'Full URL') + ': ' + urlCSV + '\n'
+					+ t('passwords', 'Login name') + ': ' + loginCSV + '\n'
+					+ t('passwords', 'Password') + ': ' + passwordCSV + '\n'
+					+ t('passwords', 'Notes') + ':\n' + notesCSV);
+			}
+		}
 	}
 
-	$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
-
+	if (passwordsDone > 0) {
+		alert(t('passwords', 'Import of passwords done. This page will now reload.'));
+		location.reload(true);
+	}
 }
+
 function InvalidCSV(error_description) {
-	$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
-	alert(t('passwords', 'This is not a valid CSV file.') + ' ' 
-		+ error_description);
-	throw new Error('Error: ' + error_description);
+	if ($('#CSVerrorfield').text().indexOf(error_description) == -1) {
+		$('#CSVerrorfield').append('<p>' + error_description + '</p>')
+	}
 }
 
 function popUp(title, value, column, address_value, website, username) {
-	$('<div/>', {id: 'overlay'}).appendTo($('#app'));	
-	$('<div/>', {id: 'popup'}).appendTo($('#app'));	
-	$('<div/>', {id: 'popupTitle'}).appendTo($('#popup'));	
+	$('<div/>', {id: 'overlay'}).appendTo($('#app'));
+	$('<div/>', {id: 'popup'}).appendTo($('#app'));
+	$('<div/>', {id: 'popupTitle'}).appendTo($('#popup'));
 	$('<span/>', {text:website}).appendTo($('#popupTitle'));
 	$('<br/>').appendTo($('#popupTitle'));
 	$('<span/>', {text:t('passwords', 'Login name') + ': ' + username, id:"popupSubTitle"}).appendTo($('#popupTitle'));
 
-	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));	
+	$('<div/>', {id: 'popupContent'}).appendTo($('#popup'));
 	$('<p/>', {text:t('passwords', 'Enter a new value and press Save to keep the new value.\nThis cannot be undone.')}).appendTo($('#popupContent'));
 	$('<br/>').appendTo($('#popupContent'));
 	$('<p/>', {text:title + ':'}).appendTo($('#popupContent'));
