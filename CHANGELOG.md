@@ -1,9 +1,16 @@
 ####16
 * Added a countdown timer, which can be set by users. When the timer reaches 0, the user will be logged off (will show a message first). Valid values are 10-3599 seconds. The countdown timer resets on activity in the passwords app. When a timer is set, the user will be logged off too when the session cookie ends (if set by admin in config.php, will else be 60 seconds and not the default 15 days).
-* Added a sidebar with info about the password.
+* Added a sidebar with info about the password
+* Added a progess bar on importing passwords
 * Removed info columns 'length', 'a-z', 'A-Z', '0-9' and '!@#' (moved to sidebar, really keeps the table nice and clean)
 * Edited settings to hide 'strength' and 'last changed' columns, instead of a-z, A-Z, 0-9 and !@#
 * Replaced alerts and confirmation popups by native OC dialogs
+* Fix for emptying trash on Firefox (#80)
+* Fix for saving a website URL on Firefox (#91)
+* Fix for importing huge CSV files (i.e. a lot of passwords) (#89)
+* Fix for checking for website column on CSV import (#90)
+* Fix for importing values with double quotation marks and removed unneeded extra CSV column (#86)
+* Fix for (multiline) notes sometimes not being imported (#85)
 
 ####15
 * Changed version numbering: 8.0.15 is replaced by 15, since future release may support more versions than OC8 only, and it suggested an ownCloud version more than an app version
