@@ -4,7 +4,7 @@
 		$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
 
 		if (false !== strpos($url,'d=1')) {
-			OCP\Util::writeLog(write('passwords', 'Passwords app accessed without secure connection.', OCP\Util::WARN);
+			OCP\Util::writeLog('passwords', 'Passwords app accessed without secure connection.', OCP\Util::WARN);
 		    return true;
 		}
 
