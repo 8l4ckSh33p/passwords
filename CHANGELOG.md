@@ -13,7 +13,7 @@
 * Fix for checking for website column on CSV import (#90)
 * Fix for importing values with double quotation marks and removed unneeded extra CSV column (#86)
 * Fix for (multiline) notes sometimes not being imported (#85)
-* Language update? Look at the changes at [TRANSLATION.js](https://github.com/fcturner/passwords/commit/7f9428bac14fbfb8f866eff59d7b0efa1899967d)
+* Updated language files for English, Spanish, Dutch. Want to do an update for your own language? Look at the changes at [TRANSLATION.js](https://github.com/fcturner/passwords/commit/7f9428bac14fbfb8f866eff59d7b0efa1899967d)
 
 ####15
 * Changed version numbering: 8.0.15 is replaced by 15, since future release may support more versions than OC8 only, and it suggested an ownCloud version more than an app version
