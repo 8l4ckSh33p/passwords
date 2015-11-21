@@ -45,3 +45,10 @@
 	background-color: #0a0;
 	color: #fff;
 }
+#passwords-personal #timer {
+	width: 30px;
+
+}
+#passwords-personal #timersettext {
+	display: none;
+}
