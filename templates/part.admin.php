@@ -15,6 +15,15 @@
 		<label>
 			<input class="check" type="checkbox" id="backup_allowed"> <?php p($l->t('Allow users to download a backup as an unencrypted, plain text file')); ?>
 		</label>
+
+		<br>
+
+		<label>
+			<input class="check" type="checkbox" id="disable_contextmenu"> <?php p($l->t('Disable browsers context menu')); ?>
+		</label>
+		<p class="descr">
+			<em><?php p($l->t('This will make it harder for users to use the functions of the browsers context menu, but it may really be annoying to some users')); ?>.</em>
+		</p>
 	</div>
 
 	<br>
@@ -56,8 +65,6 @@
 			<red id="daysRed"></red>
 		</label>
 	</div>
-
-	<br>
 
 	<span class="msg-passwords"></span>
 
