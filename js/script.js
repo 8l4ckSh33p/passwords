@@ -185,26 +185,40 @@
 					unselectElementText(event.target);
 				});
 
+				// reset timer on hover (for touch screens)
+				$('#idleTimer').mouseenter(function(event) {
+					resetTimer(true);
+				});
+				$('#countSec').mouseenter(function(event) {
+					resetTimer(true);
+				});
+
+				$('#sidebarClose').click(function() {
+					$('#sidebarRow').val('');
+					$('#app-content-wrapper').attr('class', '');
+					$('#app-sidebar-wrapper').hide(100);
+				});
+
 				$('#delete_trashbin').click(function(event) {
 
-					if (!confirm(t('passwords', 'This will permanently delete all passwords in this trash bin.') + "\n\n" + t('passwords', "Are you sure?"))) {
-						return false;
-						throw new Error();
-					}
-
-					var table = document.getElementById('PasswordsTableContent');
-					var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
-					for (var i = 1; i < table.rows.length; i++) {
-						// check for deleted status (1) and delete
-						if (table.rows[i].cells[15].textContent == '1') {
-							var db_id = table.rows[i].cells[10].textContent;
-					
-							passwords.removeByID(db_id).done(function() {
-							}).fail(function() {
-							});
-						}
-					}
-					location.reload(true);
+					OCdialogs.confirm(t('passwords', 'This will permanently delete all passwords in this trash bin.') + ' ' + t('passwords', 'Are you sure?'), t('passwords', 'Trash bin'), 
+						function(confirmed) {
+							if (confirmed)	{
+								var table = document.getElementById('PasswordsTableContent');
+								var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+								for (var i = 1; i < table.rows.length; i++) {
+									// check for deleted status (1) and delete
+									if (table.rows[i].cells[15].textContent == '1') {
+										var db_id = table.rows[i].cells[10].textContent;
+										passwords.removeByID(db_id).done(function() {
+										}).fail(function() {
+										});
+									}
+								}
+								alert(t('passwords', 'Deletion of all trashed passwords done. This page will now reload.'));
+								location.reload(true);
+							}
+						}, true);
 				});
 
 				$('#PasswordsTableContent td').click(function(event) {
@@ -244,9 +258,9 @@
 								table.rows[row].cells[15].innerHTML = 0;
 								formatTable(true);
 								update_pwcount();
-								alert(t('passwords', 'The password was reverted to the active passwords.'));
+								OCdialogs.info(t('passwords', 'The password was reverted to the active passwords.'), t('passwords', 'Trash bin'), null, true);
 							} else {
-								alert(t('passwords', 'Error: Could not update password.'));
+								OCdialogs.alert(t('passwords', 'Error: Could not update password.'), t('passwords', 'Trash bin'), null, true);
 							}
 
 						} else if (col == 13) {
@@ -310,7 +324,7 @@
 								table.rows[row].cells[col].innerHTML = innerHTMLtext.replace(old_value, escapeHTML(new_value));
 								formatTable(true);
 							} else {
-								alert(t('passwords', 'Error: Could not update password.'));
+								OCdialogs.alert(t('passwords', 'Error: Could not update password.'), t('passwords', 'Save'), null, true);
 							}
 
 							$('#overlay').hide();
@@ -337,26 +351,25 @@
 									
 
 								}).fail(function() {
-									alert(t('passwords', 'Error: Could not create password.'));
+									OCdialogs.alert(t('passwords', 'Error: Could not create password.'), t('passwords', 'Save'), null, true);
 									return false;
 								});
 
 								update_pwcount();
-								alert(t('passwords', 'The old value was moved to the trash bin.'));
+								OCdialogs.info(t('passwords', 'The old value was moved to the trash bin.'), t('passwords', 'Trash bin'), null, true);
 							}
 
 							// URL needs to be updated; requires reload of page
 							if (address != address_old) {
-								location.reload(true);				
+								alert(t('passwords', 'As the URL was changed, this page will now reload.'));
+								location.reload(true);
 							}
 
 							$('#overlay').remove();
 							$('#popup').remove();
 						});
-					}
-
-					// clicked on trash, ask confirmation to delete
-					if (col == 14) {
+					} else if (col == 14) {
+						// clicked on trash, ask confirmation to delete
 
 						// in active view, move to trash
 						if (active_table == 'active') {
@@ -367,13 +380,13 @@
 								table.rows[row].cells[15].innerHTML = 1;
 								formatTable(true);
 								update_pwcount();
-								alert(t('passwords', 'The password was moved to the trash bin.'));
+								OCdialogs.info(t('passwords', 'The password was moved to the trash bin.'), t('passwords', 'Trash bin'), null, true);
 							} else {
-								alert(t('passwords', 'Error: Could not update password.'));
+								OCdialogs.alert(t('passwords', 'Error: Could not update password.'), t('passwords', 'Trash bin'), null, true);
 							}
 							
 						// from trash, remove from database
-						} else if (confirm(t('passwords', "This will delete the password for") + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'.\n\n" + t('passwords', "Are you sure?"))) {
+						} else if (OCdialogs.confirm(t('passwords', 'This will delete the password for') + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'. " + t('passwords', 'Are you sure?'), t('passwords', 'Trash bin'), null, true)) {
 
 							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
 							var view = new View(passwords);
@@ -384,9 +397,17 @@
 								table.deleteRow(row);
 								update_pwcount();
 							}).fail(function() {
-								alert(t('passwords', 'Error: Could not delete password.'));
+								OCdialogs.alert(t('passwords', 'Error: Could not delete password.'), t('passwords', 'Trash bin'), null, true);
 							});
 														
+						}
+					} else {
+						if ($('#sidebarRow').val() == row) {
+							$('#sidebarRow').val('');
+							$('#app-content-wrapper').attr('class', '');
+							$('#app-sidebar-wrapper').hide(100);
+						} else if (col > 2) {
+							sidebarValues(table, row);
 						}
 					}
 
@@ -415,6 +436,7 @@
 					// So show it
 					$('#app-settings-backup').show();
 				}
+				$('#app-settings').attr('timer', settings.getKey('timer'));
 				$('#app-settings').attr('days-orange', settings.getKey('days_orange'));
 				$('#app-settings').attr('days-red', settings.getKey('days_red'));
 				if ((settings.getKey('icons_allowed').toLowerCase() == 'true')) {
@@ -424,8 +446,37 @@
 					$('#app-settings').attr('icons-show', 'false');
 				}
 				$('#app-settings').attr('hide-passwords', settings.getKey('hide_passwords').toLowerCase() == 'true');
-				$('#app-settings').attr('hide-usernames', settings.getKey('hide_usernames').toLowerCase() == 'true');;
+				$('#app-settings').attr('hide-usernames', settings.getKey('hide_usernames').toLowerCase() == 'true');
 				$('#app-settings').attr('hide-attributes', settings.getKey('hide_attributes').toLowerCase() == 'true');
+
+				// set timer if set by user
+				if ($('#app-settings').attr('timer') != '0') {
+					resetTimer(false);
+
+					// set timer from session_timeout in config.php
+					var session_timeout = $('#app-settings').attr('session-timeout');
+					if (session_timeout != 0) {
+						$('#session_lifetime').text(session_timeout);
+						var lifetime = setInterval(function() {
+							session_timeout = session_timeout - 1;
+							$('#session_lifetime').text(session_timeout);
+							// kill on 0, 'click' on logoff entry in top right menu
+							if (session_timeout == 0) {
+								$('#PasswordsTable table td').hide();
+							}
+							if (session_timeout == -1) {
+								clearInterval(lifetime);
+								alert(t('passwords', 'You will be logged off due to expiration of your session cookie (set to %s minutes).').replace('%s', int2time($('#app-settings').attr('session-timeout'))));
+								window.location = document.getElementById('logout').href;
+							}
+						}, 1000);
+					}
+				}
+				
+				// download backup
+				$('#trashAll').click(function() {
+					trashAllPasswords(Passwords);
+				});
 
 				// download backup
 				$('#backupDL').click(function() {
@@ -541,7 +592,7 @@
 						|| $('#new_website').val() == '' 
 						|| $('#new_password').val() == '') 
 					{
-						alert(t('passwords', 'Fill in the website, user name and password.'));
+						OCdialogs.alert(t('passwords', 'Fill in the website, user name and password.'), t('passwords', 'Add password'), null, true);
 						return false;
 					}
 
@@ -555,12 +606,12 @@
 							$('#new_address').val('http://' + $('#new_address').val());
 							// now check if valid
 							if (!isUrl($('#new_address').val())) {
-								alert(t('passwords', 'Fill in a valid URL in the first field.') + '\n\n' + t('passwords', 'Note: This field is optional and can be left blank.'));
+								OCdialogs.alert(t('passwords', 'Fill in a valid URL in the first field.') + ' ' + t('passwords', 'Note: This field is optional and can be left blank.'), t('passwords', 'Add password'), null, true);
 								$('#new_address').select();
 								return false;
 							}
 						} else {
-							alert(t('passwords', 'Fill in a valid URL in the first field.') + '\n\n' + t('passwords', 'Note: This field is optional and can be left blank.'));
+							OCdialogs.alert(t('passwords', 'Fill in a valid URL in the first field.') + ' ' + t('passwords', 'Note: This field is optional and can be left blank.'), t('passwords', 'Add password'), null, true);
 							$('#new_address').select();
 							return false;
 						}
@@ -596,7 +647,7 @@
 						update_pwcount();
 
 					}).fail(function() {
-						alert(t('passwords', 'Error: Could not create password.'));
+						OCdialogs.alert(t('passwords', 'Error: Could not create password.'), t('passwords', 'Add password'), null, true);
 						return false;
 					});
 
@@ -630,11 +681,11 @@
 					var generate_new = '';
 
 					if (!isNumeric(length_filled) || length_filled.length == 0 || length_filled < 4) {
-						alert(t('passwords', 'Fill in a valid number as length with a minimum of 4.'));
+						OCdialogs.alert(t('passwords', 'Fill in a valid number as length with a minimum of 4.'), t('passwords', 'Generate password'), null, true);
 						return false;
 					}
 					if (!lower_checked && !upper_checked && !numbers_checked && !special_checked) {
-						alert(t('passwords', 'Select at least one option to generate a password.'));
+						OCdialogs.alert(t('passwords', 'Select at least one option to generate a password.'), t('passwords', 'Generate password'), null, true);
 						return false;
 					}
 
@@ -661,13 +712,34 @@
 			}
 		};
 
+		// disable context menu if set by admin
+		var settings = new Settings(OC.generateUrl('/apps/passwords/settings'));
+		settings.load();
+		if (settings.getKey('disable_contextmenu').toLowerCase() == 'true') {
+			this.addEventListener('contextmenu', function(ev) {
+				ev.preventDefault();
+				OCdialogs.info(t('passwords', 'The context menu is disabled by your administrator.'), t('passwords', 'Context menu'), null, true);
+				return false;
+			}, false);
+		}
 
+		// reset timer on activity (click)
+		this.addEventListener("click", function() {
+			if ($('#app-settings').attr('timer') != '0') {
+				resetTimer(true);
+			}
+		});
+		// Not as convenient:
+		// this.addEventListener("mouseover", function() {
+		// 	resetTimer(true);
+		// });
+		
 		var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
 		var view = new View(passwords);
 		passwords.loadAll().done(function() {
 			view.render();
 		}).fail(function() {
-			alert(t('passwords', 'Error: Could not load passwords.'));
+			OCdialogs.alert(t('passwords', 'Error: Could not load passwords.'), t('passwords', 'Passwords'), null, true);
 		});
 
 	});
@@ -731,10 +803,9 @@ function formatTable(update_only) {
 
 		var active_table = $('#app-settings').attr("active-table");
 
+		var hide_usernames = $('#app-settings').attr("hide-usernames");
+		var hide_passwords = $('#app-settings').attr("hide-passwords");
 		var hide_attributes = $('#app-settings').attr("hide-attributes");
-		if (hide_attributes == 'false') {
-			$('.hide_attributes').removeClass('hide_attributes');
-		}
 
 		for (var i = 1; i < table.rows.length; i++) {
 
@@ -748,38 +819,41 @@ function formatTable(update_only) {
 
 			for (var j = 0; j < table.rows[i].cells.length; j++)
 
-				if (hide_attributes != 'true') {
 
-					var fieldPassword = table.rows[i].cells[2].textContent;
-					if(strHasLower(fieldPassword)) {
-						table.rows[i].cells[5].textContent = t('passwords', 'Yes');
-						table.rows[i].cells[5].className = 'green';
-					} else {
-						table.rows[i].cells[5].textContent = t('passwords', 'No');
-						table.rows[i].cells[5].className = 'red';
-					}
-					if(strHasUpper(fieldPassword)) {
-						table.rows[i].cells[6].textContent = t('passwords', 'Yes');
-						table.rows[i].cells[6].className = 'green';
-					} else {
-						table.rows[i].cells[6].textContent = t('passwords', 'No');
-						table.rows[i].cells[6].className = 'red';
-					}
-					if(strHasNumber(fieldPassword)) {
-						table.rows[i].cells[7].textContent = t('passwords', 'Yes');
-						table.rows[i].cells[7].className = 'green';
-					} else {
-						table.rows[i].cells[7].textContent = t('passwords', 'No');
-						table.rows[i].cells[7].className = 'red';
-					}
-					if(strHasSpecial(fieldPassword)) {
-						table.rows[i].cells[8].textContent = t('passwords', 'Yes');
-						table.rows[i].cells[8].className = 'green';
-					} else {
-						table.rows[i].cells[8].textContent = t('passwords', 'No');
-						table.rows[i].cells[8].className = 'red';
-					}
+				var fieldPassword = table.rows[i].cells[2].textContent;
+				if(strHasLower(fieldPassword)) {
+					table.rows[i].cells[5].textContent = t('passwords', 'Yes');
+					table.rows[i].cells[5].className = 'green';
+				} else {
+					table.rows[i].cells[5].textContent = t('passwords', 'No');
+					table.rows[i].cells[5].className = 'red';
 				}
+				if(strHasUpper(fieldPassword)) {
+					table.rows[i].cells[6].textContent = t('passwords', 'Yes');
+					table.rows[i].cells[6].className = 'green';
+				} else {
+					table.rows[i].cells[6].textContent = t('passwords', 'No');
+					table.rows[i].cells[6].className = 'red';
+				}
+				if(strHasNumber(fieldPassword)) {
+					table.rows[i].cells[7].textContent = t('passwords', 'Yes');
+					table.rows[i].cells[7].className = 'green';
+				} else {
+					table.rows[i].cells[7].textContent = t('passwords', 'No');
+					table.rows[i].cells[7].className = 'red';
+				}
+				if(strHasSpecial(fieldPassword)) {
+					table.rows[i].cells[8].textContent = t('passwords', 'Yes');
+					table.rows[i].cells[8].className = 'green';
+				} else {
+					table.rows[i].cells[8].textContent = t('passwords', 'No');
+					table.rows[i].cells[8].className = 'red';
+				}
+
+				table.rows[i].cells[5].className += ' hide_attributes';
+				table.rows[i].cells[6].className += ' hide_attributes';
+				table.rows[i].cells[7].className += ' hide_attributes';
+				table.rows[i].cells[8].className += ' hide_attributes';
 
 				// strength
 				var pass_str = table.rows[i].cells[2].textContent;
@@ -800,6 +874,13 @@ function formatTable(update_only) {
 						table.rows[i].cells[3].className = 'green';
 						table.rows[i].cells[2].className += ' green';
 						break;
+				}
+
+				if (hide_attributes == 'true') {
+					table.rows[i].cells[3].className += ' hide_attributes';
+					table.rows[i].cells[9].className += ' hide_attributes';
+					$('#hide2').hide();
+					$('#hide3').hide();
 				}
 
 				// length
@@ -827,7 +908,7 @@ function formatTable(update_only) {
 				// colourize date
 				var days_orange = $('#app-settings').attr("days-orange");
 				var days_red = $('#app-settings').attr("days-red");
-				var diffInDays = Math.floor((dateToday - dateRowEntry) / (1000*60*60*24));
+				var diffInDays = Math.floor((dateToday - dateRowEntry) / (1000 * 60 * 60 * 24));
 				var thisClass = table.rows[i].cells[3].className;
 				if(diffInDays > days_red - 1) {
 					table.rows[i].cells[9].className += ' red'; // default: > 365 days
@@ -994,8 +1075,6 @@ function formatTable(update_only) {
 
 				
 				// hide username and/or password according to user settings
-				var hide_usernames = $('#app-settings').attr("hide-usernames");
-				var hide_passwords = $('#app-settings').attr("hide-passwords");
 				if (hide_usernames == 'true') {
 					cellUsername.className += ' hidevalue';
 				}
@@ -1047,12 +1126,6 @@ function formatTable(update_only) {
 				
 
 		}
-
-		// sort on website, reset sort first
-		// if (update_only) {
-		// 	$('#column_website').click();	
-		// }
-
 	}
 }
 
@@ -1278,9 +1351,9 @@ function strength_str(passw, return_string_only) {
 
 function update_pwcount() {
 
-	$("#emptycontent").hide();
-	$("#emptytrashbin").hide();
-	$("#PasswordsTable").show();
+	$('#emptycontent').hide();
+	$('#emptytrashbin').hide();
+	$('#PasswordsTable').show();
 
 	var table = document.getElementById('PasswordsTableContent');
 	var active = 0;
@@ -1295,17 +1368,18 @@ function update_pwcount() {
 		}
 	}
 
-	$(".menu_passwords_active").text(active);
-	$(".menu_passwords_trashbin").text(trash);
+	$('.menu_passwords_active').text(active);
+	$('.menu_passwords_trashbin').text(trash);
 
 	if ($('#app-settings').attr('active-table') == 'active' && active == 0) {
-		$("#emptycontent").show();
-		$("#PasswordsTable").hide();
+		$('#emptycontent').show();
+		$('#PasswordsTable').hide();
 	}
 
 	if ($('#app-settings').attr('active-table') == 'trashbin' && trash == 0) {
-		$("#emptytrashbin").show();
-		$("#PasswordsTable").hide();
+		$('#delete_trashbin').hide();
+		$('#emptytrashbin').show();
+		$('#PasswordsTable').hide();
 	}
 
 }
@@ -1383,65 +1457,66 @@ function backupPasswords() {
 
 	// No support in IE
 	if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) {
-		alert(t('passwords', 'This function is unsupported on your browser. Use a modern browser instead.'));
+		OCdialogs.alert(t('passwords', 'This function is unsupported on your browser. Use a modern browser instead.'), t('passwords', 'Download Backup'), null, true);
 		return false;
 	}
 
-	if (!confirm(t('passwords', 'This will download an unencrypted backup file, which contains all your passwords.') + '\n' + t('passwords', 'This file is fully compatible with other password services, such as KeePass, 1Password and LastPass.') + '\n\n' + t('passwords', "Are you sure?"))) {
-		return false;
-	}
+	OCdialogs.confirm(t('passwords', 'This will download an unencrypted backup file, which contains all your passwords.') + ' ' + t('passwords', 'This file is fully compatible with other password services, such as KeePass, 1Password and LastPass.') + ' ' + t('passwords', 'Are you sure?'), t('passwords', 'Download Backup'), 
+		function(confirmed) {
+			if (confirmed)	{
+				var d = new Date();
+				var textToWrite = '"Website","Username","Passwords","FullAddress","Notes"\r\n';
+				var rowValue;
 
-	var d = new Date();
-	var textToWrite = '"Website","Username","Passwords","FullAddress","Notes",""\r\n';
-	var rowValue;
-
-	var table = document.getElementById('PasswordsTableContent');
-	for (var i = 1; i < table.rows.length; i++) {
-		for (var j = 0; j < table.rows[i].cells.length; j++)
+				var table = document.getElementById('PasswordsTableContent');
+				for (var i = 1; i < table.rows.length; i++) {
+					for (var j = 0; j < table.rows[i].cells.length; j++)
 
 
-			if (j == 0 || j == 1 || j == 2 || j == 12 || j == 13) { // columns: website, username, pass, address, notes
-				rowValue = table.rows[i].cells[j].textContent;
-				// escape " and \ by putting a \ before them
-				rowValue = rowValue.replace(/"/g, '\\"').replace(/\\/g, '\\\\');
-				textToWrite += '"' + rowValue + '",';
+						if (j == 0 || j == 1 || j == 2 || j == 12 || j == 13) { // columns: website, username, pass, address, notes
+							rowValue = table.rows[i].cells[j].textContent;
+							// escape " and \ by putting a \ before them
+							rowValue = rowValue.replace(/"/g, '\\"').replace(/\\/g, '\\\\');
+							textToWrite += '"' + rowValue + '",';
+						}
+
+						textToWrite = textToWrite.substring(0, textToWrite.length - 1) + '\r\n';
+
+				}
+
+				var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'}); 
+				var d = new Date();
+
+				// filename as YYYYMMDD_backup.txt
+				var fileNameToSaveAs = d.getFullYear()
+									 + ('0' + (d.getMonth() + 1)).slice(-2)
+									 + ('0' + d.getDate()).slice(-2)
+									 + '_backup.csv';
+
+				var downloadLink = document.createElement("a");
+				downloadLink.download = fileNameToSaveAs; 
+				downloadLink.innerHTML = "Download File";
+				
+				if (window.webkitURL != null) {
+					// Chrome allows the link to be clicked
+					// without actually adding it to the DOM.
+					downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+				} else {
+					// Firefox requires the link to be added to the DOM
+					// before it can be clicked.
+					downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+					downloadLink.onclick = destroyClickedElement;
+					downloadLink.style.display = "none";
+					document.body.appendChild(downloadLink);
+				}
+
+				downloadLink.click();
+				downloadLink = '';
+
+				// collapse settings part in navigation pane
+				$('#app-settings-content').hide();
 			}
-
-			textToWrite += '""\r\n';
-
-	}
-
-	var textFileAsBlob = new Blob([textToWrite], {type:'text/plain'}); 
-	var d = new Date();
-
-	// filename as YYYYMMDD_backup.txt
-	var fileNameToSaveAs = d.getFullYear()
-						 + ('0' + (d.getMonth() + 1)).slice(-2)
-						 + ('0' + d.getDate()).slice(-2)
-						 + '_backup.csv';
-
-	var downloadLink = document.createElement("a");
-	downloadLink.download = fileNameToSaveAs; 
-	downloadLink.innerHTML = "Download File";
-	
-	if (window.webkitURL != null) {
-		// Chrome allows the link to be clicked
-		// without actually adding it to the DOM.
-		downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
-	} else {
-		// Firefox requires the link to be added to the DOM
-		// before it can be clicked.
-		downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
-		downloadLink.onclick = destroyClickedElement;
-		downloadLink.style.display = "none";
-		document.body.appendChild(downloadLink);
-	}
-
-	downloadLink.click();
-	downloadLink = '';
-
-	// collapse settings part in navigation pane
-	$('#app-settings-content').hide();
+		}, true);
 
 }
 function destroyClickedElement(event) {
@@ -1450,7 +1525,7 @@ function destroyClickedElement(event) {
 function uploadCSV(event) {
 
 	if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
-		alert(t('passwords', 'This function is unsupported on your browser. Use a modern browser instead.'));
+		OCdialogs.alert(t('passwords', 'This function is unsupported on your browser. Use a modern browser instead.'), t('passwords', 'Import CSV File'), null, true);
 		return false;
 	}
 
@@ -1458,13 +1533,12 @@ function uploadCSV(event) {
 	var f = event.target.files[0]; 
 
 	if (!f) {
-		alert('No file loaded');
+		OCdialogs.alert('No file loaded', t('passwords', 'Import CSV File'), null, true);
 		$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
 		return false;
 	} else if (f.name.substr(f.name.length - 4, 4).toLowerCase() != '.csv') {
 		// validate file
-		alert(t('passwords', 'This is not a valid CSV file.') + ' '
-		+ ('passwords', 'Only files with CSV as file extension are allowed.'));
+		OCdialogs.alert(t('passwords', 'This is not a valid CSV file.') + ' ' + ('passwords', 'Only files with CSV as file extension are allowed.'), t('passwords', 'Import CSV File'), null, true);
 		$('#upload_csv').replaceWith($('#upload_csv').clone(true).val(''));
 		return false;
 	} else {
@@ -1489,21 +1563,18 @@ function uploadCSV(event) {
 function renderCSV(firstTime) {
 
 	// clear first
-	if (firstTime) {
-		$('#CSVtable').empty();
-	} else {
-		$('#CSVtable tbody').empty();
-	}
+	$('#CSVtable').empty();
 	$('#CSVerrorfield').empty();
 
 	var contents = $('#CSVcontent').text();
+	contents = contents.replace(/"\n/g,"\"\"\n").replace(/"\r\n/g,"\"\"\r\n");
 
 	if ($('#CSVsplit_rnBtn').hasClass('CSVbuttonOff')) {
 		var count = (contents.match(/\n/g) || []).length + 1;
-		var lines = contents.split('\n');
+		var lines = contents.split('"\n');
 	} else {
 		var count = (contents.match(/\r\n/g) || []).length + 1;
-		var lines = contents.split('\r\n');
+		var lines = contents.split('"\r\n');
 	}
 	if ($('#CSVheadersBtn').hasClass('CSVbuttonOff')) {
 		var startRow = 0;
@@ -1559,32 +1630,34 @@ function renderCSV(firstTime) {
 
 	// create tableheads
 	var CSVtable = $('#CSVtable');
+	var tableHead = ''
 
-	if (firstTime) {
-		var tableHead = '<thead><tr><td id="CSVcolumnCheck">' + t('passwords', 'Import') + ':</td>'
-		for (i = 1; i < countColumns + 1; i++) {
-			tableHead = tableHead +
-				'<td id="CSVcolumnTD' + i + '">' +
-					'<select id="CSVcolumn' + i + '">' +
-						'<option value="website">' + t('passwords', 'Website or company') + '</option>' +
-						'<option value="username">' + t('passwords', 'Login name') + '</option>' +
-						'<option value="password">' + t('passwords', 'Password') + '</option>' +
-						'<option value="url">' + t('passwords', 'Full URL') + '</option>' +
-						'<option value="notes">' + t('passwords', 'Notes') + '</option>' +
-						'<option value="empty" selected>(' + t('passwords', 'Do not import') + ')</option>' +
-					'</select>' +
-				'</td>';
-		}
+	tableHead = '<thead><tr><td id="CSVcolumnCheck">' + t('passwords', 'Import') + ':</td>'
+	for (i = 1; i < countColumns + 1; i++) {
+		tableHead = tableHead +
+			'<td id="CSVcolumnTD' + i + '">' +
+				'<select id="CSVcolumn' + i + '">' +
+					'<option value="website">' + t('passwords', 'Website or company') + '</option>' +
+					'<option value="username">' + t('passwords', 'Login name') + '</option>' +
+					'<option value="password">' + t('passwords', 'Password') + '</option>' +
+					'<option value="url">' + t('passwords', 'Full URL') + '</option>' +
+					'<option value="notes">' + t('passwords', 'Notes') + '</option>' +
+					'<option value="empty" selected>(' + t('passwords', 'Do not import') + ')</option>' +
+				'</select>' +
+			'</td>';
 
-		tableHead = tableHead + '</tr></thead>';
-		CSVtable.append(tableHead);
-
-		$('#CSVcolumn1 option').eq(0).prop('selected', true);
-		$('#CSVcolumn2 option').eq(1).prop('selected', true);
-		$('#CSVcolumn3 option').eq(2).prop('selected', true);
-		$('#CSVcolumn4 option').eq(3).prop('selected', true);
-		$('#CSVcolumn5 option').eq(4).prop('selected', true);
 	}
+	tableHead = tableHead + '</tr></thead>';
+	if (countColumns != 0) {
+		CSVtable.append(tableHead);
+	}
+
+	$('#CSVcolumn1 option').eq(0).prop('selected', true);
+	$('#CSVcolumn2 option').eq(1).prop('selected', true);
+	$('#CSVcolumn3 option').eq(2).prop('selected', true);
+	$('#CSVcolumn4 option').eq(3).prop('selected', true);
+	$('#CSVcolumn5 option').eq(4).prop('selected', true);
+	
 
 	var tableBody = '<tbody>';
 	for (i = startRow; i < lines.length; i++) {
@@ -1670,7 +1743,7 @@ function checkCSVsettings() {
 
 	// check website on multiple occurences
 	if ((selectedOptions.match(/website/g) || []).length > 1) {
-		for (i = 0; i < countColumns; i++) {
+		for (var i = 0; i <= countColumns; i++) {
 			if ($('#CSVcolumn' + i).val() == 'website') {
 				$('#CSVcolumnTD' + i).addClass('CSVcolumnInvalid');
 				multipleColumnError = true;
@@ -1756,7 +1829,7 @@ function importCSV() {
 	}
 
 	if (websiteColumn == -1 || loginColumn == -1 || passwordColumn == -1) {
-		alert(t('passwords', 'Fill in the website, user name and password.'));
+		OCdialogs.alert(t('passwords', 'Fill in the website, user name and password.'), t('passwords', 'Import CSV File'), null, true);
 		throw new Error('Select a column for website, username and password.');
 	}
 
@@ -1766,11 +1839,11 @@ function importCSV() {
 	var urlCSV = '';
 	var passwordCSV = '';
 	var notesCSV = '';
-	var passwordsDone = 0;
+	var passarray = [];
 
 	for (var r = 1; r < CSVtable.rows.length; r++) {
 		if ($('#CSVcheckRow' + r).is(":checked")) {
-			for (var c = 0; c < countColumns; c++) {
+			for (var c = 0; c <= countColumns; c++) {
 				if (c == websiteColumn) {
 					websiteCSV = CSVtable.rows[r].cells[c].textContent;
 				}
@@ -1800,49 +1873,56 @@ function importCSV() {
 					urlCSV = 'http://' + urlCSV;
 					// now check if valid
 					if (!isUrl(urlCSV)) {
-						alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
+						OCdialogs.alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + ' ' + urlCSV, t('passwords', 'Import CSV File'), null, true);
 						urlCSV = '';
 					}
 				} else {
-					alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + '\n' + urlCSV);
+					OCdialogs.alert(t('passwords', 'This is not a valid URL, so this value will not be saved:') + ' ' + urlCSV, t('passwords', 'Import CSV File'), null, true);
 					urlCSV = '';
 				}
 			}
 
-			var password = {
+			passarray.push({
 				website : websiteCSV,
 				loginname : loginCSV,
 				address : urlCSV,
 				pass : passwordCSV,
 				notes : notesCSV,
 				deleted : "0"
-			};
-
-			//add them one at the time
-			var success = $.ajax({
-					url: OC.generateUrl('/apps/passwords/passwords'),
-					method: 'POST',
-					contentType: 'application/json',
-					data: JSON.stringify(password)
-				});
-
-			if (success) {
-				passwordsDone = passwordsDone + 1;
-			} else {
-				alert(t('passwords', 'Error: Could not create password.') 
-					+ '\n\n'
-					+ t('passwords', 'Website or company') + ': ' + websiteCSV + '\n'
-					+ t('passwords', 'Full URL') + ': ' + urlCSV + '\n'
-					+ t('passwords', 'Login name') + ': ' + loginCSV + '\n'
-					+ t('passwords', 'Password') + ': ' + passwordCSV + '\n'
-					+ t('passwords', 'Notes') + ':\n' + notesCSV);
-			}
+			});
 		}
 	}
+	$('#CSVtableDIV').hide();
+	$('#CSVprogressDIV').show();
+	$('#CSVprogressActive').val(0);
+	$('#CSVprogressTotal').val(passarray.length);
+	importPassword(passarray);
+}
 
-	if (passwordsDone > 0) {
-		alert(t('passwords', 'Import of passwords done. This page will now reload.'));
-		location.reload(true);
+function importPassword(array) {
+	var password = array[0];
+	if (array.length > 0) {
+		array.shift();
+		$('#CSVprogressActive').val($('#CSVprogressTotal').val() - array.length);
+		var done = ($('#CSVprogressActive').val() / $('#CSVprogressTotal').val()) * 100;
+		$('#CSVprogressDone').css('width', done + '%');
+		$('#CSVprogressText1').text(password.website + ' (' + password.loginname + ')');
+		$('#CSVprogressText2').text($('#CSVprogressActive').val() + ' / ' + $('#CSVprogressTotal').val() + ' (' + Math.round(done) + '%)');
+		var success = $.ajax({
+			url: OC.generateUrl('/apps/passwords/passwords'),
+			method: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(password),
+			success: function(data) {
+				if (array.length == 0) {
+					setTimeout(function() {
+						alert(t('passwords', 'Import of passwords done. This page will now reload.'));
+						location.reload(true);
+					}, 500);
+				}
+				importPassword(array);
+			}
+		});
 	}
 }
 
@@ -1997,4 +2077,121 @@ function selectElementText(el, win) {
 function unselectElementText(el) {
 	$('#notification').css('display', 'none');
 	$('#new_password').click();
+}
+function trashAllPasswords(Passwords) {
+	var table = document.getElementById('PasswordsTableContent');
+
+	var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+	var doneTotal = 0;
+	for (var i = 1; i < table.rows.length; i++) {
+		if (table.rows[i].cells[15].textContent == 0) {
+			var db_id = table.rows[i].cells[10].textContent;
+			var website = table.rows[i].cells[0].textContent;
+			var user = table.rows[i].cells[1].textContent;
+			var pass = table.rows[i].cells[2].textContent;
+			var address = table.rows[i].cells[12].textContent;
+			var notes = table.rows[i].cells[13].textContent;
+
+			var success = passwords.updateActive(db_id, user, website, address, pass, notes, "1");
+
+			if (success) {
+				table.rows[i].cells[15].innerHTML = 1;
+				formatTable(true);
+				update_pwcount();
+				doneTotal = doneTotal + 1;
+			}
+		}
+	}
+	if (doneTotal > 0) {
+		OCdialogs.info(t('passwords', 'All passwords were moved to the trash bin.'), t('passwords', 'Trash bin'), null, true);
+	} else {
+		OCdialogs.info(t('passwords', 'There are no passwords to be moved.'), t('passwords', 'Trash bin'), null, true);
+	}
+}
+function sidebarValues(table, rownr) {
+	
+	$('#app-content-wrapper').attr('class', 'content-wrapper-sidebar');
+
+	// set top relatively to header (adaptive to future header changes by core team, or for skin users)
+	document.getElementById('app-sidebar-wrapper').style.top = document.getElementById('header').clientHeight + 35 + 'px';
+
+	$('#app-sidebar-wrapper').show(200);
+	$('#sidebarRow').val(rownr);
+
+	$('#sidebarWebsite').text(table.rows[rownr].cells[0].textContent);
+	$('#sidebarUsername').text(table.rows[rownr].cells[1].textContent);
+
+	$('#sidebarLength').text(table.rows[rownr].cells[4].textContent);
+
+	$('#sidebarStrength').text(table.rows[rownr].cells[3].textContent);
+	$('#sidebarStrength').attr('class', table.rows[rownr].cells[3].className);
+	$('#sidebarStrength').addClass('rightCol');
+
+	$('#sidebarLower').text(table.rows[rownr].cells[5].textContent);
+	$('#sidebarLower').attr('class', table.rows[rownr].cells[5].className);
+	$('#sidebarLower').addClass('rightCol');
+	$('#sidebarUpper').text(table.rows[rownr].cells[6].textContent);
+	$('#sidebarUpper').attr('class', table.rows[rownr].cells[6].className);
+	$('#sidebarUpper').addClass('rightCol');
+	$('#sidebarNumber').text(table.rows[rownr].cells[7].textContent);
+	$('#sidebarNumber').attr('class', table.rows[rownr].cells[7].className);
+	$('#sidebarNumber').addClass('rightCol');
+	$('#sidebarSpecial').text(table.rows[rownr].cells[8].textContent);
+	$('#sidebarSpecial').attr('class', table.rows[rownr].cells[8].className);
+	$('#sidebarSpecial').addClass('rightCol');
+
+	$('#sidebarChanged').text(table.rows[rownr].cells[9].textContent + ' (' + table.rows[rownr].cells[9].title + ')');
+	$('#sidebarChanged').attr('class', table.rows[rownr].cells[9].className);
+	$('#sidebarChanged').addClass('rightCol');
+
+	$('#sidebarNotes').text(table.rows[rownr].cells[13].textContent);
+	if ($('#sidebarNotes').text() == '') {
+		$('#sidebarNotes').text('(' + t('passwords', 'None') + ')');
+	}
+
+}
+function resetTimer(kill_old) {
+	var settimer = $('#app-settings').attr('timer');
+	$('#idleTimer').show(500);
+	$('#outerRing').show(500);
+
+	$('#countSec').text(int2time(settimer));
+
+	if (settimer < 61) {
+		$('#countSec').css('font-size', '30px');
+	} else {
+		$('#countSec').css('font-size', '16px');
+	}
+
+	if (kill_old) {
+		clearInterval(intervalID);
+	}
+	intervalID = setInterval(function() {
+		settimer = settimer - 1;
+		//if (settimer != 0) {
+			$('#countSec').text(int2time(settimer));
+		//}
+		if (settimer < 61) {
+			$('#countSec').css('font-size', '30px');
+		} else {
+			$('#countSec').css('font-size', '16px');
+		}
+		// kill on 0, 'click' on logoff entry in top right menu
+		if (settimer == 0) {
+			$('#PasswordsTable table td').hide();
+		}
+		if (settimer == -1) {
+			clearInterval(intervalID);
+			alert(t('passwords', 'You will be logged off due to inactivity of %s seconds.').replace('%s', $('#app-settings').attr('timer')));
+			window.location = document.getElementById('logout').href;
+		}
+	}, 1000);
+
+}
+function int2time(integer) {
+	if (integer < 61) {
+		return integer;
+	} else {
+		return new Date(null, null, null, null, null, integer).toTimeString().match(/\d{2}:\d{2}:\d{2}/)[0].substr(3, 5);
+	}
 }
