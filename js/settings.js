@@ -6,6 +6,8 @@
 //		Days from which creation date (and password) gets orange color
 // days_red
 //		Days from which creation date (and password) gets red color
+// disable_contextmenu
+//		Disable context menu on whole app
 // https_check
 //		Check for secure connection before activating app
 // icons_allowed
@@ -15,13 +17,15 @@
 
 // USER SETTINGS
 // hide_attributes
-//		Hide the attributes a-z, A-Z, 0-9, !@#
+//		Hide the attributes strength and last changed date
 // hide_passwords
 //		Hide passwords by showing them as '*****'
 // hide_usernames
 //		Hide usernames by showing them as '*****'
 // icons_show
 //		Show website icons, using service selected by admin
+// timer
+//		Use countdown timer, user will be logged off when it reaches 0
 
 $(document).ready(function() {
 
@@ -97,13 +101,14 @@ $(document).ready(function() {
 	// fill the boxes
 	$('#https_check').prop('checked', (settings.getKey('https_check').toLowerCase() == 'true'));
 	$('#backup_allowed').prop('checked', (settings.getKey('backup_allowed').toLowerCase() == 'true'));
+	$('#disable_contextmenu').prop('checked', (settings.getKey('disable_contextmenu').toLowerCase() == 'true'));
 	
 	$('#icons_allowed').prop('checked', (settings.getKey('icons_allowed').toLowerCase() == 'true'));
 	if (settings.getKey('icons_service') == 'ddg') {
-		$('#ddg_value').prop('checked', 'true'); 
+		$('#ddg_value').prop('checked', true); 
 	}
 	if (settings.getKey('icons_service') == 'ggl') {
-		$('#ggl_value').prop('checked', 'true'); 
+		$('#ggl_value').prop('checked', true); 
 	}
 	updateIconService();
 
@@ -119,6 +124,10 @@ $(document).ready(function() {
 
 	$('#backup_allowed').change(function () {
 		settings.setAdminKey('backup_allowed', $(this).is(":checked"));
+	});
+
+	$('#disable_contextmenu').change(function () {
+		settings.setAdminKey('disable_contextmenu', $(this).is(":checked"));
 	});
 
 	$('#icons_allowed').change(function () {
@@ -163,15 +172,32 @@ $(document).ready(function() {
 	$('#hide_usernames').prop('checked', (settings.getKey('hide_usernames').toLowerCase() == 'true'));
 	$('#hide_passwords').prop('checked', (settings.getKey('hide_passwords').toLowerCase() == 'true'));
 	$('#hide_attributes').prop('checked', (settings.getKey('hide_attributes').toLowerCase() == 'true'));
+	$('#timer').val(settings.getKey('timer'));
+
+	if ($('#timer').val() == 0) {
+		$('#timer_bool').prop('checked', false);
+		$('#timersettext').hide();
+		$('#timer').hide();
+	} else {
+		$('#timer_bool').prop('checked', true);
+		$('#timersettext').show();
+		$('#timer').show();
+		if ($('#timer').val() < 61) {
+			$('#timersettext').text(t('passwords', 'seconds'));
+		} else {
+			$('#timersettext').text(t('passwords', 'seconds') + ' (' + int2time($('#timer').val()) + ' ' + t('passwords', 'minutes') + ')');
+		}
+	}
+
 
 	// Personal settings
 	$('#icons_show').change(function () {
 		settings.setUserKey('icons_show', $(this).is(":checked"));
 	});
 
-$('#hide_usernames').change(function () {
-	settings.setUserKey('hide_usernames', $(this).is(":checked"));
-});
+	$('#hide_usernames').change(function () {
+		settings.setUserKey('hide_usernames', $(this).is(":checked"));
+	});
 
 	$('#hide_passwords').change(function () {
 		settings.setUserKey('hide_passwords', $(this).is(":checked"));
@@ -179,6 +205,43 @@ $('#hide_usernames').change(function () {
 
 	$('#hide_attributes').change(function () {
 		settings.setUserKey('hide_attributes', $(this).is(":checked"));
+	});
+
+	$('#hide_attributes').change(function () {
+		settings.setUserKey('hide_attributes', $(this).is(":checked"));
+	});
+
+	$('#timer_bool').change(function () {
+		if ($('#timer_bool').prop('checked')) {
+			settings.setUserKey('timer', 60);
+			$('#timersettext').show();
+			$('#timer').show();
+			$('#timer').val(60);
+		} else {
+			settings.setUserKey('timer', 0);
+			$('#timersettext').hide();
+			$('#timer').hide();
+		}
+	});
+	$('#timer').keyup(function () {
+		if (!isNumeric($('#timer').val())) {
+			OCdialogs.alert(t('passwords', 'Fill in a number between %s and %s').replace('%s', '10').replace('%s', '3599'), t('passwords', 'Use inactivity countdown'), null, true);
+			$('#timer').val(60);
+			settings.setUserKey('timer', 60);
+			return false;
+		}
+		if ($('#timer').val() > 3599) {
+			$('#timer').val(3599);
+		}
+		if ($('#timer').val() < 10) {
+			$('#timer').val(10);
+		}
+		if ($('#timer').val() < 61) {
+			$('#timersettext').text(t('passwords', 'seconds'));
+		} else {
+			$('#timersettext').text(t('passwords', 'seconds') + ' (' + int2time($('#timer').val()) + ' ' + t('passwords', 'minutes') + ')');
+		}
+		settings.setUserKey('timer', $('#timer').val());
 	});
 
 });
@@ -221,4 +284,9 @@ function updateIconService() {
 }
 function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+function int2time(integer) {
+	if (integer !== undefined) {
+		return new Date(null, null, null, null, null, integer).toTimeString().match(/\d{2}:\d{2}:\d{2}/)[0].substr(3, 5);
+	}
 }
