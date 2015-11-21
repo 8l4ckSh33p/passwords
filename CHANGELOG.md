@@ -1,3 +1,6 @@
+####16.2
+* Now -did- fixed the bug for ownCloud 8.2 and higher
+ 
 ####16.1
 * Fixed a bug for ownCloud 8.2 and higher
 
