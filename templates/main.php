@@ -38,6 +38,9 @@
 			<div id="app-content-wrapper">
 				<?php print_unescaped($this->inc('part.content')); ?>
 			</div>
+			<div id="app-sidebar-wrapper">
+				<?php print_unescaped($this->inc('part.sidebar')); ?>
+			</div>
 		</div>
 	</div>
 
@@ -46,13 +49,13 @@
 		OC_Log::write('passwords', 'Passwords app blocked; no secure connection.', OC_Log::ERROR);
 ?>
 
-		<div id="app">
+	<div id="app">
 
-			<div id="app-content">
-				<div id="app-content-wrapper">
-					<?php print_unescaped($this->inc('part.blocked')); ?>
-				</div>
+		<div id="app-content">
+			<div id="app-content-wrapper">
+				<?php print_unescaped($this->inc('part.blocked')); ?>
 			</div>
 		</div>
+	</div>
 
-	<?php } ?>
+<?php } ?>
