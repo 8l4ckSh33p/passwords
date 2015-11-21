@@ -97,6 +97,50 @@
 	padding: 5px;
 	font-weight: bold;
 }
+#CSVprogressDIV {
+	position: fixed;
+	top: 25%;
+	left: 37%;
+	border: 2px solid #555;
+	width: 26%;
+	min-width: 300px;
+	height: 125px;
+	background: #fff;
+	margin-left: auto;
+	margin-right: auto;
+	display: none;
+}
+#CSVprogressActive,
+#CSVprogressTotal {
+	display: none;
+}
+#CSVprogressTitle,
+#CSVprogressText2 {
+	text-align: center;
+	color: #555;
+	font-weight: bold;
+}
+#CSVprogressText1 {
+	text-align: center;
+	color: #555;
+}
+#CSVprogressTitle {
+	font-size: 1.2em;
+	margin-top: 5px;
+	margin-bottom: 15px;
+}
+#CSVprogressBar {
+	border: 2px solid #555;
+	margin-left: 20px;
+	margin-right: 20px;
+	height: 20px;
+}
+#CSVprogressDone {
+	width:0px;
+	background: #555;
+	height: 18px
+}
+
 p, h2, label, .emptyinfo {
 	color: #555;
 }
@@ -106,15 +150,26 @@ tr {
 #PasswordsTableContent .icon-delete,
 #PasswordsTableContent .icon-notes,
 #PasswordsTableContent .icon-history,
+#PasswordsTableContent .icon-info,
 #PasswordsTableContent .icon-share {
 	opacity: 0.3;
 }
 #PasswordsTableContent .icon-delete:hover,
 #PasswordsTableContent .icon-notes:hover,
 #PasswordsTableContent .icon-history:hover,
+#PasswordsTableContent .icon-info:hover,
 #PasswordsTableContent .icon-share:hover {
 	opacity: 1;
 	cursor: pointer;
+}
+#PasswordsTableContent .icon-info {
+	min-width: 30px;
+	background-size: 26px;
+}
+#column_notes,
+#column_delete,
+#column_info {
+	min-width: 30px;
 }
 .actual-note {
 	opacity: 0 !important;
@@ -339,7 +394,68 @@ div#FieldLengthCheck:not(.hidevalue) {
   color: #a00;
   font-weight: bold;
 }
-
+#session_lifetime {
+	display: none;
+}
+#idleTimer {
+	width: 50px;
+	height: 50px;
+	right: 10px;
+	bottom: 10px;
+	border: 2px solid #ddd;
+	background-color: #eee;
+}
+#idleTimer,
+#outerRing {
+	position: fixed;
+	border-radius: 25px;
+	display: none;
+	z-index: 10000;
+}
+#explnSec {
+	position: fixed;
+	bottom: 70px;
+	right: 0;
+	width: 100px;
+	text-align: center;
+	opacity: 0;
+	transition: all 150ms; /* for out */
+	z-index: 10001;
+}
+#idleTimer:hover > #explnSec {
+	opacity: 1;
+	transition: all 400ms; /* for in */
+}
+#explnSec:hover {
+	opacity: 0 !important;
+}
+#outerRing {
+	animation: rotate 1s linear infinite; 
+	width: 40px;
+	height: 40px;
+	right: 15px;
+	bottom: 15px;
+}
+#outerRing:before { 
+	content: ''; 
+	position: absolute; 
+	height: 5px; 
+	width: 5px; 
+	background: #fff; 
+	border-radius: 25px;
+	animation: rotate 1s linear infinite; 
+}
+@keyframes rotate { 
+  100% { 
+    transform:rotate(360deg); 
+  } 
+}
+#countSec {
+	text-align: center;
+	margin-top: 25%;
+	font-size: 16px;
+	color: #999;
+}
 .green,
 green {
 	color: #0a0 !important;
@@ -511,12 +627,106 @@ p#generate_strength_popup {
 	padding: 0px 10px;
 }
 
+/* sidebar */
+#passwordSidebar h3 {
+	background-color: #eee;
+	width: 95%;
+	margin: 0;
+}
+#passwordSidebar {
+	margin-left: 20px;
+}
+#sidebarClose {
+	position: absolute;
+	top: 0;
+	height: 20px;
+	width: 25px;
+	right: 5%;
+	font-size: 16px;
+	line-height: 0;
+	font-weight: bold !important;
+	background: #fff !important;
+	color: #555 !important;
+}
+#sidebarRow {
+	display: none;
+}
+.content-wrapper-sidebar {
+	min-width: 0 !important;
+	width: 80% !important;
+}
+#app-sidebar-wrapper {
+	width: 17%;
+	height: 100%;
+	float: right;
+	position: fixed;
+	right: 0;
+	display: none;
+	z-index: 1000;
+}
+.leftCol,
+.rightCol {
+	float: left; 
+	display: inline; 
+}
+.leftCol {
+	width: 40%;
+}
+.rightCol {
+	width: 60%;
+}
+#sidebarNotes,
+#sidebarCategories {
+	width: 90%;
+	height: 100px;
+	color: #000 !important;
+	background: transparent !important;
+	resize: none;
+	border: 0 !important;
+	padding: 0;
+}
+#sidebarNotes {
+	font-style: italic;
+}
+#sidebarNotes:hover,
+#sidebarCategories:hover {
+	border: 0 !important;
+}
+#sidebarWebsiteHeader,
+#sidebarUsernameHeader,
+#sidebarWebsite,
+#sidebarUsername {
+	max-width: 95%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+#sidebarUsername,
+#sidebarChanged,
+#sidebarSpecial {
+	margin-bottom: 20px;
+}
+#sidebarChanged {
+	vertical-align: sub;
+}
+
+
 /* old */
 #app-content-wrapper {
 	height: 100%;
 }
 
 /* hide if screen too small */
+@media screen and (max-width: 1260px) {
+	/* sidebar */
+	#column_sidebar, .icon-info, #app-sidebar-wrapper {
+		display: none !important;
+	}
+	.content-wrapper-sidebar {
+		min-width: 100% !important;
+		width: 100% !important;
+	}
+}
 @media screen and (max-width: 1200px) {
 	/* booleans */
 	#hide1 {
