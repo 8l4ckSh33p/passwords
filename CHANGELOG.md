@@ -1,3 +1,6 @@
+####16.1
+* Fixed a bug for ownCloud 8.2 and higher
+
 ####16
 * Added a countdown timer, which can be set by users. When the timer reaches 0, the user will be logged off (will show a message first). Valid values are 10-3599 seconds. The countdown timer resets on activity in the passwords app. When a timer is set, the user will be logged off too when the session cookie ends (if set by admin in config.php, will else be 60 seconds and not the default 15 days).
 * Added a sidebar with info about the password
