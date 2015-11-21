@@ -1,8 +1,9 @@
-<div id="app-settings" active-table="active">
+<div id="app-settings" active-table="active" session-timeout="<?php p(OC::$server->getConfig()->getSystemValue('session_lifetime', 60)) ?>">
+	<textarea id="session_lifetime" disabled="true"></textarea>
 	<div id="CSVtableDIV">
 		<textarea id="CSVcontent"></textarea>
 		<textarea id="CSVcolumnCount"></textarea>
-		<h2></h2>
+		<p></h2>
 		<h3><?php p($l->t('Select options')); ?>:</h3>
 		<div id="CSVbuttons">
 			<button id="CSVheadersBtn"><?php p($l->t('File contains headers')); ?></button>
@@ -23,12 +24,27 @@
 		<button id="importCancel"><?php p($l->t('Cancel')); ?></button>
 		<button id="importStart"><?php p($l->t('Import')); ?></button>
 	</div>
+	<div id="CSVprogressDIV">
+		<p id="CSVprogressTitle"><?php p($l->t('Import')); ?></p>
+		<input id="CSVprogressActive"/>
+		<input id="CSVprogressTotal"/>
+		<p id="CSVprogressText1">0 / 0</p>
+		<p id="CSVprogressText2">0 / 0</p>
+		<div id="CSVprogressBar">
+			<div id="CSVprogressDone"></div>
+		</div>
+	</div>
 	<div id="app-settings-header">
 		<button class="settings-button"
 				data-apps-slide-toggle="#app-settings-content"
 		><?php p($l->t('Backup and import')); ?></button>
 	</div>
 	<div id="app-settings-content">
+		<div id="app-settings-trashall">
+			<button id="trashAll"><?php p($l->t('Move all to trash')); ?></button>
+			<p><?php p($l->t('Click to move all active passwords to the trash')); ?>.</p>
+			<hr>
+		</div>
 		<div id="app-settings-backup">
 			<h3><?php p($l->t('Download Backup')); ?></h3>
 			<button id="backupDL"><?php p($l->t('Download Backup')); ?></button>
