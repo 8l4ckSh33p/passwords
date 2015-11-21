@@ -2,7 +2,7 @@
 * Added a countdown timer, which can be set by users. When the timer reaches 0, the user will be logged off (will show a message first). Valid values are 10-3599 seconds. The countdown timer resets on activity in the passwords app. When a timer is set, the user will be logged off too when the session cookie ends (if set by admin in config.php, will else be 60 seconds and not the default 15 days).
 * Added a sidebar with info about the password
 * Added a progress bar for importing passwords
-* Added admin option to disable the context menu
+* Added admin option to disable the browsers context menu on this app
 * Added a button to move all active passwords to trash
 * Removed info columns 'length', 'a-z', 'A-Z', '0-9' and '!@#' (now available in the sidebar)
 * Edited settings to hide 'strength' and 'last changed' columns, instead of a-z, A-Z, 0-9 and !@#
