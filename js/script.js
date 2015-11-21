@@ -215,8 +215,10 @@
 										});
 									}
 								}
-								alert(t('passwords', 'Deletion of all trashed passwords done. This page will now reload.'));
-								location.reload(true);
+								setTimeout(function() {
+									alert(t('passwords', 'Deletion of all trashed passwords done. This page will now reload.'));
+									location.reload(true);
+								}, 3000);
 							}
 						}, true);
 				});
