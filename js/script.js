@@ -1478,7 +1478,7 @@ function backupPasswords() {
 						if (j == 0 || j == 1 || j == 2 || j == 12 || j == 13) { // columns: website, username, pass, address, notes
 							rowValue = table.rows[i].cells[j].textContent;
 							// escape " and \ by putting a \ before them
-							rowValue = rowValue.replace(/"/g, '\\"').replace(/\\/g, '\\\\');
+							rowValue = rowValue.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 							textToWrite += '"' + rowValue + '",';
 						}
 
