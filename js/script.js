@@ -1812,7 +1812,7 @@ function importCSV() {
 	var urlColumn = -1;
 	var notesColumn = -1;
 
-	for (var i = 0; i <= countColumns; i++) {
+	for (var i = 1; i <= countColumns; i++) {
 		if ($('#CSVcolumn' + i).val() == 'website') {
 			websiteColumn = i;
 		}
