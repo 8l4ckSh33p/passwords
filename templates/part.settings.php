@@ -7,7 +7,7 @@
 		<h3><?php p($l->t('Select options')); ?>:</h3>
 		<div id="CSVbuttons">
 			<button id="CSVheadersBtn"><?php p($l->t('File contains headers')); ?></button>
-			<button id="CSVquotationmarksBtn"><?php p($l->t('Values are seperated by quotation marks')); ?></button>
+			<button id="CSVquotationmarksBtn"><?php p($l->t('Values are separated by quotation marks')); ?></button>
 			<button id="CSVescapeslashBtn"><?php p($l->t('Characters %s and %s need to be escaped', array('\\', '"'))); ?></button>
 			<button id="CSVsplit_rnBtn"><?php p($l->t('Lines are split on')); ?> \r\n</button>
 		</div>
