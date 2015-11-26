@@ -1923,6 +1923,12 @@ function importPassword(array) {
 					}, 500);
 				}
 				importPassword(array);
+			},
+			error: function(data) {
+				setTimeout(function() {
+					alert(t('passwords', 'The session has expired. This page will now reload.'));
+					location.reload(true);
+				}, 500);
 			}
 		});
 	}
