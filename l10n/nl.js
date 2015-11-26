@@ -158,7 +158,7 @@ OC.L10N.register(
 	"Use DuckDuckGo" : "DuckDuckGo gebruiken",
 	"Use Google" : "Google gebruiken",
 	"Use inactivity countdown" : "Inactiviteitstimer gebruiken",
-	"Values are seperated by quotation marks" : "Waarden zijn gecheiden door aanhalingstekens",
+	"Values are separated by quotation marks" : "Waarden zijn gecheiden door aanhalingstekens",
 	"Weak" : "Zwak",
 	"Website icons" : "Website-icoontjes",
 	"Website or company" : "Website of bedrijf",
