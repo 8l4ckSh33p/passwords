@@ -1,4 +1,4 @@
-{
+{ "translations": {
 	"ACCESS BLOCKED" : "ACCESS BLOCKED",
 	"Active passwords" : "Active passwords",
 	"Add new password" : "Add new password",
@@ -152,4 +152,5 @@
 	"You will be logged off due to expiration of your session cookie (set to %s minutes)." : "You will be logged off due to expiration of your session cookie (set to %s minutes).",
 	"You will be logged off due to inactivity of %s seconds." : "You will be logged off due to inactivity of %s seconds.",
 	"Your administrator does not allow you to download backups" : "Your administrator does not allow you to download backups"
+},"pluralForm" :"nplurals=2; plural=(n != 1);"
 }
