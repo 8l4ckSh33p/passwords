@@ -1,5 +1,4 @@
 # Passwords
-![Build Status](https://travis-ci.org/fcturner/passwords.svg?branch=master)
 #### for ownCloud Server 8 (all versions)
 ##### 2015, Fallon Turner <fcturner@users.noreply.github.com>
 
