@@ -15,11 +15,11 @@ The script for creating passwords can be found in [`/js/script.js`](/js/script.j
 ### Password generation
 Generated passwords are in fact pseudo-generated (i.e. not using atmospheric noise), since only the Javascript Math.random-function is used, of which I think is randomly 'enough'. After generation of different types of characters (your choice to include lowercase, uppercase, numbers and/or reading marks, strength will be calculated), scrambling of these characters is done using the [Fisher-Yates shuffle](http://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle) (also known as Knuth, a de-facto unbiased shuffle algorithm).
 ### Encryption (for storage in database)
-All passwords (generated or your own) are stored encrypted in your ownCloud database.
+All passwords (generated or your own) are stored encrypted in your ownCloud database, using high-end cryptological functions:
 * Encryption is done using a key built from user-specific, ownCloud-specific, and database entry-specific data so it is unique for every encrypted block of text (i.e. every password). It therefore provides key rotation for cipher and authentication keys
 * The keys are not used directly. Instead, it uses [key stretching](http://en.wikipedia.org/wiki/Key_stretching) which relies on [Password-Based Key Derivation Function 2](http://en.wikipedia.org/wiki/PBKDF2) (PBKDF2)
 * It uses [Encrypt-then-MAC](http://en.wikipedia.org/wiki/Authenticated_encryption#Approaches_to_Authenticated_Encryption) (EtM), which is a very good method for ensuring the authenticity of the encrypted data
-* It uses mcrypt to perform the encryption using MCRYPT_BLOWFISH ciphers and MCRYPT_MODE_CBC for the mode. It's strong enough, and still fairly fast
+* It uses mcrypt to perform the encryption using [MCRYPT_BLOWFISH ciphers](https://en.wikipedia.org/wiki/Blowfish_(cipher)) and [MCRYPT_MODE_CBC](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Cipher_Block_Chaining_.28CBC.29) for the mode. It's strong enough, and still fairly fast
 * It hides the [Initialization vector](http://en.wikipedia.org/wiki/Initialization_vector) (IV)
 * It uses a [timing-safe comparison](http://blog.ircmaxell.com/2014/11/its-all-about-time.html) function using [double Hash-based Message Authentication Code](http://en.wikipedia.org/wiki/Hash-based_message_authentication_code) (HMAC) verification of the source data
 
