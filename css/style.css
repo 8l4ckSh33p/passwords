@@ -663,6 +663,7 @@ p#generate_strength_popup {
 	right: 0;
 	display: none;
 	z-index: 1000;
+	background: #fff;
 }
 .leftCol,
 .rightCol {
