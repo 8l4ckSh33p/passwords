@@ -1,4 +1,4 @@
-####17 - Jan ?, 2016
+####17 - NOT RELEASED YET
 * Fix for sidebar background due to incompatibility with Javascript XMPP Chat app
  
 ####16.2 - Nov 21, 2015
