@@ -1,10 +1,13 @@
-####16.2
+####17 - Jan ?, 2016
+* Fix for sidebar background due to incompatibility with Javascript XMPP Chat app
+ 
+####16.2 - Nov 21, 2015
 * Now -did- fixed the bug for ownCloud 8.2 and higher
  
-####16.1
+####16.1 - Nov 21, 2015
 * Fixed a bug for ownCloud 8.2 and higher
 
-####16
+####16 - Nov 21, 2015
 * Added a countdown timer, which can be set by users. When the timer reaches 0, the user will be logged off (will show a message first). Valid values are 10-3599 seconds. The countdown timer resets on activity in the passwords app. When a timer is set, the user will be logged off too when the session cookie ends (if set by admin in config.php, will else be 60 seconds and not the default 15 days).
 * Added a sidebar with info about the password
 * Added a progress bar for importing passwords
@@ -21,7 +24,7 @@
 * Fix for (multiline) notes sometimes not being imported (#85)
 * Updated language files for English, Spanish, Dutch. Want to do an update for your own language? Look at the changes at [TRANSLATION.js](https://github.com/fcturner/passwords/commit/7f9428bac14fbfb8f866eff59d7b0efa1899967d)
 
-####15
+####15 - Oct 10, 2015
 * Changed version numbering: 8.0.15 is replaced by 15, since future release may support more versions than OC8 only, and it suggested an ownCloud version more than an app version
 * Added new CSV import screen, with live preview
 * Added Italian language support
