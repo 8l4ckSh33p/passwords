@@ -388,20 +388,23 @@
 							}
 							
 						// from trash, remove from database
-						} else if (OCdialogs.confirm(t('passwords', 'This will delete the password for') + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'. " + t('passwords', 'Are you sure?'), t('passwords', 'Trash bin'), null, true)) {
+						} else {
+							OCdialogs.confirm(t('passwords', 'This will delete the password for') + " '" + website + "' " + t('passwords', "with user name") + " '" + user + "'. " + t('passwords', 'Are you sure?'), t('passwords', 'Trash bin'), function(res) {
+								if (res) {
 
-							var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
-							var view = new View(passwords);
-							
-							passwords.removeByID(db_id).done(function() {
-								// now removed from db, 
-								// so delete from DOM and update count
-								table.deleteRow(row);
-								update_pwcount();
-							}).fail(function() {
-								OCdialogs.alert(t('passwords', 'Error: Could not delete password.'), t('passwords', 'Trash bin'), null, true);
+									var passwords = new Passwords(OC.generateUrl('/apps/passwords/passwords'));
+									var view = new View(passwords);
+
+									passwords.removeByID(db_id).done(function() {
+										// now removed from db, 
+										// so delete from DOM and update count
+										table.deleteRow(row);
+										update_pwcount();
+									}).fail(function() {
+										OCdialogs.alert(t('passwords', 'Error: Could not delete password.'), t('passwords', 'Trash bin'), null, true);
+									});
+								}
 							});
-														
 						}
 					} else {
 						if ($('#sidebarRow').val() == row) {
