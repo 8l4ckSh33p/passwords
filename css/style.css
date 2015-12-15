@@ -567,7 +567,7 @@ td[title]:hover:after {
 	position: fixed;
 	top: 0;
 	left: 50%;
-	width: 300px;
+	width: 400px;
 	margin-left: -150px;
 	z-index: 9999;
 }
