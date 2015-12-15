@@ -1,4 +1,5 @@
 ####17 - NOT RELEASED YET
+* Changed width of popup, now wider
 * Fix for sidebar background due to incompatibility with Javascript XMPP Chat app
  
 ####16.2 - Nov 21, 2015
