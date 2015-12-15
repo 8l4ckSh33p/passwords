@@ -5,7 +5,7 @@
 
 		if (false !== strpos($url,'d=1')) {
 			OCP\Util::writeLog('passwords', 'Passwords app accessed without secure connection.', OCP\Util::WARN);
-		    return true;
+			return true;
 		}
 
 		// test if at least one is true in:
